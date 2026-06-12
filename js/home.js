@@ -1464,6 +1464,12 @@
     };
 
     // ========== 弹窗工具函数（独立实现，不依赖 core.js） ==========
+    function ensureBodyModal(modalElement) {
+        if (modalElement && modalElement.parentElement !== document.body) {
+            document.body.appendChild(modalElement);
+        }
+    }
+
     window.homeShowModal = function(modalElement) {
         if (!modalElement) return;
         // 清除之前的定时器
@@ -1472,9 +1478,7 @@
             modalElement._hideTimeout = null;
         }
         // 将弹窗移动到 body 末尾，确保不在 home-container 内部
-        if (modalElement.parentElement !== document.body) {
-            document.body.appendChild(modalElement);
-        }
+        ensureBodyModal(modalElement);
         // 强制显示在最上层
         modalElement.style.cssText = 'display: flex !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; z-index: 99999 !important; align-items: center !important; justify-content: center !important; background-color: rgba(0, 0, 0, 0.6) !important;';
         // 重置内容动画 - 先重置为初始状态，然后触发动画
@@ -1490,7 +1494,7 @@
             content.style.opacity = '1';
             content.style.transform = 'translateY(0) scale(1)';
         }
-    }
+    };
 
     // ========== 功能翻页 ==========
     let currentAppsPage = 0;
@@ -1554,10 +1558,6 @@
                 if (!modal) {
                     console.error('diary-modal not found');
                     return;
-                }
-                // 确保弹窗在 body 下
-                if (modal.parentElement !== document.body) {
-                    document.body.appendChild(modal);
                 }
                 // 显示弹窗
                 homeShowModal(modal);
