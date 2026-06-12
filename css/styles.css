@@ -1637,6 +1637,9 @@ body.with-background .message-meta {
     backdrop-filter: blur(8px);
     animation: modalBgFadeIn 0.3s ease;
 }
+.modal--elevated {
+    z-index: 99999 !important;
+}
 @keyframes modalBgFadeIn {
     from {
         opacity: 0;

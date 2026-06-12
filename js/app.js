@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (typeof window.showHomePage === 'function') {
                 window.showHomePage();
             }
+            // 信号：应用已就绪
+            document.body.dataset.appReady = 'true';
         }, 800);
     };
 

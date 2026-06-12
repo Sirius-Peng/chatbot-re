@@ -2578,6 +2578,13 @@ function showModal(modalElement, focusElement = null) {
             });
         }
 
+        // 从主页显示弹窗时使用提升的 z-index
+        window.homeShowModal = function(modalElement) {
+            if (!modalElement) return;
+            showModal(modalElement);
+            modalElement.classList.add('modal--elevated');
+        };
+
         function hideModal(modalElement) {
             const content = modalElement.querySelector('.modal-content');
             if (content) {
@@ -2587,6 +2594,7 @@ function showModal(modalElement, focusElement = null) {
             if (modalElement._hideTimeout) clearTimeout(modalElement._hideTimeout);
             modalElement._hideTimeout = setTimeout(() => {
                 modalElement.style.display = 'none';
+                modalElement.classList.remove('modal--elevated');
             }, 300);
         }
 

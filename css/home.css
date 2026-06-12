@@ -230,7 +230,9 @@ rgba(255, 255, 255, 0.45) 100%
 /* ========== 翻页容器 ========== */
 .apps-pager {
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .apps-page {

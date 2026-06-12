@@ -1463,38 +1463,7 @@
         }
     };
 
-    // ========== 弹窗工具函数（独立实现，不依赖 core.js） ==========
-    function ensureBodyModal(modalElement) {
-        if (modalElement && modalElement.parentElement !== document.body) {
-            document.body.appendChild(modalElement);
-        }
-    }
-
-    window.homeShowModal = function(modalElement) {
-        if (!modalElement) return;
-        // 清除之前的定时器
-        if (modalElement._hideTimeout) {
-            clearTimeout(modalElement._hideTimeout);
-            modalElement._hideTimeout = null;
-        }
-        // 将弹窗移动到 body 末尾，确保不在 home-container 内部
-        ensureBodyModal(modalElement);
-        // 强制显示在最上层
-        modalElement.style.cssText = 'display: flex !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; z-index: 99999 !important; align-items: center !important; justify-content: center !important; background-color: rgba(0, 0, 0, 0.6) !important;';
-        // 重置内容动画 - 先重置为初始状态，然后触发动画
-        const content = modalElement.querySelector('.modal-content');
-        if (content) {
-            // 先设置为初始状态（隐藏）
-            content.style.opacity = '0';
-            content.style.transform = 'translateY(20px) scale(0.95)';
-            // 强制重绘
-            void content.offsetWidth;
-            // 触发动画到最终状态
-            content.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-            content.style.opacity = '1';
-            content.style.transform = 'translateY(0) scale(1)';
-        }
-    };
+    // 弹窗工具函数已迁移到 core.js (showModal / homeShowModal)
 
     // ========== 功能翻页 ==========
     let currentAppsPage = 0;

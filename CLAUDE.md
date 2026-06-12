@@ -33,3 +33,7 @@ Vanilla JS SPA (no framework, no bundler, no module system). Single `index.html`
 ### CI/CD
 
 Push to `main` triggers GitHub Actions: `npm ci` → `lint` → `build` → deploy `www/` to GitHub Pages.
+
+### Model constraints
+
+When using `mimo-v2.5-pro` (configured in `~/.claude/settings.json`), **do not pass any images or screenshots** to the model. This model does not support image/vision input. If the user provides an image, acknowledge it but do not attempt to process or include it in the conversation context.
