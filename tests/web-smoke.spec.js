@@ -48,12 +48,41 @@ async function enterChatFromHome(page) {
     await expect(page.locator('#message-input')).toBeVisible();
 }
 
+async function clickHomeApp(page, app, pageIndex = 0) {
+    await page.evaluate((index) => {
+        if (typeof window.switchAppsPage === 'function') {
+            window.switchAppsPage(index);
+        }
+    }, pageIndex);
+
+    const appItem = page.locator('.apps-page.active .app-item').filter({
+        has: page.locator(`[data-app="${app}"]`)
+    }).first();
+    await expect(appItem).toBeVisible();
+    await appItem.click();
+}
+
+async function closeModalById(page, id) {
+    await page.evaluate((modalId) => {
+        const modal = document.getElementById(modalId);
+        if (!modal) return;
+        if (typeof window.hideModal === 'function') {
+            window.hideModal(modal);
+            return;
+        }
+        modal.classList.remove('show');
+        modal.style.display = 'none';
+    }, id);
+    await expect(page.locator(`#${id}`)).toBeHidden();
+}
+
 test('first run gates resolve to the home UI', async ({ page }) => {
     await dismissStartup(page);
 
     await expect(page.locator('#home-container')).toBeVisible();
     await expect(page.locator('.hero-card')).toBeVisible();
     await expect(page.locator('[data-app="chat"]')).toBeVisible();
+    await expect(page.locator('#apps-dots .apps-dot')).toHaveCount(2);
 });
 
 test('home chat entry opens the chat UI', async ({ page }) => {
@@ -92,4 +121,44 @@ test('primary mobile feature entries open without crashing', async ({ page }) =>
         await page.locator(close).click();
         await expect(page.locator(panel)).toBeHidden();
     }
+});
+
+test('home app entries open their primary surfaces', async ({ page }) => {
+    await dismissStartup(page);
+
+    const appFlows = [
+        { app: 'shop', pageIndex: 0, target: '#shop-container', close: '.shop-back' },
+        { app: 'moyu', pageIndex: 0, target: '#moyu-modal', close: '#close-moyu-modal' },
+        { app: 'diary', pageIndex: 0, target: '#diary-modal', closeModalId: 'diary-modal' },
+        { app: 'accounting', pageIndex: 1, target: '#accounting-modal', closeModalId: 'accounting-modal' },
+        { app: 'pet', pageIndex: 1, target: '#pet-container', close: '.pet-back-btn' },
+        { app: 'map', pageIndex: 1, target: '#map-app-overlay', close: '#map-back-btn' },
+    ];
+
+    for (const flow of appFlows) {
+        await clickHomeApp(page, flow.app, flow.pageIndex);
+        await expect(page.locator(flow.target)).toBeVisible();
+
+        if (flow.closeModalId) {
+            await closeModalById(page, flow.closeModalId);
+        } else {
+            await page.locator(flow.close).click();
+            await expect(page.locator(flow.target)).toBeHidden();
+        }
+
+        await expect(page.locator('#home-container')).toBeVisible();
+    }
+});
+
+test('home moments nav opens and returns to the home UI', async ({ page }) => {
+    await dismissStartup(page);
+
+    const momentsNav = page.locator('.home-nav-item').filter({ hasText: '朋友圈' });
+    await expect(momentsNav).toBeVisible();
+    await momentsNav.click();
+
+    await expect(page.locator('#moments-container')).toBeVisible();
+    await page.locator('.moments-back-btn').click();
+    await expect(page.locator('#moments-container')).toBeHidden();
+    await expect(page.locator('#home-container')).toBeVisible();
 });

@@ -135,6 +135,7 @@
     };
 
     const defaultAppIcons = {
+        shop: '<i class="fas fa-shopping-bag"></i>',
         chat: '<i class="fas fa-comment-alt"></i>',
         mailbox: '<i class="fas fa-envelope"></i>',
         moyu: '<i class="fas fa-fish"></i>',
@@ -143,11 +144,31 @@
         mood: '<i class="fas fa-calendar-day"></i>',
         calendar: '<i class="fas fa-calendar-alt"></i>',
         decide: '<i class="fas fa-balance-scale"></i>',
+        'gift-cabinet': '<i class="fas fa-gift"></i>',
         stats: '<i class="fas fa-chart-bar"></i>',
-        accounting: '<i class="fas fa-coins"></i>'
+        accounting: '<i class="fas fa-coins"></i>',
+        pet: '<i class="fas fa-paw"></i>',
+        'ta-phone': '<i class="fas fa-mobile-alt"></i>',
+        map: '<i class="fas fa-map"></i>'
     };
 
-    const defaultAppOrder = ['chat', 'mailbox', 'moyu', 'diary', 'fortune', 'mood', 'calendar', 'decide', 'stats', 'accounting', 'map'];
+    const defaultAppOrder = [
+        'shop',
+        'chat',
+        'mailbox',
+        'moyu',
+        'diary',
+        'fortune',
+        'mood',
+        'calendar',
+        'decide',
+        'gift-cabinet',
+        'stats',
+        'accounting',
+        'pet',
+        'ta-phone',
+        'map'
+    ];
     let appOrder = [...defaultAppOrder];
     let isEditMode = false;
 
@@ -1159,7 +1180,23 @@
         if (!grid) return;
 
         grid.innerHTML = '';
-        const nameMap = { chat:'聊天', mailbox:'信封', moyu:'摸鱼', diary:'朝夕心记', fortune:'运势', mood:'心晴', calendar:'日历', decide:'抉择', stats:'统计', accounting:'记账' };
+        const nameMap = {
+            shop: '商城',
+            chat: '聊天',
+            mailbox: '信封',
+            moyu: '摸鱼',
+            diary: '朝夕心记',
+            fortune: '运势',
+            mood: '心晴',
+            calendar: '日历',
+            decide: '抉择',
+            'gift-cabinet': '礼物柜',
+            stats: '统计',
+            accounting: '记账',
+            pet: '萌宠屋',
+            'ta-phone': 'TA的手机',
+            map: '地图'
+        };
 
         Object.keys(defaultAppIcons).forEach(app => {
             const item = document.createElement('div');
