@@ -44,7 +44,7 @@
 | AI | DeepSeek API（OpenAI 兼容，流式 SSE） |
 | PWA | Service Worker + Web App Manifest |
 | Android | Capacitor |
-| 测试 | Playwright E2E |
+| 测试 | Playwright E2E + Vitest 单元测试 |
 | CI/CD | GitHub Actions → GitHub Pages |
 
 ## 快速开始
@@ -56,7 +56,10 @@ npm install
 # 本地开发（端口 3000）
 npm run dev
 
-# 运行测试
+# 运行单元测试
+npm run test:unit
+
+# 运行 E2E 测试
 npm run test:web
 
 # 构建到 www/
@@ -71,6 +74,7 @@ npm run build
 | `npm run build` | 构建静态产物到 `www/` |
 | `npm run lint` | ESLint 检查 |
 | `npm run lint:fix` | ESLint 自动修复 |
+| `npm run test:unit` | Vitest 单元测试 |
 | `npm run test:web` | Playwright E2E 测试（Pixel 5 视口，端口 4176） |
 | `npm run android:sync` | 构建 + Capacitor 同步 |
 | `npm run android:build` | 构建 Android Debug APK |
@@ -88,6 +92,7 @@ npm run build
 │   ├── config.js           # 全局常量与配置
 │   ├── db.js               # Dexie 数据库定义
 │   ├── state.js            # 全局状态管理
+│   ├── utils.js            # 工具函数（含 escapeHTML）
 │   ├── core.js             # 核心功能（弹窗、消息渲染、数据存取）
 │   ├── home.js             # 首页导航与应用入口
 │   ├── app.js              # 启动入口（DOMContentLoaded）
@@ -95,14 +100,15 @@ npm run build
 │   ├── features/           # 功能模块
 │   ├── diary.js            # 朝夕心记
 │   ├── accounting.js       # 同心记账
+│   ├── __tests__/          # Vitest 单元测试
 │   └── ...
 ├── assets/                 # 静态资源（图标、音效、vendor 库）
 ├── tests/                  # Playwright E2E 测试
 ├── scripts/                # 构建与工具脚本
 ├── server/                 # 文件上传服务
 ├── docs/                   # 设计文档
-├── capacitor.config.ts     # Capacitor 配置
-└── playwright.config.ts    # Playwright 配置
+├── capacitor.config.json   # Capacitor 配置
+└── playwright.config.js    # Playwright 配置
 ```
 
 ## 存储架构
@@ -117,17 +123,23 @@ npm run build
 ## 测试
 
 ```bash
+# 运行 Vitest 单元测试
+npm run test:unit
+
 # 运行全部 E2E 测试
 npm run test:web
 
 # 指定测试文件
 npx playwright test tests/web-smoke.spec.js
 npx playwright test tests/feature-regression.spec.js
+npx playwright test tests/xss-regression.spec.js
 ```
 
 测试覆盖：
+- **单元测试（Vitest）** — escapeHTML 安全转义函数（7 项）
 - **web-smoke** — 首页导航、聊天入口、消息发送、功能页面、底部导航、页面切换（9 项）
 - **feature-regression** — 记账、日记、宠物、摸鱼、朋友圈、商城、统计、地图、信封、塔罗、心晴、消息持久化、数据导出（13 项）
+- **xss-regression** — XSS 安全回归测试：脚本注入防护、通知 HTML 转义（2 项）
 
 ## 部署
 
@@ -136,6 +148,16 @@ npx playwright test tests/feature-regression.spec.js
 ```
 npm ci → lint → build → 部署 www/ 到 GitHub Pages
 ```
+
+## 安全
+
+已修复 7 个 Critical/High 级别 XSS 漏洞：
+- 统一全局 `escapeHTML()` 函数（覆盖 `& < > " '` 五个特殊字符）
+- 消除 11 个散落的私有转义函数，统一为单一实现
+- 修复 core.js 中消息渲染、系统消息、通话事件、回复指示器、图片属性等注入点
+- 修复 showNotification 和 home.js 中的 XSS 风险
+
+详见 [js/utils.js](js/utils.js) 中的 `window.escapeHTML` 实现。
 
 ## 文档
 
