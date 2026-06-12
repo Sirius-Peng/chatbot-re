@@ -22,6 +22,7 @@
     "localforage": "readonly",
     "JSZip": "readonly",
     "Dexie": "readonly",
+    "escapeHTML": "readonly",
     "showNotification": "writable",
     "showModal": "writable",
     "hideModal": "writable",

@@ -1280,7 +1280,7 @@ function showMoyuNotification() {
     const detailHtml = (showDetail && session) ? `
         <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 10px; padding: 8px; background: var(--primary-bg); border-radius: 8px; line-height: 1.4;">
             <div style="font-size: 11px; color: var(--accent-color); margin-bottom: 4px;">
-                <i class="fas fa-map-marker-alt" style="margin-right: 4px;"></i>${window.escapeHtml ? window.escapeHtml(session.location) : session.location}
+                <i class="fas fa-map-marker-alt" style="margin-right: 4px;"></i>${escapeHTML(session.location)}
             </div>
             <div style="font-size: 11px; color: var(--text-secondary);">
                 <i class="fas fa-clock" style="margin-right: 4px;"></i>预计工作 ${session.totalHours} 小时
@@ -1561,7 +1561,7 @@ function createMessageFragment(msg, prevMsg, nextMsg, lastSenderRef) {
     if (msg.type === 'system') {
         const systemMsgDiv = document.createElement('div');
         systemMsgDiv.className = 'system-message';
-        systemMsgDiv.innerHTML = msg.text;
+        systemMsgDiv.innerHTML = escapeHTML(msg.text);
         fragment.appendChild(systemMsgDiv);
         lastSenderRef.current = 'system';
         return fragment;
@@ -1574,8 +1574,8 @@ function createMessageFragment(msg, prevMsg, nextMsg, lastSenderRef) {
         const icon = msg.callIcon || 'fa-video';
         const isRejected = icon === 'fa-phone-slash';
         const colorClass = isRejected ? 'call-event-pill--rejected' : 'call-event-pill--ended';
-        const detail = msg.callDetail ? `<span class="call-event-detail">${msg.callDetail}</span>` : '';
-        callEvDiv.innerHTML = `<div class="call-event-pill ${colorClass}"><i class="fas ${icon} call-event-icon"></i><span class="call-event-label">${msg.text.replace(/ · .*/, '')}</span>${detail}<button class="call-event-delete" title="删除" onclick="(function(btn){const id=btn.closest('[data-id]').dataset.id;const idx=messages.findIndex(m=>String(m.id)===String(id));if(idx>-1){messages.splice(idx,1);renderMessages();throttledSaveData();}})(this)"><i class="fas fa-times"></i></button></div>`;
+        const detail = msg.callDetail ? `<span class="call-event-detail">${escapeHTML(msg.callDetail)}</span>` : '';
+        callEvDiv.innerHTML = `<div class="call-event-pill ${colorClass}"><i class="fas ${icon} call-event-icon"></i><span class="call-event-label">${escapeHTML(msg.text.replace(/ · .*/, ''))}</span>${detail}<button class="call-event-delete" title="删除" onclick="(function(btn){const id=btn.closest('[data-id]').dataset.id;const idx=messages.findIndex(m=>String(m.id)===String(id));if(idx>-1){messages.splice(idx,1);renderMessages();throttledSaveData();}})(this)"><i class="fas fa-times"></i></button></div>`;
         fragment.appendChild(callEvDiv);
         lastSenderRef.current = 'system';
         return fragment;
@@ -1697,15 +1697,15 @@ function createMessageFragment(msg, prevMsg, nextMsg, lastSenderRef) {
     if (msg.replyTo) {
         const repliedText = msg.replyTo.text || (msg.replyTo.image ? '🖼 图片' : '[消息]');
         const repliedSender = msg.replyTo.sender === 'user' ? (settings.myName || '我') : (settings.partnerName || '对方');
-        messageHTML += `<div class="reply-indicator" data-reply-id="${msg.replyTo.id || ''}" style="cursor:pointer;" onclick="scrollToQuotedMessage(this)"><span class="reply-indicator-sender">${repliedSender}</span><span class="reply-indicator-text">${repliedText}</span></div>`;
+        messageHTML += `<div class="reply-indicator" data-reply-id="${msg.replyTo.id || ''}" style="cursor:pointer;" onclick="scrollToQuotedMessage(this)"><span class="reply-indicator-sender">${escapeHTML(repliedSender)}</span><span class="reply-indicator-text">${escapeHTML(repliedText)}</span></div>`;
     }
 
     const isImageOnly = !msg.text && !!msg.image;
     const isRedPacket = msg.type === 'red-packet';
-    let content = msg.text ? `<div>${msg.text.replace(/\n/g, '<br>')}</div>` : '';
+    let content = msg.text ? `<div>${escapeHTML(msg.text).replace(/\n/g, '<br>')}</div>` : '';
     if (isRedPacket) {
         content = window.renderRedPacketMessage ? window.renderRedPacketMessage(msg) : '<div style="padding:10px;color:#c4453c;">红包消息</div>';
-    } else if (msg.image) content += `<img src="${msg.image}" class="message-image${isImageOnly ? ' message-image-only' : ''}" alt="图片" style="max-width:${isImageOnly ? '100px' : '100px'}; border-radius: 12px;${!isImageOnly ? ' margin-top: 6px;' : ''} cursor: pointer;" onclick="viewImage('${msg.image}')">`;
+    } else if (msg.image) content += `<img src="${escapeHTML(msg.image)}" class="message-image${isImageOnly ? ' message-image-only' : ''}" alt="图片" style="max-width:${isImageOnly ? '100px' : '100px'}; border-radius: 12px;${!isImageOnly ? ' margin-top: 6px;' : ''} cursor: pointer;" onclick="viewImage('${escapeHTML(msg.image)}')">`;
     messageHTML += content;
 
     const messageDiv = document.createElement('div');

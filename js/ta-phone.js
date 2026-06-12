@@ -136,7 +136,7 @@
                 <div class="ta-phone-item">
                     <button class="ta-phone-item-delete" onclick="window.TaPhoneApp.deleteCollection('${type}', ${item.id})" title="删除">×</button>
                     <div class="ta-phone-item-time">${formatTime(item.originalTime)}</div>
-                    <div class="ta-phone-item-text">${escapeHtml(item.content)}</div>
+                    <div class="ta-phone-item-text">${escapeHTML(item.content)}</div>
                     <div class="ta-phone-item-meta">${meta}</div>
                 </div>
             `;
@@ -152,11 +152,7 @@
         renderList('chat');
     }
 
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
+    // escapeHTML 已在 utils.js 中全局定义
 
     // 渲染礼物柜
     function renderGiftCabinet() {
@@ -195,7 +191,7 @@
                         </div>
                     </div>
                     <div class="ta-phone-item-time">${formatTime(item.time)}</div>
-                    ${item.remark ? `<div style="font-size:0.78rem;color:#b37400;margin-top:4px;">备注: ${escapeHtml(item.remark)}</div>` : ''}
+                    ${item.remark ? `<div style="font-size:0.78rem;color:#b37400;margin-top:4px;">备注: ${escapeHTML(item.remark)}</div>` : ''}
                     ${replyPreview}
                     ${item.replies && item.replies.length > 1 ? `<button style="margin-top:8px;background:none;border:none;color:var(--accent-color);font-size:0.75rem;cursor:pointer;" onclick="window.TaPhoneApp.showGiftReplies(${idx})">查看全部回复 (${item.replies.length}条)</button>` : ''}
                 </div>

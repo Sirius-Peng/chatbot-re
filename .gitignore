@@ -3,6 +3,7 @@
 .env
 .claude/settings.local.json
 node_modules/
+.agents/
 www/
 playwright-report/
 test-results/

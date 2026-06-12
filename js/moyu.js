@@ -150,7 +150,7 @@ window.renderMoyuCurrent = function () {
                     <div style="font-size: 10px; color: var(--text-secondary); margin-bottom: 4px; opacity: 0.7;">
                         <i class="fas fa-clock" style="margin-right: 2px; font-size: 9px;"></i>${timeStr}
                     </div>
-                    <div style="font-size: 13px; color: var(--text-primary); line-height: 1.5;">${window.escapeHtml(act.content)}</div>
+                    <div style="font-size: 13px; color: var(--text-primary); line-height: 1.5;">${escapeHTML(act.content)}</div>
                 </div>
             `;
         }).join('');
@@ -161,7 +161,7 @@ window.renderMoyuCurrent = function () {
                 <div style="font-size: 10px; color: var(--text-secondary); margin-bottom: 4px; opacity: 0.7;">
                     <i class="fas fa-clock" style="margin-right: 2px; font-size: 9px;"></i>${record.createdAt ? new Date(record.createdAt).getHours().toString().padStart(2,'0') + ':' + new Date(record.createdAt).getMinutes().toString().padStart(2,'0') : ''}
                 </div>
-                <div style="font-size: 13px; color: var(--text-primary); line-height: 1.5;">${window.escapeHtml(record.note)}</div>
+                <div style="font-size: 13px; color: var(--text-primary); line-height: 1.5;">${escapeHTML(record.note)}</div>
             </div>
         `;
     }
@@ -194,7 +194,7 @@ window.renderMoyuCurrent = function () {
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <i class="fas fa-map-marker-alt" style="color: var(--accent-color); font-size: 12px;"></i>
-                    <span style="font-weight: 600; font-size: 14px;">${window.escapeHtml(record.location)}</span>
+                    <span style="font-weight: 600; font-size: 14px;">${escapeHTML(record.location)}</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 6px;">
                     <span style="font-size: 12px; color: var(--text-secondary); background: rgba(var(--accent-color-rgb), 0.1); padding: 2px 8px; border-radius: 10px;">
@@ -331,7 +331,7 @@ window.renderMoyuRecords = function () {
                     <div style="font-size: 10px; color: var(--text-secondary); margin-bottom: 4px; opacity: 0.7;">
                         <i class="fas fa-clock" style="margin-right: 2px; font-size: 9px;"></i>${timeStr}
                     </div>
-                    <div style="font-size: 13px; color: var(--text-primary); line-height: 1.5;">${window.escapeHtml(act.content)}</div>
+                    <div style="font-size: 13px; color: var(--text-primary); line-height: 1.5;">${escapeHTML(act.content)}</div>
                 </div>
             `;
         }).join('');
@@ -344,7 +344,7 @@ window.renderMoyuRecords = function () {
                     <div style="font-size: 10px; color: var(--text-secondary); margin-bottom: 4px; opacity: 0.7;">
                         <i class="fas fa-clock" style="margin-right: 2px; font-size: 9px;"></i>${timeStr}
                     </div>
-                    <div style="font-size: 13px; color: var(--text-primary); line-height: 1.5;">${window.escapeHtml(act.content)}</div>
+                    <div style="font-size: 13px; color: var(--text-primary); line-height: 1.5;">${escapeHTML(act.content)}</div>
                 </div>
             `;
         }).join('');
@@ -360,7 +360,7 @@ window.renderMoyuRecords = function () {
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <i class="fas fa-map-marker-alt" style="color: var(--accent-color); font-size: 12px;"></i>
-                        <span style="font-weight: 600; font-size: 14px;">${window.escapeHtml(record.location)}</span>
+                        <span style="font-weight: 600; font-size: 14px;">${escapeHTML(record.location)}</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 6px;">
                         <span style="font-size: 12px; color: var(--text-secondary); background: rgba(var(--accent-color-rgb), 0.1); padding: 2px 8px; border-radius: 10px;">
@@ -520,7 +520,7 @@ window.renderMoyuLocations = function () {
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: var(--secondary-bg); border-radius: 10px; margin-bottom: 8px; border: 1px solid var(--border-color);">
             <div style="display: flex; align-items: center; gap: 8px;">
                 <i class="fas fa-map-pin" style="color: var(--accent-color); font-size: 12px;"></i>
-                <span style="font-size: 14px;">${window.escapeHtml(loc)}</span>
+                <span style="font-size: 14px;">${escapeHTML(loc)}</span>
             </div>
             <button onclick="window.removeMoyuLocation(${index})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; padding: 4px 8px; font-size: 12px;">
                 <i class="fas fa-times"></i>
@@ -538,7 +538,7 @@ window.updateMoyuLocationSelect = function () {
     const currentValue = select.value;
 
     select.innerHTML = '<option value="">请选择地点...</option>' +
-        locations.map(loc => `<option value="${window.escapeHtml(loc)}">${window.escapeHtml(loc)}</option>`).join('');
+        locations.map(loc => `<option value="${escapeHTML(loc)}">${escapeHTML(loc)}</option>`).join('');
 
     // 恢复之前的选择
     if (currentValue && locations.includes(currentValue)) {
@@ -708,9 +708,4 @@ window.removeMoyuLocation = function (index) {
 };
 
 // ==================== 工具函数 ====================
-window.escapeHtml = function (str) {
-    if (!str) return '';
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-};
+// escapeHTML 已在 utils.js 中全局定义

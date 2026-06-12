@@ -130,11 +130,7 @@ function diaryTodayStr() {
     return diaryFormatDate(new Date());
 }
 
-function diaryEscHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str || '';
-    return div.innerHTML;
-}
+// escapeHTML 已在 utils.js 中全局定义
 
 /* ========== 迷你日历弹窗 ========== */
 let miniCalYear = 0;
@@ -297,7 +293,7 @@ function showMiniCalDayDetail(dateStr) {
         contentHtml += '<div class="mini-cal-detail-group"><div class="mini-cal-detail-group-title">📋 待办事项</div>';
         todos.forEach(t => {
             const priorityIcon = t.priority === 'high' ? '🔴' : t.priority === 'medium' ? '🟡' : '🟢';
-            contentHtml += `<div class="mini-cal-detail-section"><div class="mini-cal-detail-icon">${priorityIcon}</div><div class="mini-cal-detail-content"><div class="mini-cal-detail-label">${diaryEscHtml(t.text)}</div></div></div>`;
+            contentHtml += `<div class="mini-cal-detail-section"><div class="mini-cal-detail-icon">${priorityIcon}</div><div class="mini-cal-detail-content"><div class="mini-cal-detail-label">${escapeHTML(t.text)}</div></div></div>`;
         });
         contentHtml += '</div>';
     }
@@ -306,7 +302,7 @@ function showMiniCalDayDetail(dateStr) {
     if (checkedHabits.length > 0) {
         contentHtml += '<div class="mini-cal-detail-group"><div class="mini-cal-detail-group-title">✅ 已打卡</div>';
         checkedHabits.forEach(h => {
-            contentHtml += `<div class="mini-cal-detail-section"><div class="mini-cal-detail-icon" style="color:${h.color};"><i class="${h.icon}"></i></div><div class="mini-cal-detail-content"><div class="mini-cal-detail-label">${diaryEscHtml(h.name)}</div></div></div>`;
+            contentHtml += `<div class="mini-cal-detail-section"><div class="mini-cal-detail-icon" style="color:${h.color};"><i class="${h.icon}"></i></div><div class="mini-cal-detail-content"><div class="mini-cal-detail-label">${escapeHTML(h.name)}</div></div></div>`;
         });
         contentHtml += '</div>';
     }
@@ -315,7 +311,7 @@ function showMiniCalDayDetail(dateStr) {
     if (uncheckedHabits.length > 0) {
         contentHtml += '<div class="mini-cal-detail-group"><div class="mini-cal-detail-group-title">⬜ 未打卡</div>';
         uncheckedHabits.forEach(h => {
-            contentHtml += `<div class="mini-cal-detail-section"><div class="mini-cal-detail-icon" style="color:${h.color};opacity:0.5;"><i class="${h.icon}"></i></div><div class="mini-cal-detail-content"><div class="mini-cal-detail-label" style="opacity:0.6;">${diaryEscHtml(h.name)}</div></div></div>`;
+            contentHtml += `<div class="mini-cal-detail-section"><div class="mini-cal-detail-icon" style="color:${h.color};opacity:0.5;"><i class="${h.icon}"></i></div><div class="mini-cal-detail-content"><div class="mini-cal-detail-label" style="opacity:0.6;">${escapeHTML(h.name)}</div></div></div>`;
         });
         contentHtml += '</div>';
     }
@@ -332,7 +328,7 @@ function showMiniCalDayDetail(dateStr) {
             if (diffDays === 0) dayText = '就是今天！';
             else if (diffDays > 0) dayText = `还有 ${diffDays} 天`;
             else dayText = `已过 ${Math.abs(diffDays)} 天`;
-            contentHtml += `<div class="mini-cal-detail-section"><div class="mini-cal-detail-icon">💝</div><div class="mini-cal-detail-content"><div class="mini-cal-detail-label">${diaryEscHtml(a.name)}</div><div class="mini-cal-detail-sub">${dayText}</div></div></div>`;
+            contentHtml += `<div class="mini-cal-detail-section"><div class="mini-cal-detail-icon">💝</div><div class="mini-cal-detail-content"><div class="mini-cal-detail-label">${escapeHTML(a.name)}</div><div class="mini-cal-detail-sub">${dayText}</div></div></div>`;
         });
         contentHtml += '</div>';
     }
@@ -683,7 +679,7 @@ function renderDiaryTodoItem(todo) {
                 ${todo.done ? '<i class="fas fa-check"></i>' : ''}
             </div>
             <div class="diary-todo-content" onclick="showEditTodoModal(${todo.id})">
-                <div class="diary-todo-text ${doneClass}">${diaryEscHtml(todo.text)}</div>
+                <div class="diary-todo-text ${doneClass}">${escapeHTML(todo.text)}</div>
                 <div class="diary-todo-meta">
                     <span class="diary-todo-category" style="background:${categoryBgColor};color:${categoryColor};">${getCategoryLabel(category)}</span>
                     <span class="diary-todo-priority" style="color:${color};">${priorityLabels[todo.priority] || '一般'}</span>
@@ -855,7 +851,7 @@ function showEditTodoModal(todoId) {
             </div>
             <div style="margin-bottom:16px;">
                 <label style="display:block;font-size:12px;color:var(--text-secondary);margin-bottom:6px;">待办内容</label>
-                <input type="text" id="edit-todo-text" class="diary-input" value="${diaryEscHtml(todo.text)}" style="width:100%;box-sizing:border-box;">
+                <input type="text" id="edit-todo-text" class="diary-input" value="${escapeHTML(todo.text)}" style="width:100%;box-sizing:border-box;">
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
                 <div>
@@ -987,7 +983,7 @@ function renderDiaryHabits() {
                         <i class="${icon}"></i>
                     </div>
                     <div class="diary-habit-detail">
-                        <div class="diary-habit-name">${diaryEscHtml(habit.name)}</div>
+                        <div class="diary-habit-name">${escapeHTML(habit.name)}</div>
                         <div class="diary-habit-streak">
                             <i class="fas fa-fire" style="color:#ff6b6b;"></i> 连续 ${streak} 天
                         </div>
@@ -1606,7 +1602,7 @@ function renderDiaryAnniversaries() {
             <div class="diary-anniversary-item ${typeClass}" data-id="${ann.id}">
                 <div class="diary-ann-info">
                     <div class="diary-ann-name">
-                        ${diaryEscHtml(ann.name)}
+                        ${escapeHTML(ann.name)}
                         <span class="diary-ann-tag" style="background:${tagColor}20;color:${tagColor};">${tagText}</span>
                     </div>
                     <div class="diary-ann-date">${startDate.toLocaleDateString()}</div>

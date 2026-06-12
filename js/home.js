@@ -2445,7 +2445,7 @@
                         transition: all 0.15s;
                     ">
                         <i class="fas fa-${s.id === currentSessionId ? 'check-circle' : 'circle'}" style="color: ${s.id === currentSessionId ? 'var(--accent-color)' : 'var(--text-secondary)'};"></i>
-                        <span style="flex: 1; font-weight: ${s.id === currentSessionId ? '700' : '500'};">${s.name}</span>
+                        <span style="flex: 1; font-weight: ${s.id === currentSessionId ? '700' : '500'};">${escapeHTML(s.name)}</span>
                         <span style="font-size: 11px; color: var(--text-secondary);">${new Date(s.createdAt).toLocaleDateString()}</span>
                     </button>
                 `).join('')}

@@ -596,14 +596,7 @@ window.deleteDailyMood = function(dateStr, who) {
     closeMoodOverlay();
 };
 
-function _escapeHtml(s) {
-    return String(s || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
+// escapeHTML 已在 utils.js 中全局定义
 
 function renderMoodTrashList() {
     const list = document.getElementById('mood-trash-list');
@@ -635,10 +628,10 @@ function renderMoodTrashList() {
             ">
                 <div style="min-width:0;">
                     <div style="font-size:13px; font-weight:700; color:var(--text-primary);">
-                        ${_escapeHtml(item.dateStr)} · ${_escapeHtml(whoLabel)}
+                        ${escapeHTML(item.dateStr)} · ${escapeHTML(whoLabel)}
                     </div>
                     <div style="font-size:12px; color:var(--text-secondary); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                        ${_escapeHtml(moodText)}
+                        ${escapeHTML(moodText)}
                     </div>
                 </div>
                 <div style="display:flex; gap:8px; flex-shrink:0;">

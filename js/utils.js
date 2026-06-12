@@ -15,6 +15,13 @@
             catch (e) { console.error('Error removing item:', e); }
         }
 
+window.escapeHTML = function(str) {
+    if (str == null) return '';
+    return String(str).replace(/[&<>"']/g, function(c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+};
+
 function getRandomItem(arr) {
     if (!arr || arr.length === 0) return null;
     return arr[Math.floor(Math.random() * arr.length)];
@@ -106,7 +113,10 @@ function deduplicateContentArray(arr, baseSystemArray = []) {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
             const iconMap = { success:'fa-check-circle', error:'fa-exclamation-circle', info:'fa-info-circle', warning:'fa-exclamation-triangle' };
-            notification.innerHTML = `<i class="fas ${iconMap[type] || 'fa-info-circle'}"></i><span>${message}</span>`;
+            notification.innerHTML = `<i class="fas ${iconMap[type] || 'fa-info-circle'}"></i>`;
+            const msgSpan = document.createElement('span');
+            msgSpan.textContent = message;
+            notification.appendChild(msgSpan);
             document.body.appendChild(notification);
             setTimeout(() => {
                 notification.classList.add('hiding');

@@ -138,7 +138,7 @@
                     ${waveSvg}
                     <span class="voice-bubble-duration">${duration}"</span>
                 </div>
-                ${fakeText ? `<div class="voice-fake-text">${escapeHtml(fakeText)}</div>` : ''}
+                ${fakeText ? `<div class="voice-fake-text">${escapeHTML(fakeText)}</div>` : ''}
             `;
         }
 
@@ -181,12 +181,6 @@
             if (typeof messages === 'undefined' || !Array.isArray(messages)) return null;
             return messages.find(m => String(m.id) === String(id));
         }
-        function escapeHtml(s) {
-            return String(s)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;');
-        }
+        // escapeHTML 已在 utils.js 中全局定义
     });
 })();

@@ -596,9 +596,9 @@
                 name = allMapData[key].name;
             }
             if (i === mapStack.length - 1) {
-                html += '<span style="color:var(--accent-color);font-weight:600;">' + escapeHtml(name) + '</span>';
+                html += '<span style="color:var(--accent-color);font-weight:600;">' + escapeHTML(name) + '</span>';
             } else {
-                html += '<span style="cursor:pointer;" data-nav-index="' + i + '">' + escapeHtml(name) + '</span>';
+                html += '<span style="cursor:pointer;" data-nav-index="' + i + '">' + escapeHTML(name) + '</span>';
             }
         }
         bc.innerHTML = html;
@@ -806,7 +806,7 @@
         html += '<div style="padding:4px 12px 8px;">'
             + '<div style="display:flex;align-items:center;gap:6px;background:var(--primary-bg);border-radius:var(--radius-xs);padding:6px 10px;border:1px solid var(--border-color);">'
             + '<i class="fas fa-search" style="color:var(--text-secondary);font-size:11px;"></i>'
-            + '<input id="map-footprint-search" type="text" placeholder="搜索地点..." value="' + escapeHtml(_footprintSearchQuery) + '" style="flex:1;border:none;background:none;font-size:12px;color:var(--text-primary);outline:none;font-family:var(--font-family);">'
+            + '<input id="map-footprint-search" type="text" placeholder="搜索地点..." value="' + escapeHTML(_footprintSearchQuery) + '" style="flex:1;border:none;background:none;font-size:12px;color:var(--text-primary);outline:none;font-family:var(--font-family);">'
             + '</div></div>';
 
         if (taFootprints.length === 0) {
@@ -856,7 +856,7 @@
                     html += '<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:var(--radius-xs);margin-bottom:1px;background:var(--primary-bg);">'
                         + '<i class="fas fa-heart" style="color:#c5a47e;font-size:11px;width:16px;text-align:center;flex-shrink:0;"></i>'
                         + '<div style="flex:1;min-width:0;">'
-                        +   '<div style="font-size:12px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + partnerName + ' 到达了 ' + escapeHtml(fp.locationName || '(' + fp.x + ', ' + fp.y + ')') + '</div>'
+                        +   '<div style="font-size:12px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + partnerName + ' 到达了 ' + escapeHTML(fp.locationName || '(' + fp.x + ', ' + fp.y + ')') + '</div>'
                         + '</div>'
                         + '<span style="font-size:10px;color:var(--text-secondary);flex-shrink:0;">' + timeStr + '</span>'
                         + '</div>';
@@ -2071,7 +2071,7 @@
             submapSection = '<div style="margin-bottom:16px;padding:12px;background:rgba(155,89,182,0.08);border-radius:var(--radius-xs);">'
                 + '<div style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;">附地图信息</div>'
                 + '<div style="display:flex;gap:8px;align-items:center;">'
-                +   '<input id="map-edit-submap-name" type="text" value="' + escapeHtml(submapName) + '" placeholder="附地图名称" style="flex:1;padding:8px 10px;border:1px solid var(--border-color);border-radius:var(--radius-xs);font-size:13px;color:var(--text-primary);background:var(--primary-bg);outline:none;font-family:var(--font-family);" />'
+                +   '<input id="map-edit-submap-name" type="text" value="' + escapeHTML(submapName) + '" placeholder="附地图名称" style="flex:1;padding:8px 10px;border:1px solid var(--border-color);border-radius:var(--radius-xs);font-size:13px;color:var(--text-primary);background:var(--primary-bg);outline:none;font-family:var(--font-family);" />'
                 +   '<button id="map-edit-enter-submap" style="padding:8px 12px;border:none;border-radius:var(--radius-xs);background:#9b59b6;color:#fff;font-size:12px;cursor:pointer;font-family:var(--font-family);white-space:nowrap;">进入</button>'
                 + '</div>'
                 + '</div>';
@@ -2082,7 +2082,7 @@
             +   '<div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:16px;">编辑地点</div>'
             +   '<div style="margin-bottom:12px;">'
             +     '<label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:4px;">地点名称</label>'
-            +     '<input id="map-edit-place-name" type="text" value="' + escapeHtml(loc.name) + '" style="width:100%;padding:10px 12px;border:1px solid var(--border-color);border-radius:var(--radius-xs);font-size:14px;color:var(--text-primary);background:var(--primary-bg);outline:none;font-family:var(--font-family);" />'
+            +     '<input id="map-edit-place-name" type="text" value="' + escapeHTML(loc.name) + '" style="width:100%;padding:10px 12px;border:1px solid var(--border-color);border-radius:var(--radius-xs);font-size:14px;color:var(--text-primary);background:var(--primary-bg);outline:none;font-family:var(--font-family);" />'
             +   '</div>'
             +   '<div style="margin-bottom:12px;">'
             +     '<label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:4px;">分类</label>'
@@ -2178,10 +2178,10 @@
         dialog.innerHTML = ''
             + '<div style="background:var(--secondary-bg);border-radius:var(--radius);padding:24px;width:85%;max-width:320px;box-shadow:0 20px 60px rgba(0,0,0,0.3);animation:modalContentSlideIn 0.3s ease;">'
             +   '<div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:12px;">创建附地图</div>'
-            +   '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">为地点 <strong style="color:var(--accent-color);">' + escapeHtml(loc.name) + '</strong> 创建内部地图</div>'
+            +   '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">为地点 <strong style="color:var(--accent-color);">' + escapeHTML(loc.name) + '</strong> 创建内部地图</div>'
             +   '<div style="margin-bottom:16px;">'
             +     '<label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:4px;">附地图名称</label>'
-            +     '<input id="map-new-submap-name" type="text" value="' + escapeHtml(loc.name + ' 内部') + '" placeholder="输入附地图名称" style="width:100%;padding:10px 12px;border:1px solid var(--border-color);border-radius:var(--radius-xs);font-size:14px;color:var(--text-primary);background:var(--primary-bg);outline:none;font-family:var(--font-family);" />'
+            +     '<input id="map-new-submap-name" type="text" value="' + escapeHTML(loc.name + ' 内部') + '" placeholder="输入附地图名称" style="width:100%;padding:10px 12px;border:1px solid var(--border-color);border-radius:var(--radius-xs);font-size:14px;color:var(--text-primary);background:var(--primary-bg);outline:none;font-family:var(--font-family);" />'
             +   '</div>'
             +   '<div style="display:flex;gap:10px;">'
             +     '<button id="map-submap-cancel" style="flex:1;padding:10px;border:1px solid var(--border-color);border-radius:var(--radius-xs);background:var(--primary-bg);color:var(--text-primary);font-size:14px;cursor:pointer;font-family:var(--font-family);">取消</button>'
@@ -2227,11 +2227,7 @@
         document.getElementById('map-new-submap-name').focus();
     }
 
-    function escapeHtml(text) {
-        var div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
+    // escapeHTML 已在 utils.js 中全局定义
 
     function deleteTerrainAt(x, y) {
         var data = currentData();
@@ -2538,7 +2534,7 @@
                 + avatarHtml
                 + '<div style="flex:1;min-width:0;">'
                 +   '<div style="display:flex;justify-content:space-between;align-items:center;">'
-                +     '<span style="font-size:13.5px;color:var(--text-primary);">' + escapeHtml(partnerName) + ' 到达了 ' + escapeHtml(locationName) + '</span>'
+                +     '<span style="font-size:13.5px;color:var(--text-primary);">' + escapeHTML(partnerName) + ' 到达了 ' + escapeHTML(locationName) + '</span>'
                 +     '<span style="font-size:11px;color:var(--text-secondary);flex-shrink:0;margin-left:8px;">' + timeStr + '</span>'
                 +   '</div>'
                 + '</div>';

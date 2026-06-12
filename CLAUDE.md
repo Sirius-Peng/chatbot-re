@@ -20,6 +20,7 @@ npm run dev              # Dev server (npx serve .)
 npm run build            # Build to www/
 npm run lint             # ESLint js/
 npm run lint:fix         # ESLint with auto-fix
+npm run test:unit        # Vitest unit tests (jsdom environment)
 npm run test:web         # Playwright E2E tests (Pixel 5 viewport, port 4176)
 npm run android:sync     # Build + Capacitor sync
 npm run android:build    # Full Android debug APK
@@ -37,3 +38,17 @@ Push to `main` triggers GitHub Actions: `npm ci` → `lint` → `build` → depl
 ### Model constraints
 
 When using `mimo-v2.5-pro` (configured in `~/.claude/settings.json`), **do not pass any images or screenshots** to the model. This model does not support image/vision input. If the user provides an image, acknowledge it but do not attempt to process or include it in the conversation context.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live as local markdown files under `.scratch/`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Five canonical roles: needs-triage, needs-info, ready-for-agent, ready-for-human, wontfix. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: one `CONTEXT.md` + `docs/adr/` at the repo root. See `docs/agents/domain.md`.

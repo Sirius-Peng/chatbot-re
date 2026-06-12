@@ -355,7 +355,7 @@
             <div class="glow"></div>
             <div class="companion-transition-message">
                 <div class="companion-transition-avatar">${avatarHtml}</div>
-                <div class="companion-transition-bubble">${escapeHtml(text)}</div>
+                <div class="companion-transition-bubble">${escapeHTML(text)}</div>
             </div>
         `;
         document.documentElement.appendChild(el);
@@ -1775,7 +1775,7 @@
                     <div class="companion-noise-now-playing">
                         <i class="fas fa-music"></i>
                         <div class="companion-noise-now-playing-track">
-                            <span class="companion-noise-now-playing-name">${escapeHtml(currentSongName)}</span>
+                            <span class="companion-noise-now-playing-name">${escapeHTML(currentSongName)}</span>
                         </div>
                     </div>
                 ` : ''}
@@ -1870,7 +1870,7 @@
                 <div class="companion-noise-list-item ${activeId === item.id ? 'active' : ''}" data-id="${item.id}">
                     <div class="companion-noise-list-item-main" data-action="play" data-id="${item.id}">
                         <i class="fas fa-music"></i>
-                        <span class="companion-noise-list-item-name">${escapeHtml(item.name || '未命名')}</span>
+                        <span class="companion-noise-list-item-name">${escapeHTML(item.name || '未命名')}</span>
                     </div>
                     <button class="companion-noise-list-item-edit" data-action="rename" data-id="${item.id}" title="重命名">
                         <i class="fas fa-pencil"></i>
@@ -2571,7 +2571,7 @@
         if (message.image) {
             contentHtml = `<img src="${message.image}">`;
         } else {
-            contentHtml = escapeHtml(message.text || '');
+            contentHtml = escapeHTML(message.text || '');
         }
 
         bubble.innerHTML = `
@@ -2649,7 +2649,7 @@
             listHtml = _sessionDialogue.map(m => {
                 const contentHtml = m.image
                     ? `<img src="${m.image}">`
-                    : escapeHtml(m.text || '');
+                    : escapeHTML(m.text || '');
                 return `
                     <div class="companion-history-item">
                         <div class="companion-bubble-avatar">${avatarHtml}</div>
@@ -2807,11 +2807,7 @@
     // 当前选中的 tab（背景管理 + 语音管理 各自记录）
     const _mgrState = { bg: 'study', voice: 'study', noise: 'study' };
 
-    function escapeHtml(s) {
-        return String(s).replace(/[&<>"']/g, c => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[c]));
-    }
+    // escapeHTML 已在 utils.js 中全局定义
 
     // ── 渲染：陪伴背景列表 ──
     function renderCompanionBgManager() {
@@ -2823,7 +2819,7 @@
         let html = '';
         if (items.length === 0) {
             html += `<div class="companion-mgr-empty">
-                还没有添加${escapeHtml(MODES[mode].label.slice(2))}场景的背景<br>
+                还没有添加${escapeHTML(MODES[mode].label.slice(2))}场景的背景<br>
                 点击下方按钮上传图片或视频
             </div>`;
         } else {
@@ -2836,7 +2832,7 @@
                         }
                     </div>
                     <div class="companion-bg-card-info">
-                        <div class="companion-bg-card-name">${escapeHtml(bg.name || '未命名')}</div>
+                        <div class="companion-bg-card-name">${escapeHTML(bg.name || '未命名')}</div>
                         <div class="companion-bg-card-meta">${bg.type === 'video' ? '视频' : '图片'}</div>
                     </div>
                     <div class="companion-bg-card-actions">
@@ -2848,7 +2844,7 @@
             `).join('');
         }
         html += `<button class="companion-mgr-add" id="companion-bg-add-btn">
-            <i class="fas fa-plus"></i> 添加${escapeHtml(MODES[mode].label.slice(2))}背景
+            <i class="fas fa-plus"></i> 添加${escapeHTML(MODES[mode].label.slice(2))}背景
         </button>`;
         list.innerHTML = html;
     }
@@ -2863,7 +2859,7 @@
         let html = '';
         if (items.length === 0) {
             html += `<div class="companion-mgr-empty">
-                还没有添加${escapeHtml(MODES[mode].label.slice(2))}场景的语音<br>
+                还没有添加${escapeHTML(MODES[mode].label.slice(2))}场景的语音<br>
                 点击下方按钮上传音频文件
             </div>`;
         } else {
@@ -2871,7 +2867,7 @@
                 <div class="companion-voice-card" data-id="${v.id}">
                     <i class="fas fa-music"></i>
                     <input type="text" class="companion-voice-card-name"
-                        value="${escapeHtml(v.name || '')}"
+                        value="${escapeHTML(v.name || '')}"
                         data-action="rename-voice" data-id="${v.id}"
                         placeholder="语音名称">
                     <div class="companion-voice-card-actions">
@@ -2886,7 +2882,7 @@
             `).join('');
         }
         html += `<button class="companion-mgr-add" id="companion-voice-add-btn">
-            <i class="fas fa-plus"></i> 添加${escapeHtml(MODES[mode].label.slice(2))}语音
+            <i class="fas fa-plus"></i> 添加${escapeHTML(MODES[mode].label.slice(2))}语音
         </button>`;
         list.innerHTML = html;
     }
@@ -2901,7 +2897,7 @@
         let html = '';
         if (items.length === 0) {
             html += `<div class="companion-mgr-empty">
-                还没有添加${escapeHtml(MODES[mode].label.slice(2))}场景的音乐<br>
+                还没有添加${escapeHTML(MODES[mode].label.slice(2))}场景的音乐<br>
                 点击下方按钮上传音频文件
             </div>`;
         } else {
@@ -2909,7 +2905,7 @@
                 <div class="companion-voice-card" data-id="${v.id}">
                     <i class="fas fa-music"></i>
                     <input type="text" class="companion-voice-card-name"
-                        value="${escapeHtml(v.name || '')}"
+                        value="${escapeHTML(v.name || '')}"
                         data-action="rename-noise" data-id="${v.id}"
                         placeholder="音乐名称">
                     <div class="companion-voice-card-actions">
@@ -2924,7 +2920,7 @@
             `).join('');
         }
         html += `<button class="companion-mgr-add" id="companion-noise-add-btn">
-            <i class="fas fa-plus"></i> 添加${escapeHtml(MODES[mode].label.slice(2))}音乐
+            <i class="fas fa-plus"></i> 添加${escapeHTML(MODES[mode].label.slice(2))}音乐
         </button>`;
         list.innerHTML = html;
     }

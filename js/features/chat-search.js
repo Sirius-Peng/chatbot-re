@@ -14,17 +14,13 @@
         return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
-    function escapeHtml(str) {
-        var div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
+    // escapeHTML 已在 utils.js 中全局定义
 
     /** 高亮关键词 */
     function highlightKeyword(text, keyword) {
-        if (!keyword || !text) return escapeHtml(text);
+        if (!keyword || !text) return escapeHTML(text);
         var escaped = escapeRegex(keyword.trim());
-        return escapeHtml(text).replace(
+        return escapeHTML(text).replace(
             new RegExp('(' + escaped + ')', 'gi'),
             '<mark>$1</mark>'
         );
@@ -193,7 +189,7 @@
                 '</div>' +
                 '<div class="sr-body">' +
                     '<div class="sr-header">' +
-                        '<span class="sr-name">' + escapeHtml(getSenderName(msg.sender)) + '</span>' +
+                        '<span class="sr-name">' + escapeHTML(getSenderName(msg.sender)) + '</span>' +
                         '<span class="sr-time">' + formatTime(msg.timestamp) + '</span>' +
                     '</div>' +
                     '<div class="sr-text">' + textPreview + '</div>' +

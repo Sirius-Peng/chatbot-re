@@ -15,11 +15,7 @@
 
     /* ===================== 工具函数 ===================== */
 
-    function escapeHtml(str) {
-        var div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
+    // escapeHTML 已在 utils.js 中全局定义
 
     function _el(id) {
         return document.getElementById(id);
@@ -892,7 +888,7 @@
                 (!p.coverUrl ? '<i class="fas fa-' + (p.source === 'netease' ? 'music' : 'list') + '"></i>' : '') +
                 '</div>' +
                 '<div class="music-playlist-card-info">' +
-                '<div class="music-playlist-card-name">' + escapeHtml(p.name) + '</div>' +
+                '<div class="music-playlist-card-name">' + escapeHTML(p.name) + '</div>' +
                 '<div class="music-playlist-card-count">' + p.songs.length + ' 首 · ' +
                 (p.source === 'netease' ? '网易云' : p.source === 'qqmusic' ? 'QQ音乐' : '自定义') +
                 '</div>' +
@@ -926,8 +922,8 @@
                 (isActive && _isPlaying ? '<i class="fas fa-volume-high" style="color:var(--accent-color);"></i>' : (i + 1)) +
                 '</div>' +
                 '<div class="music-song-info">' +
-                '<div class="music-song-title' + (isActive ? ' active' : '') + '">' + escapeHtml(song.title) + '</div>' +
-                '<div class="music-song-sub">' + escapeHtml(song.sub || '---') + '</div>' +
+                '<div class="music-song-title' + (isActive ? ' active' : '') + '">' + escapeHTML(song.title) + '</div>' +
+                '<div class="music-song-sub">' + escapeHTML(song.sub || '---') + '</div>' +
                 '</div>' +
                 '</div>';
         }

@@ -4,12 +4,13 @@
   "description": "传讯 (ChuanXun) - 功能丰富的情侣聊天模拟单页应用",
   "private": true,
   "scripts": {
-    "lint": "npx eslint js/ --no-error-on-unmatched-pattern",
-    "lint:fix": "npx eslint js/ --fix --no-error-on-unmatched-pattern",
+    "lint": "npx eslint js/ --no-error-on-unmatched-pattern --ignore-pattern 'js/__tests__/'",
+    "lint:fix": "npx eslint js/ --fix --no-error-on-unmatched-pattern --ignore-pattern 'js/__tests__/'",
     "dev": "npx serve .",
     "server": "node server/upload-server.js",
     "build": "node scripts/build-static.js",
     "test:web": "playwright test",
+    "test:unit": "vitest run",
     "android:sync": "npm run build && cap sync android",
     "android:build": "npm run android:sync && cd android && ./gradlew :app:assembleDebug",
     "test:android": "node scripts/android-smoke.js"
@@ -18,14 +19,16 @@
     "@capacitor/cli": "^8.4.0",
     "@playwright/test": "^1.60.0",
     "eslint": "^8.57.0",
-    "serve": "^14.2.0"
+    "jsdom": "^29.1.1",
+    "serve": "^14.2.0",
+    "vitest": "^4.1.8"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.0",
     "@capacitor/core": "^8.4.0",
     "@fortawesome/fontawesome-free": "^6.4.0",
-    "cos-nodejs-sdk-v5": "^2.14.7",
     "cors": "^2.8.5",
+    "cos-nodejs-sdk-v5": "^2.14.7",
     "dexie": "^4.0.8",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",

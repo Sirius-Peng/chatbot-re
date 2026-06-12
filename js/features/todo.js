@@ -7,11 +7,7 @@
 (function() {
     /* ===================== 工具函数 ===================== */
 
-    function escapeHtml(str) {
-        var div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
+    // escapeHTML 已在 utils.js 中全局定义
 
     function formatDate(dateStr) {
         if (!dateStr) return '';
@@ -117,7 +113,7 @@
             var html = '';
             for (var i = 0; i < items.length; i++) {
                 var t = items[i];
-                var titleEsc = escapeHtml(t.title);
+                var titleEsc = escapeHTML(t.title);
                 html += '<div class="todo-card' + (t.completed ? ' completed' : '') + '" data-id="' + t.id + '">' +
                     '<div class="todo-checkbox' + (t.completed ? ' checked' : '') + '" data-toggle="' + t.id + '">' +
                         (t.completed ? '<i class="fas fa-check"></i>' : '') +
@@ -125,7 +121,7 @@
                     '<div class="todo-body">' +
                         '<span class="todo-title' + (t.completed ? ' todo-done' : '') + '">' + titleEsc + '</span>' +
                         (t.dueDate ? '<span class="todo-due"><i class="far fa-calendar-alt"></i> ' + formatDate(t.dueDate) + '</span>' : '') +
-                        (t.note ? '<span class="todo-note">' + escapeHtml(t.note) + '</span>' : '') +
+                        (t.note ? '<span class="todo-note">' + escapeHTML(t.note) + '</span>' : '') +
                     '</div>' +
                     '<button class="todo-delete-btn" data-remove="' + t.id + '" title="删除">' +
                         '<i class="fas fa-times"></i>' +
