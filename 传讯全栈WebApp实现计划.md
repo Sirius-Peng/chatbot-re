@@ -4,58 +4,45 @@
 
 ---
 
-## 当前进展快照 (2026-06-13)
+## 当前进展快照 (2026-06-13 更新)
 
-> 本节记录当前工作区的真实状态，用于承接后续重构。下方 6 阶段全栈计划仍是目标路线，但实际进展已经先集中在前端整合、PWA/Android、测试和旧版功能迁移。
+> 本节记录当前工作区的真实状态。P0-P4 前端重构任务已全部完成，可进入全栈后端开发阶段。
 
 ### 已完成 / 已落地
 
-- **基础前端工程化**: 已有 `package.json`、ESLint、Playwright、静态构建脚本、PWA Service Worker、Capacitor Android 工程与 GitHub Pages workflow。
-- **本地数据层增强**: 已接入 localforage + Dexie；音乐二进制文件使用 Dexie `audioFiles` 表本地存储；仍以本地优先存储为主。
-- **AI 与提示词**: 已接入 DeepSeek OpenAI-compatible streaming API、AI/字卡模式切换、提示词模板管理。
-- **主页化重构**: 当前入口已从直接聊天首屏调整为手机主页/功能桌面首屏；聊天通过主页「聊天」入口进入。
-- **旧版功能迁移**: 根目录工作区已接入商城、萌宠屋、朝夕心记、朋友圈、地图、同心记账、摸鱼小记、TA 的手机、礼物柜、红包等旧版/扩展功能。
-- **测试修复**: Web smoke 已按新导航模型更新为「主页首屏 -> 进入聊天 -> 发送消息/打开设置」；2026-06-13 本地 `npm run test:web` 结果为 4 passed。
-- **弹窗层级修复**: 通用 `showModal()` 已在显示前把弹窗提升到 `document.body`，避免主页隐藏聊天容器时产生不可见弹窗拦截点击。
+- **P0 统一主线与构建入口**: 根目录作为唯一权威源码，已验证 lint/build/test 全流程。
+- **P1 稳定主页化导航模型**:
+  - 统一弹窗管理：`homeShowModal` 委托给 `showModal` + CSS `.modal--elevated` 类，移除内联 `!important` 样式。
+  - 确定性就绪信号：`body[data-app-ready]` 替代 4200ms `waitForTimeout`。
+  - 应用网格可滚动：`apps-pager` 改为 `overflow-y: auto`。
+  - Smoke 测试从 6 个扩展到 9 个，覆盖第一页应用、第二页应用、底部导航、朋友圈、主页/聊天切换。
+- **P2 迁移功能回归测试**: 新增 13 个 feature-regression 测试，覆盖记账、日记、萌宠屋、摸鱼、朋友圈、商城、统计、地图、信封、运势、心晴、聊天消息持久化、数据导出。
+- **P3 渐进式模块拆分**:
+  - 从 `listeners.js` 提取 `initChatActionListeners` 到 `listeners-chat-actions.js`（IIFE + `window` 模式）。
+  - 创建 `js/MODULES.md` 文档化脚本加载顺序和模块依赖图。
+- **P4 全栈预设计**: 完成数据模型映射、Prisma schema、离线队列设计、API 设计（详见 `docs/fullstack-pre-design.md`）。
+- **基础前端工程化**: `package.json`、ESLint、Playwright、PWA、Capacitor Android、GitHub Pages workflow。
+- **本地数据层**: localforage + Dexie；音乐二进制使用 Dexie `audioFiles` 表。
+- **AI 集成**: DeepSeek OpenAI-compatible streaming API、AI/字卡模式切换、提示词模板管理。
+- **旧版功能迁移**: 商城、萌宠屋、朝夕心记、朋友圈、地图、同心记账、摸鱼小记、TA 的手机、礼物柜、红包。
+- **测试**: 22 个 Playwright 测试全部通过（9 smoke + 13 regression）。
 
 ### 尚未开始 / 未真正落地
 
-- **全栈后端主计划尚未实现**: 尚未发现 Fastify + TypeScript 服务、Prisma schema、PostgreSQL、Redis、JWT 认证、管理后台目录或云端同步 API。
-- **现有 `server/` 不是全栈后端**: 当前只有音乐上传辅助服务 (`server/upload-server.js`)，用于 NCM 转换和 COS 上传。
-- **源码权威位置已明确**: 2026-06-13 已选择根目录工作区作为当前可测试主线；`chatbot/` 保留为独立历史仓库/参考来源，除非明确执行迁回任务，否则不再作为主动开发入口。
+- **全栈后端**: Fastify + TypeScript 服务、Prisma schema、PostgreSQL、Redis、JWT 认证、管理后台。
+- **现有 `server/`**: 只有音乐上传辅助服务 (`server/upload-server.js`)，不是全栈后端。
+- **云端同步 API**: 离线队列和同步机制尚未实现。
+- **管理后台**: 完全未开始。
 
 ### 当前主要风险
 
-- **历史分叉风险**: 根目录已作为当前主线，但 `chatbot/` 仍是独立 git worktree；如需回迁或合并历史，需要单独制定迁移策略，不能在两个位置并行开发同一功能。
-- **脚本顺序风险**: 项目仍依赖 `<script>` 顺序和全局变量，新增模块越多，初始化竞态越容易出现。
-- **覆盖率不足**: 目前只有基础 smoke；旧版迁移功能还缺少“可打开、不报错、基础保存/恢复”的自动化覆盖。
-- **大文件维护风险**: `index.html`、`core.js`、`listeners.js`、`home.js` 和多个迁移模块体积偏大，需要渐进拆分，但不能一次性大改破坏全局依赖。
+- **脚本顺序风险**: 项目仍依赖 `<script>` 顺序和全局变量，`js/MODULES.md` 已文档化但未强制执行。
+- **大文件**: `core.js` (158KB)、`pet-game.js` (262KB)、`moments.js` (129KB)、`listeners.js` (提取后仍约 100KB) 仍需继续拆分。
+- **存储键不一致**: Shop/Pet/Moments 使用裸键（全局），Diary/Accounting/Map 使用 `getStorageKey()`（会话级），需要在全栈迁移时统一。
 
-### 下一步重构优先级
+### 下一步
 
-1. **P0: 统一主线与构建入口（已完成 2026-06-13）**
-   - 已选择根目录作为唯一权威源码。
-   - 已同步 `AGENTS.md` / `CLAUDE.md` 中的实际路径说明。
-   - 已验证 `npm run lint`、`npm run build`、`npm run test:web` 均从根目录运行；GitHub Pages workflow 也以根目录 `npm ci -> lint -> build` 为入口。
-
-2. **P1: 稳定主页化导航模型**
-   - 固化启动流程：声明/引导、欢迎动画、主页、聊天页之间不能互相遮挡。
-   - 为主页入口补充 smoke：聊天、设置、商城、日记、萌宠屋、朋友圈、地图、记账至少验证可打开并可关闭。
-   - 继续清理全局弹窗层级，统一使用 body 级 modal。
-
-3. **P2: 迁移功能回归测试**
-   - 给商城、萌宠屋、朝夕心记、朋友圈、地图、记账分别增加最小可用流程测试。
-   - 重点验证 localStorage/localforage 键名、跨模块头像/背景同步、会话绑定开关和移动端滚动。
-
-4. **P3: 渐进式模块拆分**
-   - 不引入 bundler 的前提下，先按现有 IIFE + `window.ModuleName` 模式整理。
-   - 优先拆分 `listeners.js` 中与主页、聊天设置、附件、音乐无关的事件绑定。
-   - 每次拆分后保持脚本加载顺序文档化并跑 smoke。
-
-5. **P4: 全栈计划落地前置设计**
-   - 在动 Fastify/Prisma 前，先定义本地数据模型到云端数据模型的映射表。
-   - 明确哪些数据继续本地优先，哪些需要云同步，哪些只做文件备份。
-   - 设计 API 时保留离线队列和本地缓存，不直接替换 IndexedDB。
+进入全栈后端开发（阶段一），详见 `docs/fullstack-pre-design.md`。
 
 ---
 
