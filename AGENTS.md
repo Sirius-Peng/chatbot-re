@@ -4,14 +4,15 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 ## Repository layout
 
-- **`chatbot/`** — Main project ("传讯" ChuanXun). A mobile-first simulated partner chat SPA. This is where all active development happens. Has its own git repo, package.json, and full toolchain.
-- **`字卡 -二测/`** — Older/alternate version of the app. No package.json, no build system, no git. Contains features not yet ported to the main project (pet game, shop, diary, moments, map, accounting, etc.).
+- **Repository root** — Current active project ("传讯" ChuanXun). This is the tested source of truth for the integrated mobile-first simulated partner chat SPA, PWA, and Capacitor build.
+- **`chatbot/`** — Older independent git worktree kept for history/reference. Do not treat it as the active source unless explicitly asked to migrate changes back into that repo.
+- **`字卡 -二测/`** — Older/alternate version of the app. No package.json, no build system, no git. Keep it as a migration/reference snapshot.
 
 ## Main project
 
-See [`chatbot/AGENTS.md`](chatbot/AGENTS.md) for full architecture details, script load order, state management, and feature module patterns.
+Active development happens from the repository root. The app is still a vanilla JS SPA with strict script-tag load ordering, so keep changes incremental and verify the runtime after any script-order or global-state change.
 
-### Commands (run from `chatbot/`)
+### Commands (run from repository root)
 
 ```bash
 npm install              # Install dependencies
