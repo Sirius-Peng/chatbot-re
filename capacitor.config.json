@@ -1,0 +1,13 @@
+{
+  "appId": "com.siriuspeng.chuanxun",
+  "appName": "传讯",
+  "webDir": "www",
+  "plugins": {
+    "SystemBars": {
+      "insetsHandling": "disable"
+    }
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

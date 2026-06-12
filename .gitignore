@@ -1,0 +1,11 @@
+.DS_Store
+*.log
+.env
+.claude/settings.local.json
+node_modules/
+www/
+playwright-report/
+test-results/
+backup/
+chat_repo/
+milk_repo/

@@ -1,0 +1,544 @@
+/**
+ * desktop.css - 手机桌面页面样式
+ * Phone Desktop Page Styles
+ */
+
+/* ========== 全屏容器 ========== */
+.desktop-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 4000;
+    background: linear-gradient(160deg, #0f0f1a 0%, #1a1a2e 30%, #16213e 60%, #0a0a14 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.95);
+    transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+                transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.desktop-page.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+}
+
+/* ========== 退出按钮 ========== */
+.desktop-exit-btn {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    z-index: 10;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+}
+
+.desktop-exit-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+/* ========== 状态栏 ========== */
+.desktop-status-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 8px 8px;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.3px;
+    flex-shrink: 0;
+}
+
+.desktop-status-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+}
+
+.desktop-status-right i {
+    font-size: 11px;
+}
+
+.desktop-battery-text {
+    margin-left: 2px;
+}
+
+/* ========== 上半部分：相恋时间 + 照片 ========== */
+.desktop-top-row {
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    flex-shrink: 0;
+}
+
+/* ---- 左侧：相恋时间卡片 ---- */
+.desktop-love-card {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 22px;
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 4px;
+    cursor: default;
+    transition: all 0.3s ease;
+}
+
+.desktop-love-card:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.desktop-love-icon {
+    font-size: 22px;
+    color: var(--accent-color, #e8456b);
+    margin-bottom: 2px;
+    animation: desktopHeartPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes desktopHeartPulse {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.18); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.14); }
+    60% { transform: scale(1); }
+}
+
+.desktop-love-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+.desktop-love-days {
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #fff 30%, rgba(255, 255, 255, 0.7));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.desktop-love-unit {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 500;
+    margin-top: -2px;
+}
+
+.desktop-love-since {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.3);
+    margin-top: 4px;
+}
+
+/* ---- 右侧：照片窗口 ---- */
+.desktop-photo-frame {
+    flex: 1;
+    aspect-ratio: 3 / 4;
+    max-width: 45%;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 22px;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.desktop-photo-frame:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.desktop-photo-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.desktop-photo-placeholder i {
+    font-size: 28px;
+    opacity: 0.6;
+}
+
+.desktop-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ========== 音乐播放条 ========== */
+.desktop-music-bar {
+    width: 100%;
+    margin-top: 16px;
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.desktop-music-bar:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.desktop-music-album {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.5);
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.desktop-music-album img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.desktop-music-album.playing {
+    animation: desktopAlbumSpin 4s linear infinite;
+}
+
+@keyframes desktopAlbumSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.desktop-music-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.desktop-music-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.desktop-music-artist {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.desktop-music-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.desktop-music-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.desktop-music-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.desktop-music-play {
+    width: 38px;
+    height: 38px;
+    background: var(--accent-color, #e8456b);
+    color: #fff;
+    font-size: 14px;
+}
+
+.desktop-music-play:hover {
+    background: var(--accent-color, #e8456b);
+    filter: brightness(1.15);
+}
+
+/* ========== 三个自定义卡片 ========== */
+.desktop-cards-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+    flex-shrink: 0;
+    padding-bottom: 30px;
+}
+
+.desktop-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-align: center;
+    position: relative;
+}
+
+.desktop-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.desktop-card:active {
+    transform: scale(0.96);
+}
+
+.desktop-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+}
+
+.desktop-card:hover .desktop-card-icon {
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+}
+
+.desktop-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.5px;
+}
+
+.desktop-card-subtitle {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 0.3px;
+    line-height: 1.3;
+}
+
+/* 卡片右上角编辑小点 */
+.desktop-card-edit-dot {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.desktop-card:hover .desktop-card-edit-dot {
+    opacity: 1;
+}
+
+/* ========== 卡片编辑弹窗 ========== */
+.desktop-card-editor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 5000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.desktop-card-editor-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+}
+
+.desktop-card-editor-box {
+    position: relative;
+    z-index: 1;
+    width: 85%;
+    max-width: 340px;
+    background: #1e1e2e;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.desktop-card-editor-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.desktop-card-editor-input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.desktop-card-editor-input:focus {
+    border-color: var(--accent-color, #e8456b);
+}
+
+.desktop-card-editor-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.desktop-card-editor-btns {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+/* ========== 深色模式适配 ========== */
+/* 桌面页面始终是深色的，但需要与全局主题变量协调 */
+/* .desktop-page 自带深色背景，不随全局主题变化 */
+
+
+/* ========== 响应式微调 ========== */
+@media (max-width: 380px) {
+    .desktop-top-row {
+        gap: 10px;
+    }
+    .desktop-love-card {
+        padding: 14px 10px;
+    }
+    .desktop-love-days {
+        font-size: 34px;
+    }
+    .desktop-photo-frame {
+        border-radius: 18px;
+    }
+    .desktop-cards-row {
+        gap: 8px;
+    }
+    .desktop-card {
+        padding: 14px 8px;
+        border-radius: 16px;
+    }
+    .desktop-card-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+    .desktop-card-title {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 500px) {
+    .desktop-page {
+        max-width: 420px;
+        margin: 0 auto;
+        left: 50%;
+        transform: translateX(-50%) scale(0.95);
+        border-left: 1px solid rgba(255, 255, 255, 0.05);
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .desktop-page.active {
+        transform: translateX(-50%) scale(1);
+    }
+}
