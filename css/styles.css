@@ -11091,3 +11091,18 @@ body[data-avatar-pos="custom"] .message-avatar {
     border-color: var(--accent-color) !important;
     outline: none;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   工具类 (Utility Classes)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* 毛玻璃效果 — 新功能优先使用此类，现有代码逐步替换 */
+.glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+html[data-theme="dark"] .glass {
+    background: rgba(30, 30, 40, 0.65);
+}
+}

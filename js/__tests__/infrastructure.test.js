@@ -94,6 +94,23 @@ describe('index.html 可访问性', () => {
     });
 });
 
+describe('CSS 工具类', () => {
+    test('styles.css 定义了 .glass 毛玻璃工具类', () => {
+        const css = readFileSync(resolve(ROOT, 'css/styles.css'), 'utf-8');
+        // .glass 类必须存在
+        expect(css).toMatch(/\.glass\s*\{/);
+        // 必须包含 backdrop-filter
+        expect(css).toMatch(/\.glass[\s\S]*?backdrop-filter:\s*blur/);
+        // 必须包含 -webkit-backdrop-filter（Safari 兼容）
+        expect(css).toMatch(/\.glass[\s\S]*?-webkit-backdrop-filter:\s*blur/);
+    });
+    test('.glass 工具类有暗色模式适配', () => {
+        const css = readFileSync(resolve(ROOT, 'css/styles.css'), 'utf-8');
+        // 暗色模式下 .glass 应有不同背景色
+        expect(css).toMatch(/data-theme.*dark[\s\S]*?\.glass|\.glass[\s\S]*?data-theme.*dark/);
+    });
+});
+
 describe('diary.css 语法正确性', () => {
     test('没有多余的闭合花括号', () => {
         const css = readFileSync(resolve(ROOT, 'css/diary.css'), 'utf-8');
