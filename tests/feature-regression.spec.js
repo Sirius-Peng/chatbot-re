@@ -542,6 +542,33 @@ test('renderMessages: preserves DOM nodes when preserveScroll is true', async ({
     expect(markerSurvived).toBe(true);
 });
 
+test('saveData: messages persist across page reload', async ({ page }) => {
+    await dismissStartup(page);
+    await enterChatFromHome(page);
+
+    // 发送一条唯一消息
+    const msg = `persist-${Date.now()}`;
+    await page.locator('#message-input').fill(msg);
+    await page.locator('#send-btn').click();
+    await expect(page.locator('#chat-container')).toContainText(msg);
+
+    // 等待 saveData 完成（throttledSaveData debounce 500ms + IndexedDB 写入）
+    await page.waitForTimeout(1500);
+
+    // 刷新页面
+    await page.reload();
+    await page.waitForLoadState('domcontentloaded');
+    await passSplash(page);
+    await expect(page.locator('body')).toHaveAttribute('data-app-ready', 'true', { timeout: 15000 });
+    await closeIfVisible(page.locator('#accept-disclaimer'));
+    await closeIfVisible(page.locator('#tour-skip-btn'));
+    await closeIfVisible(page.locator('.daily-greeting-close-btn'));
+
+    // 进入聊天，验证消息仍然存在
+    await enterChatFromHome(page);
+    await expect(page.locator('#chat-container')).toContainText(msg, { timeout: 10000 });
+});
+
 test('red-packet: send modal opens without crashing', async ({ page }) => {
     await dismissStartup(page);
     // 进入聊天

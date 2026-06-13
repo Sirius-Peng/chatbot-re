@@ -703,18 +703,22 @@ const saveData = async () => {
     // 注意：头像由 handleAvatarUpload/updateHomeAvatar 直接保存到 localforage，这里只保存 settings 对象
     // 不主动删除头像，避免竞态条件导致头像丢失
 
-    const results = await Promise.allSettled(promises.map(p => {
-        try { return p.val(); }
-        catch(e) { return Promise.reject(e); }
-    }));
-
+    // 分批写入（每批 5 个），减少 IndexedDB 并发压力
+    const BATCH_SIZE = 5;
     const failed = [];
-    results.forEach((r, i) => {
-        if (r.status === 'rejected') {
-            failed.push(promises[i].key);
-            console.error(`[saveData] 保存失败: ${promises[i].key}`, r.reason);
-        }
-    });
+    for (let i = 0; i < promises.length; i += BATCH_SIZE) {
+        const batch = promises.slice(i, i + BATCH_SIZE);
+        const results = await Promise.allSettled(batch.map(p => {
+            try { return p.val(); }
+            catch(e) { return Promise.reject(e); }
+        }));
+        results.forEach((r, j) => {
+            if (r.status === 'rejected') {
+                failed.push(batch[j].key);
+                console.error(`[saveData] 保存失败: ${batch[j].key}`, r.reason);
+            }
+        });
+    }
 
     if (failed.length > 0) {
         console.warn(`[saveData] ${failed.length} 项写入失败，已触发 localStorage 降级备份`, failed);
