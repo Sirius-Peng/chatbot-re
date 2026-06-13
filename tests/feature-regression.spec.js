@@ -352,3 +352,84 @@ test('data: export produces valid JSON', async ({ page }) => {
     });
     expect(canExport).toBe(true);
 });
+
+// ========== 补充冒烟测试 ==========
+
+test('gift-cabinet: modal opens without crashing', async ({ page }) => {
+    await dismissStartup(page);
+    await page.evaluate(() => {
+        if (typeof window.GiftCabinetApp === 'object') window.GiftCabinetApp.open();
+    });
+    await expect(page.locator('#gift-cabinet-modal')).toBeVisible();
+    await closeModalById(page, 'gift-cabinet-modal');
+});
+
+test('diary: period tab opens without crashing', async ({ page }) => {
+    await dismissStartup(page);
+    await clickHomeApp(page, 'diary', 0);
+    await expect(page.locator('#diary-modal')).toBeVisible();
+    const periodTab = page.locator('#diary-modal [data-tab="period"]');
+    if (await periodTab.isVisible().catch(() => false)) {
+        await periodTab.click();
+        const periodPanel = page.locator('#diary-modal [data-panel="period"]');
+        await expect(periodPanel).toBeVisible();
+    }
+    await closeModalById(page, 'diary-modal');
+});
+
+test('theme-editor: modal opens without crashing', async ({ page }) => {
+    await dismissStartup(page);
+    // 主题编辑器通过外观设置面板中的按钮打开
+    const themeBtn = page.locator('#open-theme-editor');
+    if (await themeBtn.count() === 0) {
+        // 需要先打开外观设置
+        const appearanceBtn = page.locator('[data-app="appearance"], #open-appearance-panel, .appearance-entry');
+        if (await appearanceBtn.count() > 0) {
+            await appearanceBtn.first().click();
+            await page.waitForTimeout(500);
+        }
+    }
+    if (await themeBtn.isVisible().catch(() => false)) {
+        await themeBtn.click();
+        await expect(page.locator('#theme-editor-modal')).toBeVisible();
+        await closeModalById(page, 'theme-editor-modal');
+    }
+});
+
+test('group-chat: modal opens without crashing', async ({ page }) => {
+    await dismissStartup(page);
+    // 群聊设置在会话管理弹窗中
+    await page.evaluate(() => {
+        const sessionModal = document.getElementById('session-modal');
+        if (sessionModal && typeof showModal === 'function') showModal(sessionModal);
+    });
+    await expect(page.locator('#session-modal')).toBeVisible();
+    const groupBtn = page.locator('#open-group-chat-settings');
+    if (await groupBtn.isVisible().catch(() => false)) {
+        await groupBtn.click();
+        await expect(page.locator('#group-chat-modal')).toBeVisible();
+        await closeModalById(page, 'group-chat-modal');
+    }
+    await closeModalById(page, 'session-modal');
+});
+
+test('red-packet: send modal opens without crashing', async ({ page }) => {
+    await dismissStartup(page);
+    // 进入聊天
+    const chatApp = page.locator('.app-item').filter({
+        has: page.locator('[data-app="chat"]')
+    }).first();
+    await chatApp.click();
+    await expect(page.locator('#message-input')).toBeVisible();
+
+    // 点击红包按钮
+    const rpBtn = page.locator('#red-packet-btn');
+    if (await rpBtn.isVisible().catch(() => false)) {
+        await rpBtn.click();
+        // 红包弹窗是动态创建的
+        await page.waitForTimeout(500);
+        const rpOverlay = page.locator('#rp-send-btn, .red-packet-overlay, [class*="red-packet"]');
+        const hasOverlay = await rpOverlay.count() > 0;
+        expect(hasOverlay).toBe(true);
+    }
+});
