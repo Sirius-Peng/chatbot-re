@@ -42,7 +42,7 @@
 | CI 测试覆盖 | 0（不跑测试） | 部署前必须通过 | CI 配置 |
 | E2E 测试数量 | 24 | 35+ | `npm run test:web` |
 | 单元测试数量 | 10 | 20+ | `npm run test:unit` |
-| ESLint errors | 0（规则被关） | 0（规则开启后仍为 0） | `npm run lint` |
+| ESLint errors | ~~0（规则被关）~~ 0（规则开启后） | 0 | `npm run lint` ✅ |
 | XSS 可利用点 | ~~2~~ 0 | 0 | 代码审查 |
 | 暗色模式异常页面 | 3（商城/萌宠/朋友圈） | 0 | 手动检查 |
 | JS 控制台错误 | 未统计 | 0（正常操作路径） | 浏览器 DevTools |
@@ -174,30 +174,32 @@
 
 > 目标：补充测试覆盖，为后续重构建立安全网。收紧 ESLint 防止新问题引入。
 
-#### Day 1-2：ESLint 收紧
+#### Day 1-2：ESLint 收紧 ✅ 已完成（2026-06-13）
 
-**Step 2.1 — ESLint 规则收紧**
+**Step 2.1 — ESLint 规则收紧 ✅**
 
 - 对应问题：C-3 相关
-- 改动文件：`.eslintrc.json` + 全项目
-- 业务价值：捕获变量拼写错误和重复声明，防止新 bug 引入
+- 改动文件：`.eslintrc.json`、`js/home.js`
+- 业务价值：捕获变量拼写错误，防止新 bug 引入
+- 实际提交：`590c35d lint: tighten no-undef to error, add 100+ missing globals, fix useless escapes`
 
-**操作：**
+**实际执行：**
 
-1. 将以下规则改为 `error`：
-   ```json
-   "no-redeclare": "error",
-   "no-undef": "error",
-   "no-unused-vars": ["error", { "args": "none", "varsIgnorePattern": "^_" }],
-   "no-useless-escape": "error"
-   ```
-2. 运行 `npm run lint` 查看新增 error
-3. 逐一修复（预计主要是未声明变量和重复声明）
-4. 确实需要的全局变量添加到 `globals` 配置
-- 回滚方案：恢复 .eslintrc.json
-- 风险：可能发现大量 error，工作量超出预期 → 应急方案：先只收紧 `no-redeclare`，其余下个迭代
-- 验证：`npm run lint` 0 errors
-- 提交：`lint: tighten ESLint rules for no-redeclare and no-undef`
+原计划收紧 4 条规则到 error，但分析发现 `no-redeclare` 无法收紧（架构约束：变量同时在代码和 globals 中声明是本项目的固有模式）。实际收紧：
+
+1. `no-undef`: warn → **error** — 捕获真实缺失变量
+2. `no-useless-escape`: off → **warn** — 暴露无用转义字符
+3. `no-redeclare`: 保持 **off** — 架构约束，非 bug
+4. `no-unused-vars`: 保持 **warn** — 252 处，渐进修复
+
+补充操作：
+- 添加 ~100 个缺失全局变量到 `.eslintrc.json`
+- 修复 `js/home.js` 中 3 个无用转义字符（`\/` → `/`）
+- 警告从 698 降至 364，0 errors
+
+- 回滚方案：`git revert 590c35d`
+- 验证：`npm run lint` 0 errors、35 测试全部通过
+- 状态：✅ 完成
 
 #### Day 3-4：补充冒烟测试
 
@@ -237,7 +239,10 @@
 - 验证：连续运行 3 次 `npm run test:web` 无 flaky
 - 提交：`test: replace networkidle with deterministic wait strategy`
 
-**第 2 周检查点：** `npm run lint` 0 errors + 测试 31+ 通过 + 连续 3 次无 flaky
+**第 2 周检查点：**
+- ✅ ESLint 收紧完成（0 errors，364 warnings）
+- ⬜ 冒烟测试补充（Step 2.2 待执行）
+- ⬜ Playwright 优化（Step 2.3 待执行）
 
 ---
 
@@ -485,7 +490,7 @@
   └── Step 1.6 viewport ─────────┘ ✅ adbb828
 
 第 2 周（测试安全网）
-  ├── Step 2.1 ESLint 收紧 ──────┐
+  ├── Step 2.1 ESLint 收紧 ──────┐ ✅ 590c35d
   ├── Step 2.2 冒烟测试 ─────────┤── 2.1 先行（ESLint 能发现测试中的问题）
   └── Step 2.3 Playwright 优化 ──┘── 2.2 先行（测试数量确认后再优化配置）
 
