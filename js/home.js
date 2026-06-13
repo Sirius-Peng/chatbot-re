@@ -1573,7 +1573,7 @@
                 } else {
                     (window.showNotification || function(){})('TA的手机加载中...', 'info');
                     const script = document.createElement('script');
-                    var basePath = window.location.pathname.replace(/\/[^\/]*$/, '/') || '/';
+                    var basePath = window.location.pathname.replace(/\/[^/]*$/, '/') || '/';
                     script.src = basePath + 'js/ta-phone.js';
                     script.onload = function() {
                         if (typeof window.TaPhoneApp !== 'undefined') window.TaPhoneApp.showTaPhone();
@@ -1591,7 +1591,7 @@
                 } else {
                     (window.showNotification || function(){})('商城加载中...', 'info');
                     const script = document.createElement('script');
-                    var basePath = window.location.pathname.replace(/\/[^\/]*$/, '/') || '/';
+                    var basePath = window.location.pathname.replace(/\/[^/]*$/, '/') || '/';
                     script.src = basePath + 'js/shop.js';
                     script.onload = function() {
                         if (typeof window.ShopApp !== 'undefined') window.ShopApp.showShop();
@@ -1610,7 +1610,7 @@
                     // 动态加载 map.js（使用绝对路径避免预览环境路径问题）
                     (window.showNotification || function(){})('地图加载中...', 'info');
                     const script = document.createElement('script');
-                    var basePath = window.location.pathname.replace(/\/[^\/]*$/, '/') || '/';
+                    var basePath = window.location.pathname.replace(/\/[^/]*$/, '/') || '/';
                     script.src = basePath + 'js/features/map.js';
                     script.onload = function() {
                         if (typeof window.MapApp !== 'undefined') {

@@ -2,9 +2,25 @@
 
 import { describe, test, expect } from 'vitest';
 import { readFileSync, existsSync } from 'fs';
+import { execSync } from 'child_process';
 import { resolve } from 'path';
 
 const ROOT = resolve(import.meta.dirname, '../..');
+
+describe('ESLint 规则', () => {
+    test('lint 无 error 级别违规', () => {
+        try {
+            execSync('npm run lint', { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe' });
+            // exit code 0, no errors
+        } catch (e) {
+            // eslint exits non-zero when there are errors
+            const output = e.stdout || e.stderr || '';
+            // Count only "error" lines, not "warning"
+            const errorLines = output.split('\n').filter(line => /\d+:\d+\s+error\s+/.test(line));
+            expect(errorLines).toHaveLength(0);
+        }
+    });
+});
 
 describe('package.json 脚本完整性', () => {
     test('所有 node 脚本引用的文件都存在', () => {
