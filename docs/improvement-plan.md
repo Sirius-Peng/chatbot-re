@@ -148,7 +148,7 @@
 
 **Step 1.6 — 移除 viewport 缩放限制 ✅**
 
-- 对应问题：C-11（无障碍）
+- 对应问题：W-S2（viewport 缩放限制，非 C-11 ARIA 问题）
 - 改动文件：`index.html`
 - 业务价值：允许视力不佳的用户放大页面，WCAG 2.1 AA 合规
 - 实际提交：`adbb828`
@@ -388,6 +388,8 @@ html[data-theme="dark"] .glass {
 2. 保留公共前缀元素，移除过时后缀，追加新消息
 3. `preserveScroll=false` 或 DOM 为空时走全量重建路径（兼容所有调用点）
 4. 新增 E2E 测试验证 `renderMessages(true)` 不销毁已有 DOM 节点
+
+**已知限制：** 增量渲染仅处理追加（新消息末尾添加）。如果消息从中间删除（如撤回），公共前缀 diff 不会检测到删除，会在下次全量重建时才清理残留 DOM。当前消息撤回通过 `renderMessages(false)` 触发全量重建来规避此问题。
 
 - 回滚方案：`git revert 6f5ad4f`
 - 验证：48 测试全部通过（16 单元 + 32 E2E）
