@@ -1,0 +1,48 @@
+'use strict';
+
+import { describe, test, expect } from 'vitest';
+import { readFileSync, existsSync } from 'fs';
+import { resolve } from 'path';
+
+const ROOT = resolve(import.meta.dirname, '../..');
+
+describe('package.json 脚本完整性', () => {
+    test('所有 node 脚本引用的文件都存在', () => {
+        const pkg = JSON.parse(readFileSync(resolve(ROOT, 'package.json'), 'utf-8'));
+        const scriptEntries = Object.entries(pkg.scripts || {});
+        for (const [name, cmd] of scriptEntries) {
+            // 匹配 "node <path>" 模式
+            const nodeMatch = cmd.match(/^node\s+(\S+)/);
+            if (nodeMatch) {
+                const scriptPath = resolve(ROOT, nodeMatch[1]);
+                expect(existsSync(scriptPath), `脚本 "${name}" 引用的文件不存在: ${nodeMatch[1]}`).toBe(true);
+            }
+        }
+    });
+});
+
+describe('index.html 可访问性', () => {
+    test('viewport 不限制用户缩放', () => {
+        const html = readFileSync(resolve(ROOT, 'index.html'), 'utf-8');
+        const viewportMatch = html.match(/<meta[^>]*name="viewport"[^>]*>/i);
+        expect(viewportMatch).not.toBeNull();
+        expect(viewportMatch[0]).not.toContain('user-scalable=no');
+        expect(viewportMatch[0]).not.toContain('maximum-scale=1.0');
+    });
+});
+
+describe('diary.css 语法正确性', () => {
+    test('没有多余的闭合花括号', () => {
+        const css = readFileSync(resolve(ROOT, 'css/diary.css'), 'utf-8');
+        // 解析大括号层级，确保不会有负数层级
+        let depth = 0;
+        for (let i = 0; i < css.length; i++) {
+            if (css[i] === '{') depth++;
+            if (css[i] === '}') depth--;
+            if (depth < 0) {
+                throw new Error(`在字符位置 ${i} 发现多余的闭合花括号`);
+            }
+        }
+        expect(depth).toBe(0);
+    });
+});

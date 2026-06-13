@@ -78,7 +78,6 @@ npm run build
 | `npm run test:web` | Playwright E2E 测试（Pixel 5 视口，端口 4176） |
 | `npm run android:sync` | 构建 + Capacitor 同步 |
 | `npm run android:build` | 构建 Android Debug APK |
-| `npm run test:android` | ADB 冒烟测试 |
 | `npm run server` | 启动文件上传服务 |
 
 ## 项目结构

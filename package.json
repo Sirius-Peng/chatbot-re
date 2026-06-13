@@ -12,8 +12,7 @@
     "test:web": "playwright test",
     "test:unit": "vitest run",
     "android:sync": "npm run build && cap sync android",
-    "android:build": "npm run android:sync && cd android && ./gradlew :app:assembleDebug",
-    "test:android": "node scripts/android-smoke.js"
+    "android:build": "npm run android:sync && cd android && ./gradlew :app:assembleDebug"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.4.0",

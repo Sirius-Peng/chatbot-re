@@ -28,6 +28,20 @@ jobs:
 
       - run: npm run lint
 
+      - run: npm run test:unit
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        run: npm run test:web
+
       - run: npm run build
 
       - uses: actions/configure-pages@v4
