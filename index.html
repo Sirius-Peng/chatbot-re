@@ -2313,6 +2313,34 @@
     <input type="file" id="image-input" class="file-input" accept="image/*">
     <input type="file" id="my-sticker-quick-upload" class="file-input" accept="image/*" multiple>
 </div>
+    <!-- 全屏搜索浮动按钮 -->
+    <button id="chat-search-toggle-btn" class="chat-search-fab" title="搜索聊天记录">
+        <i class="fas fa-search"></i>
+    </button>
+    </div>
+
+    <!-- 全屏搜索页面 -->
+    <div id="search-page" class="search-page">
+        <div class="search-page-header">
+            <button id="search-back-btn" class="search-icon-btn"><i class="fas fa-arrow-left"></i></button>
+            <div class="search-input-wrap">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-keyword-input" placeholder="搜索聊天记录..." autocomplete="off">
+                <button id="search-clear-btn" class="search-icon-btn search-clear" style="display:none;"><i class="fas fa-times-circle"></i></button>
+            </div>
+        </div>
+        <div class="search-filters">
+            <input type="date" id="search-date-from" class="search-date-input">
+            <span class="search-filter-sep">至</span>
+            <input type="date" id="search-date-to" class="search-date-input">
+            <button id="search-filter-reset" class="search-filter-btn">重置</button>
+        </div>
+        <div id="search-results-container" class="search-results-container">
+            <div id="search-results-placeholder" class="search-results-placeholder">
+                <i class="fas fa-search"></i>
+                <p>输入关键词搜索聊天记录</p>
+            </div>
+        </div>
     </div>
 
 

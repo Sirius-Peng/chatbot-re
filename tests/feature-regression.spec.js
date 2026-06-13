@@ -465,6 +465,45 @@ test('chat export: "最近 7 天" quick option pre-fills date range', async ({ p
     expect(toVal).toBe(today);
 });
 
+test('fullscreen search: opens and finds messages by keyword', async ({ page }) => {
+    await dismissStartup(page);
+    await enterChatFromHome(page);
+
+    // 发送一条唯一消息
+    const keyword = `search-${Date.now()}`;
+    await page.locator('#message-input').fill(keyword);
+    await page.locator('#send-btn').click();
+    await expect(page.locator('#chat-container')).toContainText(keyword);
+
+    // 打开全屏搜索（FAB 在聊天视图中）
+    const searchBtn = page.locator('#chat-search-toggle-btn');
+    await expect(searchBtn).toBeVisible({ timeout: 5000 });
+    await searchBtn.click();
+
+    const searchPage = page.locator('#search-page');
+    await expect(searchPage).toHaveClass(/active/);
+
+    // 输入关键词搜索
+    const searchInput = page.locator('#search-keyword-input');
+    await searchInput.fill(keyword);
+
+    // 等待 debounce + 渲染
+    await page.waitForTimeout(500);
+
+    // 验证搜索结果
+    const results = page.locator('#search-results-container .sr-item');
+    await expect(results.first()).toBeVisible({ timeout: 5000 });
+    const count = await results.count();
+    expect(count).toBeGreaterThanOrEqual(1);
+
+    // 验证结果包含关键词
+    await expect(results.first()).toContainText(keyword);
+
+    // 关闭搜索页
+    await page.locator('#search-back-btn').click();
+    await expect(searchPage).not.toHaveClass(/active/);
+});
+
 test('red-packet: send modal opens without crashing', async ({ page }) => {
     await dismissStartup(page);
     // 进入聊天
