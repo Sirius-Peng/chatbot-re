@@ -503,17 +503,24 @@ html[data-theme="dark"] .glass {
 - 验证：54 测试全部通过（21 单元 + 33 E2E）
 - 状态：✅ 完成
 
-**Step 8.2 — saveData 防抖**
+**Step 8.2 — saveData 防抖 ✅ 已完成（2026-06-13）**
 
 - 对应问题：W-J3
-- 改动文件：`js/core.js`
+- 改动文件：`js/home.js`
 - 业务价值：减少非关键路径的存储写入
 
-**操作：**
+**实际执行：**
 
-搜索直接调用 `saveData()` 的位置，将非关键路径改为 `throttledSaveData()`。
-- 验证：连续快速发送消息，数据不丢失
-- 提交：`perf: use throttledSaveData in non-critical paths`
+审计全部 `saveData()` 直接调用（8 处），分类：
+- **保留直接调用（5 处）**：visibilitychange 紧急保存、数据导入后保存、备份恢复后保存、页面刷新前保存、定时器 — 这些场景需要立即写入
+- **改为 throttledSaveData（2 处）**：`home.js` 两个头像上传回调（图片已通过 localforage 单独持久化，设置保存可延迟）
+- **不适用（1 处）**：`utils.js` 中 throttledSaveData 的实现本身
+
+代码库中已有 150+ 处使用 `throttledSaveData()`，说明项目已全面采用防抖策略。剩余直接调用均为刻意保留的关键路径。
+
+- 回滚方案：`git revert <commit>`
+- 验证：54 测试全部通过（21 单元 + 33 E2E）
+- 状态：✅ 完成
 
 #### Day 3-5：产品功能
 
@@ -559,7 +566,7 @@ html[data-theme="dark"] .glass {
 
 第 8 周（收尾）
   ├── Step 8.1 空 catch ─────────┐── 独立 ✅
-  ├── Step 8.2 saveData 防抖 ────┤── 独立
+  ├── Step 8.2 saveData 防抖 ────┤── 独立 ✅
   └── 产品功能 ──────────────────┘── 独立
 ```
 

@@ -902,11 +902,11 @@
                 }
             }
 
-            // 同时触发 saveData 保存其他设置
-            if (typeof window.saveData === 'function') {
-                window.saveData();
-            } else if (typeof window.throttledSaveData === 'function') {
+            // 同时触发 saveData 保存其他设置（图片已通过 localforage 单独持久化，无需立即写入）
+            if (typeof window.throttledSaveData === 'function') {
                 window.throttledSaveData();
+            } else if (typeof window.saveData === 'function') {
+                window.saveData();
             }
         };
         reader.readAsDataURL(file);
@@ -2393,11 +2393,11 @@
             }
         }
 
-        // 同时触发 saveData 保存其他设置
-        if (typeof window.saveData === 'function') {
-            window.saveData();
-        } else if (typeof window.throttledSaveData === 'function') {
+        // 同时触发 saveData 保存其他设置（图片已通过 localforage 单独持久化，无需立即写入）
+        if (typeof window.throttledSaveData === 'function') {
             window.throttledSaveData();
+        } else if (typeof window.saveData === 'function') {
+            window.saveData();
         }
     };
 
