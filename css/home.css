@@ -1301,22 +1301,22 @@ font-size: 20px;
 }
 
 /* 深色模式适配 */
-body.dark-mode .home-notification-inner {
+html[data-theme="dark"] .home-notification-inner {
     background: rgba(40, 40, 45, 0.85);
     box-shadow:
 0 4px 24px rgba(0, 0, 0, 0.3),
 0 0 0 0.5px rgba(255, 255, 255, 0.1) inset;
 }
 
-body.dark-mode .home-notification-name {
+html[data-theme="dark"] .home-notification-name {
     color: #e0e0e0;
 }
 
-body.dark-mode .home-notification-text {
+html[data-theme="dark"] .home-notification-text {
     color: #aaa;
 }
 
-body.dark-mode .home-notification-time,
-body.dark-mode .home-notification-app {
+html[data-theme="dark"] .home-notification-time,
+html[data-theme="dark"] .home-notification-app {
     color: #666;
 }

@@ -1,11 +1,33 @@
 'use strict';
 
 import { describe, test, expect } from 'vitest';
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync, readdirSync } from 'fs';
 import { execSync } from 'child_process';
 import { resolve } from 'path';
 
 const ROOT = resolve(import.meta.dirname, '../..');
+
+describe('暗色模式选择器一致性', () => {
+    test('所有 CSS 使用 html[data-theme="dark"] 作为暗色模式选择器', () => {
+        const cssDir = resolve(ROOT, 'css');
+        const cssFiles = readdirSync(cssDir).filter(f => f.endsWith('.css'));
+        const violations = [];
+        for (const file of cssFiles) {
+            const content = readFileSync(resolve(cssDir, file), 'utf-8');
+            // 检查 body.dark-mode 选择器
+            const bodyDarkMatches = content.match(/body\.dark-mode/g);
+            if (bodyDarkMatches) {
+                violations.push(`${file}: ${bodyDarkMatches.length} 个 body.dark-mode 选择器`);
+            }
+            // 检查 .xxx.dark-mode 容器选择器（排除 html[data-theme="dark"]）
+            const containerDarkMatches = content.match(/\.[a-z][a-z0-9-]*\.dark-mode/gi);
+            if (containerDarkMatches) {
+                violations.push(`${file}: ${containerDarkMatches.length} 个 .container.dark-mode 选择器`);
+            }
+        }
+        expect(violations).toEqual([]);
+    });
+});
 
 describe('ESLint 规则', () => {
     test('lint 无 error 级别违规', () => {

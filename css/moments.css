@@ -2484,22 +2484,22 @@
 }
 
 /* Dark mode count */
-.moments-container.dark-mode .beautify-count-wrap input[type="number"] {
+html[data-theme="dark"] .moments-container .beautify-count-wrap input[type="number"] {
   background: #2a2a2a;
   border-color: #444;
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .beautify-count-sep {
+html[data-theme="dark"] .moments-container .beautify-count-sep {
   color: #777;
 }
 
 /* Dark mode range */
-.moments-container.dark-mode .beautify-range-wrap input[type="range"] {
+html[data-theme="dark"] .moments-container .beautify-range-wrap input[type="range"] {
   background: #444;
 }
 
-.moments-container.dark-mode .beautify-range-label {
+html[data-theme="dark"] .moments-container .beautify-range-label {
   color: #8a9dc8;
 }
 
@@ -2556,11 +2556,11 @@
 }
 
 /* Dark mode toggle */
-.moments-container.dark-mode .toggle-switch {
+html[data-theme="dark"] .moments-container .toggle-switch {
   background: #555;
 }
 
-.moments-container.dark-mode .toggle-switch.active {
+html[data-theme="dark"] .moments-container .toggle-switch.active {
   background: #576b95;
 }
 
@@ -2845,878 +2845,878 @@
 }
 
 /* ========== Dark Mode ========== */
-.moments-container.dark-mode {
+html[data-theme="dark"] .moments-container {
   background: #1a1a1a;
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .app-container {
+html[data-theme="dark"] .moments-container .app-container {
   background: #1a1a1a;
 }
 
-.moments-container.dark-mode .moment-card {
+html[data-theme="dark"] .moments-container .moment-card {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .moment-card::after {
+html[data-theme="dark"] .moments-container .moment-card::after {
   background: #3a3a3a;
 }
 
-.moments-container.dark-mode .moment-text {
+html[data-theme="dark"] .moments-container .moment-text {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .moment-time {
+html[data-theme="dark"] .moments-container .moment-time {
   color: #888;
 }
 
-.moments-container.dark-mode .moment-mentions {
+html[data-theme="dark"] .moments-container .moment-mentions {
   color: #888;
 }
 
-.moments-container.dark-mode .moment-text-expand {
+html[data-theme="dark"] .moments-container .moment-text-expand {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .interaction-bubble {
+html[data-theme="dark"] .moments-container .interaction-bubble {
   background: #333;
 }
 
-.moments-container.dark-mode .like-section {
+html[data-theme="dark"] .moments-container .like-section {
   border-bottom-color: #444;
 }
 
-.moments-container.dark-mode .comment-item .comment-text {
+html[data-theme="dark"] .moments-container .comment-item .comment-text {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .comment-item:active {
+html[data-theme="dark"] .moments-container .comment-item:active {
   background: rgba(255, 255, 255, 0.05);
 }
 
-.moments-container.dark-mode .action-btn .heart-icon {
+html[data-theme="dark"] .moments-container .action-btn .heart-icon {
   stroke: #8a9dc8;
 }
 
-.moments-container.dark-mode .action-btn.liked .heart-icon {
+html[data-theme="dark"] .moments-container .action-btn.liked .heart-icon {
   fill: #8a9dc8;
   stroke: #8a9dc8;
 }
 
-.moments-container.dark-mode .action-btn .comment-icon {
+html[data-theme="dark"] .moments-container .action-btn .comment-icon {
   fill: #8a9dc8;
 }
 
-.moments-container.dark-mode .action-btn .star-icon {
+html[data-theme="dark"] .moments-container .action-btn .star-icon {
   stroke: #8a9dc8;
 }
 
-.moments-container.dark-mode .moments-list {
+html[data-theme="dark"] .moments-container .moments-list {
   background: #1a1a1a;
 }
 
-.moments-container.dark-mode .watermark {
+html[data-theme="dark"] .moments-container .watermark {
   color: #555;
 }
 
-.moments-container.dark-mode .moment-notification-inner {
+html[data-theme="dark"] .moments-container .moment-notification-inner {
   background: rgba(255, 255, 255, 0.15);
 }
 
-.moments-container.dark-mode .moments-notification-card {
+html[data-theme="dark"] .moments-container .moments-notification-card {
   background: rgba(255, 255, 255, 0.15);
 }
 
-.moments-container.dark-mode .search-panel {
+html[data-theme="dark"] .moments-container .search-panel {
   background: #1a1a1a;
 }
 
 /* Notification Detail Panel Dark Mode */
-.moments-container.dark-mode .notification-detail-panel {
+html[data-theme="dark"] .moments-container .notification-detail-panel {
   background: #1a1a1a;
 }
 
-.moments-container.dark-mode .notification-detail-header {
+html[data-theme="dark"] .moments-container .notification-detail-header {
   background: #1a1a1a;
   border-bottom-color: #333;
 }
 
-.moments-container.dark-mode .notification-detail-header .back-btn {
+html[data-theme="dark"] .moments-container .notification-detail-header .back-btn {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .notification-detail-header .title {
+html[data-theme="dark"] .moments-container .notification-detail-header .title {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .notification-detail-header .clear-btn {
+html[data-theme="dark"] .moments-container .notification-detail-header .clear-btn {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .notification-detail-body {
+html[data-theme="dark"] .moments-container .notification-detail-body {
   background: #1a1a1a;
 }
 
-.moments-container.dark-mode .notification-detail-item {
+html[data-theme="dark"] .moments-container .notification-detail-item {
   border-bottom-color: #333;
 }
 
-.moments-container.dark-mode .notification-detail-item:active {
+html[data-theme="dark"] .moments-container .notification-detail-item:active {
   background: rgba(255, 255, 255, 0.05);
 }
 
-.moments-container.dark-mode .notification-detail-item .detail-name {
+html[data-theme="dark"] .moments-container .notification-detail-item .detail-name {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .notification-detail-item .detail-action-text {
+html[data-theme="dark"] .moments-container .notification-detail-item .detail-action-text {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .notification-detail-item .detail-time {
+html[data-theme="dark"] .moments-container .notification-detail-item .detail-time {
   color: #888;
 }
 
-.moments-container.dark-mode .notification-detail-item .detail-preview {
+html[data-theme="dark"] .moments-container .notification-detail-item .detail-preview {
   background: #333;
 }
 
-.moments-container.dark-mode .notification-detail-item .detail-preview-text {
+html[data-theme="dark"] .moments-container .notification-detail-item .detail-preview-text {
   background: #333;
   color: #aaa;
 }
 
-.moments-container.dark-mode .notification-detail-empty {
+html[data-theme="dark"] .moments-container .notification-detail-empty {
   color: #888;
 }
 
-.moments-container.dark-mode .search-header {
+html[data-theme="dark"] .moments-container .search-header {
   background: #2a2a2a;
   border-bottom-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .search-input {
+html[data-theme="dark"] .moments-container .search-input {
   background: #333;
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .search-filter-bar {
+html[data-theme="dark"] .moments-container .search-filter-bar {
   background: #2a2a2a;
   border-bottom-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .search-results {
+html[data-theme="dark"] .moments-container .search-results {
   background: #1a1a1a;
 }
 
-.moments-container.dark-mode .search-result-item {
+html[data-theme="dark"] .moments-container .search-result-item {
   border-bottom-color: #333;
 }
 
-.moments-container.dark-mode .search-result-text {
+html[data-theme="dark"] .moments-container .search-result-text {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .search-result-time {
+html[data-theme="dark"] .moments-container .search-result-time {
   color: #888;
 }
 
-.moments-container.dark-mode .publish-panel {
+html[data-theme="dark"] .moments-container .publish-panel {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .publish-header {
+html[data-theme="dark"] .moments-container .publish-header {
   border-bottom-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .publish-text,
-.moments-container.dark-mode .publish-textarea {
+html[data-theme="dark"] .moments-container .publish-text,
+html[data-theme="dark"] .moments-container .publish-textarea {
   background: #333;
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .publish-tools {
+html[data-theme="dark"] .moments-container .publish-tools {
   border-top-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .comment-popup {
+html[data-theme="dark"] .moments-container .comment-popup {
   background: #2a2a2a;
   border-top-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .comment-input {
+html[data-theme="dark"] .moments-container .comment-input {
   background: #333;
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .comment-emoji-panel {
+html[data-theme="dark"] .moments-container .comment-emoji-panel {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .comment-emoji-tabs {
+html[data-theme="dark"] .moments-container .comment-emoji-tabs {
   background: #333;
 }
 
-.moments-container.dark-mode .comment-emoji-content {
+html[data-theme="dark"] .moments-container .comment-emoji-content {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .custom-panel {
+html[data-theme="dark"] .moments-container .custom-panel {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .custom-panel-header {
+html[data-theme="dark"] .moments-container .custom-panel-header {
   border-bottom-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .custom-input,
-.moments-container.dark-mode .custom-comment-input {
-  background: #333;
-  color: #e0e0e0;
-  border-color: #444;
-}
-
-.moments-container.dark-mode .edit-panel {
-  background: #2a2a2a;
-}
-
-.moments-container.dark-mode .edit-textarea {
+html[data-theme="dark"] .moments-container .custom-input,
+html[data-theme="dark"] .moments-container .custom-comment-input {
   background: #333;
   color: #e0e0e0;
   border-color: #444;
 }
 
-.moments-container.dark-mode .edit-panel-header {
-  border-bottom-color: #3a3a3a;
+html[data-theme="dark"] .moments-container .edit-panel {
+  background: #2a2a2a;
 }
 
-.moments-container.dark-mode .edit-text {
+html[data-theme="dark"] .moments-container .edit-textarea {
   background: #333;
   color: #e0e0e0;
   border-color: #444;
 }
 
-.moments-container.dark-mode .mention-panel {
-  background: #2a2a2a;
-}
-
-.moments-container.dark-mode .mention-panel-header {
+html[data-theme="dark"] .moments-container .edit-panel-header {
   border-bottom-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .mention-search {
+html[data-theme="dark"] .moments-container .edit-text {
   background: #333;
   color: #e0e0e0;
   border-color: #444;
 }
 
-.moments-container.dark-mode .location-panel {
+html[data-theme="dark"] .moments-container .mention-panel {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .location-panel-header {
+html[data-theme="dark"] .moments-container .mention-panel-header {
   border-bottom-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .location-search {
+html[data-theme="dark"] .moments-container .mention-search {
   background: #333;
   color: #e0e0e0;
   border-color: #444;
 }
 
-.moments-container.dark-mode .beautify-panel {
+html[data-theme="dark"] .moments-container .location-panel {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .beautify-panel-header {
+html[data-theme="dark"] .moments-container .location-panel-header {
   border-bottom-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .beautify-avatar-preview,
-.moments-container.dark-mode .beautify-cover-preview {
+html[data-theme="dark"] .moments-container .location-search {
+  background: #333;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+html[data-theme="dark"] .moments-container .beautify-panel {
+  background: #2a2a2a;
+}
+
+html[data-theme="dark"] .moments-container .beautify-panel-header {
+  border-bottom-color: #3a3a3a;
+}
+
+html[data-theme="dark"] .moments-container .beautify-avatar-preview,
+html[data-theme="dark"] .moments-container .beautify-cover-preview {
   background: #333;
 }
 
-.moments-container.dark-mode .album-panel {
+html[data-theme="dark"] .moments-container .album-panel {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .album-panel-header {
+html[data-theme="dark"] .moments-container .album-panel-header {
   border-bottom-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .collection-panel {
+html[data-theme="dark"] .moments-container .collection-panel {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .collection-panel-header {
+html[data-theme="dark"] .moments-container .collection-panel-header {
   border-bottom-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .preview-detail-btn {
+html[data-theme="dark"] .moments-container .preview-detail-btn {
   background: rgba(255, 255, 255, 0.2);
 }
 
 /* ========== Dark Mode (补充缺失的覆盖) ========== */
 
 /* 用户资料 */
-.moments-container.dark-mode .user-profile .avatar {
+html[data-theme="dark"] .moments-container .user-profile .avatar {
   background: #2a2a2a;
 }
 
 /* 九宫格 */
-.moments-container.dark-mode .nine-grid .grid-item {
+html[data-theme="dark"] .moments-container .nine-grid .grid-item {
   background: #333;
 }
 
 /* 表情包 */
-.moments-container.dark-mode .moment-sticker {
+html[data-theme="dark"] .moments-container .moment-sticker {
   background: #333;
 }
 
 /* 点赞评论气泡 */
-.moments-container.dark-mode .interaction-area {
+html[data-theme="dark"] .moments-container .interaction-area {
   background: transparent;
 }
 
-.moments-container.dark-mode .like-section svg {
+html[data-theme="dark"] .moments-container .like-section svg {
   fill: #8a9dc8;
 }
 
-.moments-container.dark-mode .like-section .like-names {
+html[data-theme="dark"] .moments-container .like-section .like-names {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .comment-section {
+html[data-theme="dark"] .moments-container .comment-section {
   background: transparent;
 }
 
-.moments-container.dark-mode .comment-item .comment-name {
+html[data-theme="dark"] .moments-container .comment-item .comment-name {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .comment-item .reply-to {
+html[data-theme="dark"] .moments-container .comment-item .reply-to {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .comment-item .reply-arrow {
+html[data-theme="dark"] .moments-container .comment-item .reply-arrow {
   color: #666;
 }
 
 /* 搜索面板 */
-.moments-container.dark-mode .search-back {
+html[data-theme="dark"] .moments-container .search-back {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .search-input-wrap {
+html[data-theme="dark"] .moments-container .search-input-wrap {
   background: #333;
 }
 
-.moments-container.dark-mode .search-clear {
+html[data-theme="dark"] .moments-container .search-clear {
   color: #888;
 }
 
-.moments-container.dark-mode .search-filter-row {
+html[data-theme="dark"] .moments-container .search-filter-row {
   background: transparent;
 }
 
-.moments-container.dark-mode .search-filter-row input {
+html[data-theme="dark"] .moments-container .search-filter-row input {
   background: #333;
   color: #e0e0e0;
   border-color: #444;
 }
 
-.moments-container.dark-mode .search-filter-row button {
+html[data-theme="dark"] .moments-container .search-filter-row button {
   background: #333;
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .search-body {
+html[data-theme="dark"] .moments-container .search-body {
   background: #1a1a1a;
 }
 
-.moments-container.dark-mode .search-highlight {
+html[data-theme="dark"] .moments-container .search-highlight {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .search-empty {
+html[data-theme="dark"] .moments-container .search-empty {
   color: #888;
 }
 
 /* 相册面板 */
-.moments-container.dark-mode .album-header .back-btn {
+html[data-theme="dark"] .moments-container .album-header .back-btn {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .album-title {
+html[data-theme="dark"] .moments-container .album-title {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .album-expand-btn {
+html[data-theme="dark"] .moments-container .album-expand-btn {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .album-filter-row {
+html[data-theme="dark"] .moments-container .album-filter-row {
   background: transparent;
 }
 
-.moments-container.dark-mode .album-filter-row input {
+html[data-theme="dark"] .moments-container .album-filter-row input {
   background: #333;
   color: #e0e0e0;
   border-color: #444;
 }
 
-.moments-container.dark-mode .album-quick-btn {
+html[data-theme="dark"] .moments-container .album-quick-btn {
   background: #333;
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .album-grid {
+html[data-theme="dark"] .moments-container .album-grid {
   background: #1a1a1a;
 }
 
-.moments-container.dark-mode .album-grid-item {
+html[data-theme="dark"] .moments-container .album-grid-item {
   background: #333;
 }
 
-.moments-container.dark-mode .album-timeline {
+html[data-theme="dark"] .moments-container .album-timeline {
   background: #1a1a1a;
 }
 
-.moments-container.dark-mode .album-item {
+html[data-theme="dark"] .moments-container .album-item {
   border-bottom-color: #333;
 }
 
 /* 收藏面板 */
-.moments-container.dark-mode .collection-header .back-btn {
+html[data-theme="dark"] .moments-container .collection-header .back-btn {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .collection-title {
+html[data-theme="dark"] .moments-container .collection-title {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .collection-body {
+html[data-theme="dark"] .moments-container .collection-body {
   background: #1a1a1a;
 }
 
-.moments-container.dark-mode .collection-empty {
+html[data-theme="dark"] .moments-container .collection-empty {
   color: #888;
 }
 
 /* 发布面板 */
-.moments-container.dark-mode .publish-header .cancel {
+html[data-theme="dark"] .moments-container .publish-header .cancel {
   color: #888;
 }
 
-.moments-container.dark-mode .publish-header .post {
+html[data-theme="dark"] .moments-container .publish-header .post {
   color: #07c160;
 }
 
-.moments-container.dark-mode .publish-mentions {
+html[data-theme="dark"] .moments-container .publish-mentions {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .publish-location {
+html[data-theme="dark"] .moments-container .publish-location {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .publish-photos {
+html[data-theme="dark"] .moments-container .publish-photos {
   background: transparent;
 }
 
-.moments-container.dark-mode .publish-photos .add-photo-btn {
+html[data-theme="dark"] .moments-container .publish-photos .add-photo-btn {
   background: #333;
   border-color: #444;
   color: #666;
 }
 
-.moments-container.dark-mode .publish-photos .photo-item {
+html[data-theme="dark"] .moments-container .publish-photos .photo-item {
   background: #333;
 }
 
-.moments-container.dark-mode .publish-video-area {
+html[data-theme="dark"] .moments-container .publish-video-area {
   background: transparent;
 }
 
-.moments-container.dark-mode .publish-video-cover {
+html[data-theme="dark"] .moments-container .publish-video-cover {
   background: #333;
 }
 
-.moments-container.dark-mode .publish-stickers {
+html[data-theme="dark"] .moments-container .publish-stickers {
   background: transparent;
 }
 
-.moments-container.dark-mode .publish-sticker-item {
+html[data-theme="dark"] .moments-container .publish-sticker-item {
   background: #333;
 }
 
-.moments-container.dark-mode .publish-toolbar .tool-btn {
+html[data-theme="dark"] .moments-container .publish-toolbar .tool-btn {
   color: #888;
 }
 
-.moments-container.dark-mode .publish-toolbar .tool-btn svg {
+html[data-theme="dark"] .moments-container .publish-toolbar .tool-btn svg {
   fill: #888;
 }
 
 /* 发布表情包面板 */
-.moments-container.dark-mode .publish-sticker-panel-header .close-btn {
+html[data-theme="dark"] .moments-container .publish-sticker-panel-header .close-btn {
   color: #888;
 }
 
-.moments-container.dark-mode .publish-sticker-panel-header .title {
+html[data-theme="dark"] .moments-container .publish-sticker-panel-header .title {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .publish-sticker-panel {
+html[data-theme="dark"] .moments-container .publish-sticker-panel {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .publish-sticker-panel-body {
+html[data-theme="dark"] .moments-container .publish-sticker-panel-body {
   background: #1a1a1a;
 }
 
-.moments-container.dark-mode .publish-sticker-panel-body .sticker-item {
+html[data-theme="dark"] .moments-container .publish-sticker-panel-body .sticker-item {
   background: #333;
 }
 
 /* 评论输入弹窗 */
-.moments-container.dark-mode .emoji-toggle-btn {
+html[data-theme="dark"] .moments-container .emoji-toggle-btn {
   background: transparent;
 }
 
-.moments-container.dark-mode .emoji-toggle-btn.active {
+html[data-theme="dark"] .moments-container .emoji-toggle-btn.active {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.moments-container.dark-mode .emoji-toggle-btn svg {
+html[data-theme="dark"] .moments-container .emoji-toggle-btn svg {
   fill: #888;
 }
 
-.moments-container.dark-mode .comment-input-area {
+html[data-theme="dark"] .moments-container .comment-input-area {
   background: transparent;
 }
 
-.moments-container.dark-mode .comment-sticker-preview {
+html[data-theme="dark"] .moments-container .comment-sticker-preview {
   background: transparent;
 }
 
-.moments-container.dark-mode .comment-sticker-preview img {
+html[data-theme="dark"] .moments-container .comment-sticker-preview img {
   background: #333;
 }
 
-.moments-container.dark-mode .comment-sticker-preview .remove-sticker {
+html[data-theme="dark"] .moments-container .comment-sticker-preview .remove-sticker {
   color: #888;
 }
 
 /* 表情面板 */
-.moments-container.dark-mode .emoji-tab {
+html[data-theme="dark"] .moments-container .emoji-tab {
   color: #888;
   border-bottom-color: transparent;
 }
 
-.moments-container.dark-mode .emoji-tab.active {
+html[data-theme="dark"] .moments-container .emoji-tab.active {
   color: #8a9dc8;
   border-bottom-color: #8a9dc8;
 }
 
-.moments-container.dark-mode .comment-emoji-item {
+html[data-theme="dark"] .moments-container .comment-emoji-item {
   background: transparent;
 }
 
-.moments-container.dark-mode .comment-emoji-item:hover {
+html[data-theme="dark"] .moments-container .comment-emoji-item:hover {
   background: rgba(255, 255, 255, 0.05);
 }
 
-.moments-container.dark-mode .comment-emoji-item.sticker-mode {
+html[data-theme="dark"] .moments-container .comment-emoji-item.sticker-mode {
   background: #333;
 }
 
 /* 自定义面板 */
-.moments-container.dark-mode .custom-panel-header .close-btn {
+html[data-theme="dark"] .moments-container .custom-panel-header .close-btn {
   color: #888;
 }
 
-.moments-container.dark-mode .custom-panel-title {
+html[data-theme="dark"] .moments-container .custom-panel-title {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .custom-panel-body {
+html[data-theme="dark"] .moments-container .custom-panel-body {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .custom-comment-group {
+html[data-theme="dark"] .moments-container .custom-comment-group {
   background: transparent;
 }
 
-.moments-container.dark-mode .custom-panel-footer {
+html[data-theme="dark"] .moments-container .custom-panel-footer {
   border-top-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .friends-shortcut-title {
+html[data-theme="dark"] .moments-container .friends-shortcut-title {
   color: #aaa;
 }
 
-.moments-container.dark-mode .friends-select-all {
+html[data-theme="dark"] .moments-container .friends-select-all {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .friends-shortcut-chips .friend-chip {
+html[data-theme="dark"] .moments-container .friends-shortcut-chips .friend-chip {
   background: #2a2a2a;
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .friends-shortcut-chips .friend-chip.selected {
+html[data-theme="dark"] .moments-container .friends-shortcut-chips .friend-chip.selected {
   background: rgba(138, 157, 200, 0.15);
   border-color: #8a9dc8;
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .cancel-btn {
+html[data-theme="dark"] .moments-container .cancel-btn {
   background: #333;
   color: #e0e0e0;
 }
 
 /* 编辑面板 */
-.moments-container.dark-mode .edit-panel-header .close-btn {
+html[data-theme="dark"] .moments-container .edit-panel-header .close-btn {
   color: #888;
 }
 
-.moments-container.dark-mode .edit-panel-header .title {
+html[data-theme="dark"] .moments-container .edit-panel-header .title {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .edit-panel-body {
+html[data-theme="dark"] .moments-container .edit-panel-body {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .edit-info {
+html[data-theme="dark"] .moments-container .edit-info {
   color: #888;
 }
 
-.moments-container.dark-mode .edit-image-grid {
+html[data-theme="dark"] .moments-container .edit-image-grid {
   background: transparent;
 }
 
-.moments-container.dark-mode .edit-image-grid .add-photo-btn {
+html[data-theme="dark"] .moments-container .edit-image-grid .add-photo-btn {
   background: #333;
   border-color: #444;
   color: #666;
 }
 
-.moments-container.dark-mode .edit-image-grid .photo-item {
+html[data-theme="dark"] .moments-container .edit-image-grid .photo-item {
   background: #333;
 }
 
-.moments-container.dark-mode .edit-location-btn {
+html[data-theme="dark"] .moments-container .edit-location-btn {
   background: #07c160;
   color: #fff;
 }
 
-.moments-container.dark-mode .edit-mention-btn {
+html[data-theme="dark"] .moments-container .edit-mention-btn {
   background: #333;
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .edit-panel-footer {
+html[data-theme="dark"] .moments-container .edit-panel-footer {
   border-top-color: #3a3a3a;
 }
 
 /* 提醒面板 */
-.moments-container.dark-mode .mention-panel-header .close-btn {
+html[data-theme="dark"] .moments-container .mention-panel-header .close-btn {
   color: #888;
 }
 
-.moments-container.dark-mode .mention-panel-header .title {
+html[data-theme="dark"] .moments-container .mention-panel-header .title {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .mention-panel-body {
+html[data-theme="dark"] .moments-container .mention-panel-body {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .mention-item {
+html[data-theme="dark"] .moments-container .mention-item {
   background: transparent;
 }
 
-.moments-container.dark-mode .mention-item:hover {
+html[data-theme="dark"] .moments-container .mention-item:hover {
   background: rgba(255, 255, 255, 0.05);
 }
 
-.moments-container.dark-mode .mention-item.selected {
+html[data-theme="dark"] .moments-container .mention-item.selected {
   background: #1a3a5c;
 }
 
-.moments-container.dark-mode .mention-item img {
+html[data-theme="dark"] .moments-container .mention-item img {
   background: #333;
 }
 
-.moments-container.dark-mode .mention-item span {
+html[data-theme="dark"] .moments-container .mention-item span {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .mention-panel-footer {
+html[data-theme="dark"] .moments-container .mention-panel-footer {
   border-top-color: #3a3a3a;
 }
 
 /* 位置面板 */
-.moments-container.dark-mode .location-panel-header .close-btn {
+html[data-theme="dark"] .moments-container .location-panel-header .close-btn {
   color: #888;
 }
 
-.moments-container.dark-mode .location-panel-header .title {
+html[data-theme="dark"] .moments-container .location-panel-header .title {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .location-panel-body {
+html[data-theme="dark"] .moments-container .location-panel-body {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .location-item {
+html[data-theme="dark"] .moments-container .location-item {
   color: #e0e0e0;
   border-bottom-color: #333;
 }
 
-.moments-container.dark-mode .location-item:hover {
+html[data-theme="dark"] .moments-container .location-item:hover {
   background: rgba(255, 255, 255, 0.05);
 }
 
-.moments-container.dark-mode .location-panel-footer {
+html[data-theme="dark"] .moments-container .location-panel-footer {
   border-top-color: #3a3a3a;
 }
 
 /* 美化面板 */
-.moments-container.dark-mode .beautify-header .back-btn {
+html[data-theme="dark"] .moments-container .beautify-header .back-btn {
   color: #8a9dc8;
 }
 
-.moments-container.dark-mode .beautify-header .title {
+html[data-theme="dark"] .moments-container .beautify-header .title {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .beautify-body {
+html[data-theme="dark"] .moments-container .beautify-body {
   background: #1a1a1a;
 }
 
-.moments-container.dark-mode .beautify-section-title {
+html[data-theme="dark"] .moments-container .beautify-section-title {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .beautify-avatar-preview {
+html[data-theme="dark"] .moments-container .beautify-avatar-preview {
   background: #333;
   border-color: #444;
 }
 
-.moments-container.dark-mode .beautify-cover-preview {
+html[data-theme="dark"] .moments-container .beautify-cover-preview {
   background: #333;
   border-color: #444;
 }
 
-.moments-container.dark-mode .beautify-row {
+html[data-theme="dark"] .moments-container .beautify-row {
   background: transparent;
 }
 
-.moments-container.dark-mode .beautify-row label {
+html[data-theme="dark"] .moments-container .beautify-row label {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .beautify-row input {
+html[data-theme="dark"] .moments-container .beautify-row input {
   background: #333;
   color: #e0e0e0;
   border-color: #444;
 }
 
-.moments-container.dark-mode .beautify-footer {
+html[data-theme="dark"] .moments-container .beautify-footer {
   border-top-color: #3a3a3a;
 }
 
 /* Friends List Dark Mode */
-.moments-container.dark-mode .beautify-friends-desc {
+html[data-theme="dark"] .moments-container .beautify-friends-desc {
   color: #888;
 }
 
-.moments-container.dark-mode .beautify-friend-item {
+html[data-theme="dark"] .moments-container .beautify-friend-item {
   background: #2a2a2a;
 }
 
-.moments-container.dark-mode .beautify-friend-item .friend-name {
+html[data-theme="dark"] .moments-container .beautify-friend-item .friend-name {
   color: #e0e0e0;
 }
 
-.moments-container.dark-mode .beautify-friend-item .friend-tag {
+html[data-theme="dark"] .moments-container .beautify-friend-item .friend-tag {
   color: #8a9dc8;
   background: rgba(138, 157, 200, 0.15);
 }
 
-.moments-container.dark-mode .beautify-friends-add input {
+html[data-theme="dark"] .moments-container .beautify-friends-add input {
   background: #333;
   color: #e0e0e0;
   border-color: #444;
 }
 
 /* 图片预览 */
-.moments-container.dark-mode .preview-image-container {
+html[data-theme="dark"] .moments-container .preview-image-container {
   background: transparent;
 }
 
-.moments-container.dark-mode .preview-video-container {
+html[data-theme="dark"] .moments-container .preview-video-container {
   background: transparent;
 }
 
-.moments-container.dark-mode .preview-video-play {
+html[data-theme="dark"] .moments-container .preview-video-play {
   background: rgba(0, 0, 0, 0.5);
 }
 
-.moments-container.dark-mode .preview-video-play svg {
+html[data-theme="dark"] .moments-container .preview-video-play svg {
   fill: #fff;
 }
 
-.moments-container.dark-mode .preview-video-info {
+html[data-theme="dark"] .moments-container .preview-video-info {
   color: rgba(255, 255, 255, 0.7);
 }
 
 /* 长按提示 */
-.moments-container.dark-mode .long-press-hint {
+html[data-theme="dark"] .moments-container .long-press-hint {
   background: rgba(0, 0, 0, 0.7);
   color: #fff;
 }
 
 /* 返回按钮 */
-.moments-container.dark-mode .moments-back-btn {
+html[data-theme="dark"] .moments-container .moments-back-btn {
   background: rgba(0, 0, 0, 0.3);
   color: #fff;
 }
 
-.moments-container.dark-mode .moments-back-btn:active {
+html[data-theme="dark"] .moments-container .moments-back-btn:active {
   background: rgba(0, 0, 0, 0.5);
 }
 
-.moments-container.dark-mode .moments-back-btn svg {
+html[data-theme="dark"] .moments-container .moments-back-btn svg {
   fill: #fff;
 }
 
 /* 补充缺失的深色模式覆盖 */
-.moments-container.dark-mode .search-filters {
+html[data-theme="dark"] .moments-container .search-filters {
   background: #2a2a2a;
   border-bottom-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .album-header {
+html[data-theme="dark"] .moments-container .album-header {
   background: #2a2a2a;
   border-bottom-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .album-filter-bar {
+html[data-theme="dark"] .moments-container .album-filter-bar {
   background: #2a2a2a;
   border-bottom-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .collection-header {
+html[data-theme="dark"] .moments-container .collection-header {
   background: #2a2a2a;
   border-bottom-color: #3a3a3a;
 }
 
-.moments-container.dark-mode .beautify-header {
+html[data-theme="dark"] .moments-container .beautify-header {
   background: #2a2a2a;
   border-bottom-color: #3a3a3a;
 }
@@ -3898,29 +3898,29 @@
 }
 
 /* 深色模式适配 */
-.moments-container.dark-mode .visitor-header {
+html[data-theme="dark"] .moments-container .visitor-header {
     background: #2a2a2a;
     border-bottom-color: #3a3a3a;
 }
-.moments-container.dark-mode .visitor-header .title {
+html[data-theme="dark"] .moments-container .visitor-header .title {
     color: #e0e0e0;
 }
-.moments-container.dark-mode .visitor-header .back-btn svg {
+html[data-theme="dark"] .moments-container .visitor-header .back-btn svg {
     fill: #e0e0e0;
 }
-.moments-container.dark-mode .visitor-item-inner {
+html[data-theme="dark"] .moments-container .visitor-item-inner {
     background: #2a2a2a;
 }
-.moments-container.dark-mode .visitor-item {
+html[data-theme="dark"] .moments-container .visitor-item {
     border-bottom-color: #3a3a3a;
 }
-.moments-container.dark-mode .visitor-name {
+html[data-theme="dark"] .moments-container .visitor-name {
     color: #e0e0e0;
 }
-.moments-container.dark-mode .visitor-date-group {
+html[data-theme="dark"] .moments-container .visitor-date-group {
     background: #1a1a1a;
     color: #888;
 }
-.moments-container.dark-mode .visitor-panel {
+html[data-theme="dark"] .moments-container .visitor-panel {
     background: #1a1a1a;
 }
