@@ -2,7 +2,7 @@
 
 > 基于 [工程性审阅报告](engineering-review.md) 和项目经理审阅意见制定
 > 创建日期：2026-06-13
-> 最后更新：2026-06-13（v9 — 完成第 5-6 周性能优化核心任务）
+> 最后更新：2026-06-13（v10 — 完成第 7 周安全加固任务）
 > 执行周期：8 周（1 人全职）
 
 ---
@@ -437,21 +437,24 @@ html[data-theme="dark"] .glass {
 
 #### Day 1-2：上传服务安全
 
-**Step 7.1 — 上传服务安全加固**
+**Step 7.1 — 上传服务安全加固 ✅ 已完成（2026-06-13）**
 
 - 对应问题：W-S4、W-S5、W-S6、W-S7
 - 改动文件：`server/upload-server.js`
 - 业务价值：防止未授权文件上传，保护 COS 存储桶安全
+- 实际提交：`97335d0 fix(security): add CORS whitelist, API key auth, file type filter to upload server`
 
-**操作：**
+**实际执行：**
 
-1. CORS 白名单：仅允许开发和生产域名
-2. API Key 认证中间件
-3. multer 文件类型白名单：仅允许图片和音频格式
-4. 健康端点移除 bucket/region 信息
-- 回滚方案：恢复原 upload-server.js
-- 验证：无 Key 返回 401；上传 .exe 被拒绝；健康端点仅返回 `{ "ok": true }`
-- 提交：`fix(security): add auth, file type whitelist, and restrict CORS on upload server`
+1. CORS 白名单：`cors()` → `cors({ origin: ALLOWED_ORIGINS })`，可通过 `CORS_ORIGINS` 环境变量配置
+2. API Key 认证中间件：检查 `x-api-key` 请求头，可通过 `UPLOAD_API_KEY` 环境变量配置
+3. multer 文件类型白名单：仅允许音频（mp3/ogg/wav/flac/aac/m4a/ncm）和图片（jpg/png/gif/webp）
+4. 健康端点移除 bucket/region 信息：`{ ok: true, cos, ncmdump, bucket, region }` → `{ ok: true }`
+5. 最大文件大小从 100MB 降至 50MB
+6. 新增 4 个基础设施测试验证安全属性
+- 回滚方案：`git revert 97335d0`
+- 验证：53 测试全部通过（20 单元 + 33 E2E）
+- 状态：✅ 完成
 
 #### Day 3-5：工程化决策
 
@@ -546,7 +549,7 @@ html[data-theme="dark"] .glass {
   └── Step 5.3 图片引用 ─────────┘── 依赖 5.1（渲染逻辑需适配）
 
 第 7 周（安全+决策）
-  ├── Step 7.1 上传服务 ─────────┐── 独立
+  ├── Step 7.1 上传服务 ─────────┐ ✅ 97335d0
   └── Step 7.2 Vite ADR ─────────┘── 独立
 
 第 8 周（收尾）
@@ -566,7 +569,7 @@ html[data-theme="dark"] .glass {
 | M2 | 第 3 周末 | CSS 一致性修复 | 暗色模式选择器统一 ✅、z-index 无冲突 ✅ |
 | M3 | 第 4 周末 | 产品功能上线 | 备份快捷导出 ✅、全屏搜索 ✅、47 测试通过 ✅ |
 | M4 | 第 6 周末 | 性能优化完成 | 增量渲染 ✅、存储写入批量 ✅、49 测试通过 ✅ |
-| M5 | 第 7 周末 | 安全加固+决策 | 上传服务安全、Vite ADR 完成 |
+| M5 | 第 7 周末 | 安全加固+决策 | 上传服务安全 ✅、Vite ADR ⬜、53 测试通过 ✅ |
 | M6 | 第 8 周末 | 全部收尾 | 所有 Step 完成、回归通过 |
 
 ---
