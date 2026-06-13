@@ -183,10 +183,15 @@ app.use(express.json());
 
 // API Key 认证中间件
 const API_KEY = process.env.UPLOAD_API_KEY || '';
+function timingSafeCompare(a, b) {
+    if (typeof a !== 'string' || typeof b !== 'string') return false;
+    if (a.length !== b.length) return false;
+    return crypto.timingSafeEqual(Buffer.from(a), Buffer.from(b));
+}
 function requireApiKey(req, res, next) {
     if (!API_KEY) return next(); // 未配置则跳过（开发环境）
     const provided = req.headers['x-api-key'] || req.query.api_key;
-    if (provided === API_KEY) return next();
+    if (provided && timingSafeCompare(provided, API_KEY)) return next();
     res.status(401).json({ success: false, error: '未授权：缺少或无效的 API Key' });
 }
 

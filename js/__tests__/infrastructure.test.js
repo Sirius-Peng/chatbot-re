@@ -111,6 +111,35 @@ describe('CSS 工具类', () => {
     });
 });
 
+describe('XSS 防御完整性', () => {
+    test('session.totalHours 在 innerHTML 中被转义', () => {
+        const core = readFileSync(resolve(ROOT, 'js/core.js'), 'utf-8');
+        // 在 showMoyuNotification 函数定义中，totalHours 插入 innerHTML 必须经过 escapeHTML
+        const funcDef = core.indexOf('function showMoyuNotification');
+        expect(funcDef).toBeGreaterThan(-1);
+        const moyuSection = core.slice(funcDef, funcDef + 3000);
+        // 不应有 ${session.totalHours} 出现在 innerHTML 上下文中（未转义）
+        const unescaped = moyuSection.match(/\$\{session\.totalHours\}/g);
+        expect(unescaped).toBeNull();
+    });
+    test('msg.callIcon 经过白名单校验后才用于 innerHTML', () => {
+        const core = readFileSync(resolve(ROOT, 'js/core.js'), 'utf-8');
+        // 在 createMessageFragment 中，callIcon 必须经过白名单或 escapeHTML
+        const callSection = core.slice(core.indexOf("msg.type === 'call-event'"), core.indexOf("msg.type === 'call-event'") + 2000);
+        // icon 变量来自 msg.callIcon，要么经过白名单校验，要么经过 escapeHTML
+        const hasWhitelist = callSection.includes('.includes(msg.callIcon)');
+        const hasEscape = callSection.includes('escapeHTML(msg.callIcon)');
+        expect(hasWhitelist || hasEscape).toBe(true);
+    });
+    test('upload-server.js 使用时序安全的 API Key 比较', () => {
+        const serverPath = resolve(ROOT, 'server/upload-server.js');
+        if (!existsSync(serverPath)) return;
+        const src = readFileSync(serverPath, 'utf-8');
+        // 不应使用 === 比较 API Key（时序攻击风险）
+        expect(src).not.toMatch(/provided\s*===\s*API_KEY/);
+    });
+});
+
 describe('upload-server.js 安全加固', () => {
     const serverPath = resolve(ROOT, 'server/upload-server.js');
     const serverSrc = existsSync(serverPath) ? readFileSync(serverPath, 'utf-8') : '';

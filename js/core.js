@@ -1287,7 +1287,7 @@ function showMoyuNotification() {
                 <i class="fas fa-map-marker-alt" style="margin-right: 4px;"></i>${escapeHTML(session.location)}
             </div>
             <div style="font-size: 11px; color: var(--text-secondary);">
-                <i class="fas fa-clock" style="margin-right: 4px;"></i>预计工作 ${session.totalHours} 小时
+                <i class="fas fa-clock" style="margin-right: 4px;"></i>预计工作 ${escapeHTML(session.totalHours)} 小时
             </div>
         </div>
         <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 14px;">是否现在查看？</div>
@@ -1575,7 +1575,7 @@ function createMessageFragment(msg, prevMsg, nextMsg, lastSenderRef) {
         const callEvDiv = document.createElement('div');
         callEvDiv.className = 'call-event-message';
         callEvDiv.dataset.id = msg.id;
-        const icon = msg.callIcon || 'fa-video';
+        const icon = ['fa-video', 'fa-phone', 'fa-phone-slash', 'fa-video-slash'].includes(msg.callIcon) ? msg.callIcon : 'fa-video';
         const isRejected = icon === 'fa-phone-slash';
         const colorClass = isRejected ? 'call-event-pill--rejected' : 'call-event-pill--ended';
         const detail = msg.callDetail ? `<span class="call-event-detail">${escapeHTML(msg.callDetail)}</span>` : '';
