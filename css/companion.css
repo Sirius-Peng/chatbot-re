@@ -1132,7 +1132,7 @@ html[data-theme="dark"] .companion-mode-card i {
 .companion-transition {
     position: fixed;
     inset: 0;
-    z-index: 99999;
+    z-index: var(--z-elevated);
     background: radial-gradient(ellipse at center, #1a1525 0%, #050308 70%, #000 100%);
     display: flex;
     align-items: center;
@@ -1420,7 +1420,7 @@ html[data-theme="dark"] .companion-mode-card i {
 .companion-history-modal {
     position: fixed;
     inset: 0;
-    z-index: 99999;  /* 高于所有陪伴 UI（含过渡画面）*/
+    z-index: var(--z-modal);  /* 高于所有陪伴 UI（含过渡画面）*/
     background: rgba(0, 0, 0, 0.6);
     display: none;
     flex-direction: column;

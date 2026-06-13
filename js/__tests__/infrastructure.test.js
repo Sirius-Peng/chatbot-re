@@ -30,6 +30,22 @@ describe('z-index 层级策略', () => {
         }
         expect(violations).toEqual([]);
     });
+    test('CSS 文件中的 z-index: 99999 应使用 --z-* 变量代替', () => {
+        const cssDir = resolve(ROOT, 'css');
+        const cssFiles = readdirSync(cssDir).filter(f => f.endsWith('.css'));
+        const violations = [];
+        for (const file of cssFiles) {
+            if (file === 'styles.css') continue; // styles.css 定义变量本身
+            const content = readFileSync(resolve(cssDir, file), 'utf-8');
+            const lines = content.split('\n');
+            for (let i = 0; i < lines.length; i++) {
+                if (/z-index:\s*99999\b/.test(lines[i]) && !lines[i].includes('var(--z-')) {
+                    violations.push(`${file}:${i + 1}: ${lines[i].trim()}`);
+                }
+            }
+        }
+        expect(violations).toEqual([]);
+    });
 });
 
 describe('暗色模式选择器一致性', () => {
