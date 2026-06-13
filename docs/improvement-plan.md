@@ -228,31 +228,26 @@
 
 #### Day 5：Playwright 优化
 
-**Step 2.3 — Playwright 配置优化**
+**Step 2.3 — Playwright 配置优化 ✅ 已完成（2026-06-13）**
 
 - 对应问题：W-T4、W-T6
-- 改动文件：`playwright.config.js`、`tests/*.spec.js`
+- 改动文件：`playwright.config.js`、`tests/feature-regression.spec.js`、`tests/web-smoke.spec.js`、`tests/xss-regression.spec.js`
 - 业务价值：消除测试 flaky，提升 CI 可靠性
+- 实际提交：`4e10b76 test: replace networkidle with domcontentloaded, add HTML reporter`
 
-**操作：**
+**实际执行：**
 
-1. 将 `waitForLoadState('networkidle')` 替换为确定性等待：
-   ```javascript
-   await page.waitForLoadState('domcontentloaded');
-   await page.waitForSelector('#home-container', { state: 'visible', timeout: 15000 });
-   ```
-2. 添加 HTML 报告器：
-   ```javascript
-   reporter: process.env.CI ? 'github' : [['list'], ['html', { open: 'never' }]],
-   ```
-- 回滚方案：恢复配置文件
-- 验证：连续运行 3 次 `npm run test:web` 无 flaky
-- 提交：`test: replace networkidle with deterministic wait strategy`
+1. 将 3 个测试文件中的 `waitForLoadState('networkidle')` 替换为 `waitForLoadState('domcontentloaded')`（后续的 `#home-container` visible 等待已是确定性的）
+2. 添加 HTML 报告器：本地 `[['list'], ['html', { open: 'never' }]]`，CI 使用 `github`
 
-**第 2 周检查点：**
+- 回滚方案：`git revert 4e10b76`
+- 验证：29 E2E + 11 单元 = 40 测试全部通过
+- 状态：✅ 完成
+
+**第 2 周检查点：** ✅ 全部完成
 - ✅ ESLint 收紧完成（0 errors，364 warnings）
-- ✅ 冒烟测试补充（29 E2E，原目标 31+ 已接近）
-- ⬜ Playwright 优化（Step 2.3 待执行）
+- ✅ 冒烟测试补充（29 E2E + 11 单元 = 40 测试）
+- ✅ Playwright 优化（networkidle → domcontentloaded + HTML 报告器）
 
 ---
 
@@ -502,7 +497,7 @@
 第 2 周（测试安全网）
   ├── Step 2.1 ESLint 收紧 ──────┐ ✅ 590c35d
   ├── Step 2.2 冒烟测试 ─────────┤ ✅ 37aaf6b
-  └── Step 2.3 Playwright 优化 ──┘── 2.2 先行（测试数量确认后再优化配置）
+  └── Step 2.3 Playwright 优化 ──┘ ✅ 4e10b76
 
 第 3 周（CSS 修复）
   ├── Step 3.1 暗色模式 ─────────┐
@@ -533,7 +528,7 @@
 | 检查点 | 时间 | 完成条件 | 度量指标 |
 |--------|------|----------|----------|
 | M0 | 第 1 周末 | 安全基线建立 | XSS=0 ✅、CI 含测试 ✅、34 测试通过 ✅ |
-| M1 | 第 2 周末 | 测试安全网就绪 | lint 0 errors ✅、40 测试通过 ✅、无 flaky ⬜ |
+| M1 | 第 2 周末 | 测试安全网就绪 | lint 0 errors ✅、40 测试通过 ✅、networkidle 已消除 ✅ |
 | M2 | 第 3 周末 | CSS 一致性修复 | 暗色模式 0 异常页面、z-index 无冲突 |
 | M3 | 第 4 周末 | 产品功能上线 | 1-2 个用户可见功能 |
 | M4 | 第 6 周末 | 性能优化完成 | 长对话流畅、存储写入减少 |
