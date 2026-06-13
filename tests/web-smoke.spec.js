@@ -29,7 +29,7 @@ async function dismissStartup(page) {
     });
     await page.goto('/');
     await expect(page).toHaveTitle('传讯');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await passSplash(page);
     // 等待应用就绪信号，而不是固定超时
     await expect(page.locator('body')).toHaveAttribute('data-app-ready', 'true', { timeout: 15000 });

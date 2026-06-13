@@ -26,7 +26,7 @@ async function dismissStartup(page) {
     });
     await page.goto('/');
     await expect(page).toHaveTitle('传讯');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await passSplash(page);
     await expect(page.locator('body')).toHaveAttribute('data-app-ready', 'true', { timeout: 15000 });
     await closeIfVisible(page.locator('#accept-disclaimer'));

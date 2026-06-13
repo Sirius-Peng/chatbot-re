@@ -8,7 +8,7 @@ module.exports = defineConfig({
     expect: {
         timeout: 10000
     },
-    reporter: [['list']],
+    reporter: process.env.CI ? 'github' : [['list'], ['html', { open: 'never' }]],
     use: {
         baseURL: 'http://127.0.0.1:4176',
         trace: 'retain-on-failure',
