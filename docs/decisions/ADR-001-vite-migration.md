@@ -66,5 +66,6 @@
 ## 后续行动
 
 - [x] ADR 文档完成
-- [ ] 全栈迁移时间线确认后，启动 Phase 1
-- [ ] Phase 1 前需要：所有 E2E 测试通过、ESLint 0 errors
+- [x] 详细执行计划已编写 → [ADR-002 Vite 迁移详细执行计划](ADR-002-vite-migration-plan.md)
+- [x] 全栈迁移计划已编写 → [ADR-003 全栈迁移详细执行计划](ADR-003-fullstack-migration-plan.md)
+- [ ] Phase 1 前需要：所有 E2E 测试通过 ✅、ESLint 0 errors ✅（均已达成）
