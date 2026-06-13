@@ -2,7 +2,7 @@
 
 > 基于 [工程性审阅报告](engineering-review.md) 和项目经理审阅意见制定
 > 创建日期：2026-06-13
-> 最后更新：2026-06-13（v5 — 完成第 3 周 Day 3-4 任务）
+> 最后更新：2026-06-13（v6 — 完成第 3 周全部任务）
 > 执行周期：8 周（1 人全职）
 
 ---
@@ -307,17 +307,30 @@ shop.css 和 pet-style.css 无暗色模式样式，暂不添加（需先确定�
 
 #### Day 5：CSS 工具类提取
 
-**Step 3.3 — 提取公共 CSS 工具类**
+**Step 3.3 — 提取公共 CSS 工具类 ✅ 已完成（2026-06-13）**
 
 - 对应问题：W-C8
 - 改动文件：`css/styles.css`
 - 业务价值：新功能开发时减少重复代码，统一毛玻璃视觉效果
+- 实际提交：`3427a85 refactor(css): extract .glass utility class for frosted glass effect`
 
-**操作：**
+**实际执行：**
 
-在 `styles.css` 末尾添加 `.glass` 工具类，含暗色模式适配。新功能使用此类，现有代码逐步替换（不强制一次性完成）。
-- 验证：毛玻璃效果视觉不变
-- 提交：`refactor(css): extract glass effect utility class`
+在 `styles.css` 末尾添加 `.glass` 工具类：
+```css
+.glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+html[data-theme="dark"] .glass {
+    background: rgba(30, 30, 40, 0.65);
+}
+```
+新增基础设施测试验证 `.glass` 类存在且有暗色模式适配。
+- 回滚方案：`git revert 3427a85`
+- 验证：45 测试全部通过（16 单元 + 29 E2E）
+- 状态：✅ 完成
 
 **第 3 周检查点：** ✅ 暗色模式全页面正常 + ✅ z-index 无冲突（11 个极端值已封顶） + ✅ 测试全部通过（43 个）
 
@@ -505,7 +518,7 @@ shop.css 和 pet-style.css 无暗色模式样式，暂不添加（需先确定�
 第 3 周（CSS 修复）
   ├── Step 3.1 暗色模式 ─────────┐ ✅ 64019f1
   ├── Step 3.2 z-index ──────────┤ ✅ e60a229
-  └── Step 3.3 CSS 工具类 ───────┘── 独立
+  └── Step 3.3 CSS 工具类 ───────┘ ✅ 3427a85
 
 第 4 周（产品功能）── 独立，无技术依赖
 
