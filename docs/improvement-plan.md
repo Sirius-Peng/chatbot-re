@@ -255,24 +255,31 @@
 
 > 目标：修复用户可感知的 UI 一致性问题（暗色模式、弹窗层级）。
 
-#### Day 1-2：暗色模式统一
+#### Day 1-2：暗色模式统一 ✅ 已完成（2026-06-13）
 
-**Step 3.1 — 统一暗色模式选择器**
+**Step 3.1 — 统一暗色模式选择器 ✅**
 
 - 对应问题：W-C2、W-C6
-- 改动文件：`css/home.css`、`css/moments.css`、`css/shop.css`、`css/pet-style.css`
+- 改动文件：`css/home.css`、`css/moments.css`
 - 业务价值：暗色模式下不再出现亮色块，提升用户体验一致性
+- 实际提交：`64019f1 fix(css): unify dark mode selectors to html[data-theme="dark"]`
 
-**操作：**
+**实际执行：**
 
-1. 统一为 `html[data-theme="dark"]` 选择器
-2. `css/home.css`：`body.dark-mode` → `html[data-theme="dark"]`
-3. `css/moments.css`：`.moments-container.dark-mode` → `html[data-theme="dark"] .moments-container`
-4. 为 `css/shop.css` 和 `css/pet-style.css` 添加基础暗色模式变量
-- 回滚方案：各文件独立提交，可单独 revert
-- 风险：moments.css 约 800 行暗色模式样式需逐一修改 → 分两天完成
-- 验证：切换暗色模式，逐页检查主页、聊天、朋友圈、商城、萌宠，无亮色块
-- 提交：`fix(css): unify dark mode selectors to html[data-theme="dark"]`
+审计发现 3 种暗色模式选择器模式：
+- `html[data-theme="dark"]` — 4 个文件 77 条规则（已是标准）
+- `.moments-container.dark-mode` — moments.css 216 条规则
+- `body.dark-mode` — home.css 5 条规则
+
+统一为 `html[data-theme="dark"]`：
+1. home.css: `body.dark-mode` → `html[data-theme="dark"]`（5 条规则）
+2. moments.css: `.moments-container.dark-mode` → `html[data-theme="dark"] .moments-container`（216 条规则）
+
+shop.css 和 pet-style.css 无暗色模式样式，暂不添加（需先确定设计稿）。新增基础设施测试强制执行单一模式。
+
+- 回滚方案：`git revert 64019f1`
+- 验证：41 测试全部通过（12 单元 + 29 E2E）
+- 状态：✅ 完成
 
 #### Day 3-4：z-index 层级策略
 
@@ -500,7 +507,7 @@
   └── Step 2.3 Playwright 优化 ──┘ ✅ 4e10b76
 
 第 3 周（CSS 修复）
-  ├── Step 3.1 暗色模式 ─────────┐
+  ├── Step 3.1 暗色模式 ─────────┐ ✅ 64019f1
   ├── Step 3.2 z-index ──────────┤── 3.1 先行（颜色变量依赖统一后的选择器）
   └── Step 3.3 CSS 工具类 ───────┘── 独立
 
@@ -529,7 +536,7 @@
 |--------|------|----------|----------|
 | M0 | 第 1 周末 | 安全基线建立 | XSS=0 ✅、CI 含测试 ✅、34 测试通过 ✅ |
 | M1 | 第 2 周末 | 测试安全网就绪 | lint 0 errors ✅、40 测试通过 ✅、networkidle 已消除 ✅ |
-| M2 | 第 3 周末 | CSS 一致性修复 | 暗色模式 0 异常页面、z-index 无冲突 |
+| M2 | 第 3 周末 | CSS 一致性修复 | 暗色模式选择器统一 ✅、z-index 无冲突 ⬜ |
 | M3 | 第 4 周末 | 产品功能上线 | 1-2 个用户可见功能 |
 | M4 | 第 6 周末 | 性能优化完成 | 长对话流畅、存储写入减少 |
 | M5 | 第 7 周末 | 安全加固+决策 | 上传服务安全、Vite ADR 完成 |
