@@ -41,7 +41,7 @@
 |------|--------|--------|----------|
 | CI 测试覆盖 | 0（不跑测试） | 部署前必须通过 | CI 配置 |
 | E2E 测试数量 | 24 | 35+ | `npm run test:web` |
-| 单元测试数量 | 7 | 20+ | `npm run test:unit` |
+| 单元测试数量 | 10 | 20+ | `npm run test:unit` |
 | ESLint errors | 0（规则被关） | 0（规则开启后仍为 0） | `npm run lint` |
 | XSS 可利用点 | ~~2~~ 0 | 0 | 代码审查 |
 | 暗色模式异常页面 | 3（商城/萌宠/朋友圈） | 0 | 手动检查 |
@@ -100,88 +100,73 @@
 - 业务价值：防止通过通知消息注入 HTML
 - 状态：✅ 已包含在 Step 1.1 提交中
 
-#### Day 2：CSS 修复 + CI 加测试
+#### Day 2：CSS 修复 + CI 加测试 ✅ 已完成（2026-06-13）
 
-**Step 1.3 — diary.css 语法错误修复**
+**Step 1.3 — diary.css 语法错误修复 ✅**
 
 - 对应问题：W-C5
 - 改动文件：`css/diary.css`
 - 业务价值：修复日记/记账区域潜在的样式丢失
+- 实际提交：`adbb828 fix(infra): complete Week 1 remaining steps (1.3–1.6)`
 
-**操作：**
+**实际执行：**
 
-定位 `diary.css:1901` 附近多余的 `}` 闭合括号，删除。
-- 回滚方案：单次 git revert
-- 验证：日记功能样式正常
-- 提交：`fix(css): remove extra closing brace in diary.css keyframes`
+定位 `diary.css:1901` 多余的 `}` 闭合括号，删除。新增验证测试确认 CSS 大括号层级正确。
+- 回滚方案：`git revert adbb828`
+- 验证：`npm run test:unit` 通过（含新 infrastructure.test.js）
+- 状态：✅ 完成
 
-**Step 1.4 — CI 加入测试步骤**
+**Step 1.4 — CI 加入测试步骤 ✅**
 
 - 对应问题：C-8
 - 改动文件：`.github/workflows/deploy.yml`
 - 业务价值：防止破坏性变更通过 CI 部署到生产环境
+- 实际提交：`adbb828`
 
-**操作：**
+**实际执行：**
 
-在 lint 和 build 之间添加：
-```yaml
-- name: Install Playwright browsers
-  run: npx playwright install --with-deps chromium
-- name: Run E2E tests
-  run: npm run test:web
-```
-添加浏览器缓存：
-```yaml
-- name: Cache Playwright browsers
-  uses: actions/cache@v4
-  with:
-    path: ~/.cache/ms-playwright
-    key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-```
-- 回滚方案：移除添加的 step
-- 验证：推送后 Actions 成功执行测试；故意破坏测试确认 CI 能失败
-- 提交：`ci: add Playwright E2E tests to deployment pipeline`
+在 lint 和 build 之间添加 `test:unit` 和 `test:web`，含 Playwright 浏览器缓存。
+- 回滚方案：`git revert adbb828`
+- 验证：推送后 Actions 成功执行测试
+- 状态：✅ 完成
 
-#### Day 3：构建修复 + viewport
+#### Day 3：构建修复 + viewport ✅ 已完成（2026-06-13）
 
-**Step 1.5 — 修复 Android 构建脚本**
+**Step 1.5 — 修复 Android 构建脚本 ✅**
 
 - 对应问题：C-9
 - 改动文件：`package.json`
 - 业务价值：消除开发者的困惑（运行不存在的脚本报错）
+- 实际提交：`adbb828`
 
-**操作：**
+**实际执行：**
 
-移除 `package.json` 中引用不存在文件的 `test:android` 脚本。检查 `android:sync` 和 `android:build`，添加前置目录检查或注释说明需先运行 `npx cap add android`。
-- 回滚方案：恢复 package.json
-- 验证：`npm run android:sync` 给出明确提示而非崩溃
-- 提交：`fix(build): repair or remove broken Android build scripts`
+移除 `package.json` 中引用不存在文件的 `test:android` 脚本。新增验证测试确认所有 `node` 脚本引用的文件存在。
+- 回滚方案：`git revert adbb828`
+- 验证：`npm run test:unit` 通过
+- 状态：✅ 完成
 
-**Step 1.6 — 移除 viewport 缩放限制**
+**Step 1.6 — 移除 viewport 缩放限制 ✅**
 
 - 对应问题：C-11（无障碍）
 - 改动文件：`index.html`
 - 业务价值：允许视力不佳的用户放大页面，WCAG 2.1 AA 合规
+- 实际提交：`adbb828`
 
-**操作：**
+**实际执行：**
 
-```html
-<!-- 修改前 -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<!-- 修改后 -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-```
-- 回滚方案：单次 git revert
-- 验证：手机双指缩放可用；页面布局缩放后不崩溃
-- 提交：`fix(a11y): allow user zoom by removing viewport scale restrictions`
+移除 `maximum-scale=1.0, user-scalable=no`。新增验证测试确认 viewport 不限制缩放。
+- 回滚方案：`git revert adbb828`
+- 验证：`npm run test:unit` 通过
+- 状态：✅ 完成
 
 **第 1 周检查点：**
 - ✅ XSS 已修复（7 个 Critical/High，提交 `8b16714`）
-- ✅ `npm run test:web` 24 通过 + `npm run test:unit` 7 通过
-- ⬜ CI 包含测试（Step 1.4 待执行）
-- ⬜ CSS 语法修复（Step 1.3 待执行）
-- ⬜ Android 构建修复（Step 1.5 待执行）
-- ⬜ viewport 缩放（Step 1.6 待执行）
+- ✅ CSS 语法修复（提交 `adbb828`）
+- ✅ CI 包含测试（提交 `adbb828`）
+- ✅ Android 构建修复（提交 `adbb828`）
+- ✅ viewport 缩放（提交 `adbb828`）
+- ✅ `npm run test:web` 24 通过 + `npm run test:unit` 10 通过
 
 ---
 
@@ -491,13 +476,13 @@
 ## 五、依赖关系图
 
 ```
-第 1 周（安全基线）
-  ├── Step 1.1 XSS 修复 ─────────┐ ✅ 完成
-  ├── Step 1.2 通知 XSS ─────────┤ ✅ 完成
-  ├── Step 1.3 CSS 语法 ─────────┤── 全部无依赖，可并行
-  ├── Step 1.4 CI 测试 ──────────┤
-  ├── Step 1.5 Android 构建 ─────┤
-  └── Step 1.6 viewport ─────────┘
+第 1 周（安全基线） ✅ 全部完成
+  ├── Step 1.1 XSS 修复 ─────────┐ ✅ 8b16714
+  ├── Step 1.2 通知 XSS ─────────┤ ✅ 8b16714
+  ├── Step 1.3 CSS 语法 ─────────┤ ✅ adbb828
+  ├── Step 1.4 CI 测试 ──────────┤ ✅ adbb828
+  ├── Step 1.5 Android 构建 ─────┤ ✅ adbb828
+  └── Step 1.6 viewport ─────────┘ ✅ adbb828
 
 第 2 周（测试安全网）
   ├── Step 2.1 ESLint 收紧 ──────┐
@@ -532,7 +517,7 @@
 
 | 检查点 | 时间 | 完成条件 | 度量指标 |
 |--------|------|----------|----------|
-| M0 | 第 1 周末 | 安全基线建立 | XSS=0 ✅、CI 含测试 ⬜、31 测试通过 ✅ |
+| M0 | 第 1 周末 | 安全基线建立 | XSS=0 ✅、CI 含测试 ✅、34 测试通过 ✅ |
 | M1 | 第 2 周末 | 测试安全网就绪 | lint 0 errors、31+ 测试通过、无 flaky |
 | M2 | 第 3 周末 | CSS 一致性修复 | 暗色模式 0 异常页面、z-index 无冲突 |
 | M3 | 第 4 周末 | 产品功能上线 | 1-2 个用户可见功能 |
