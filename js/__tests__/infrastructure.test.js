@@ -7,6 +7,31 @@ import { resolve } from 'path';
 
 const ROOT = resolve(import.meta.dirname, '../..');
 
+describe('z-index 层级策略', () => {
+    test('styles.css :root 定义了 z-index 层级变量', () => {
+        const css = readFileSync(resolve(ROOT, 'css/styles.css'), 'utf-8');
+        const requiredVars = ['--z-base', '--z-sticky', '--z-overlay', '--z-modal', '--z-elevated', '--z-toast', '--z-max'];
+        const missing = requiredVars.filter(v => !css.includes(v + ':'));
+        expect(missing).toEqual([]);
+    });
+    test('没有 z-index 超过 --z-max (99999) 的值', () => {
+        const cssDir = resolve(ROOT, 'css');
+        const cssFiles = readdirSync(cssDir).filter(f => f.endsWith('.css'));
+        const violations = [];
+        for (const file of cssFiles) {
+            const content = readFileSync(resolve(cssDir, file), 'utf-8');
+            const matches = content.match(/z-index:\s*(\d+)/g) || [];
+            for (const match of matches) {
+                const val = parseInt(match.match(/(\d+)/)[1], 10);
+                if (val > 99999) {
+                    violations.push(`${file}: z-index: ${val}`);
+                }
+            }
+        }
+        expect(violations).toEqual([]);
+    });
+});
+
 describe('暗色模式选择器一致性', () => {
     test('所有 CSS 使用 html[data-theme="dark"] 作为暗色模式选择器', () => {
         const cssDir = resolve(ROOT, 'css');

@@ -6,7 +6,7 @@
   width: 100%;
   min-height: 100%;
   background: #f7f7f7;
-  z-index: 999998;
+  z-index: 99999;
   overflow-y: auto;
   display: none;
 }

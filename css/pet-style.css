@@ -35,7 +35,7 @@
     width: 100%;
     min-height: 100%;
     background: var(--white);
-    z-index: 999998;
+    z-index: 99999;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -1660,7 +1660,7 @@
     width: 100vw !important;
     height: 100vh !important;
     background: rgba(93, 78, 55, 0.6);
-    z-index: 9999999 !important;
+    z-index: 99999 !important;
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(8px) !important;
@@ -1680,7 +1680,7 @@
     max-width: 400px;
     overflow: hidden;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-    z-index: 99999999 !important;
+    z-index: 99999 !important;
     /* 覆盖 styles.css 中的 opacity: 0 和 transform */
     opacity: 1 !important;
     transform: none !important;
