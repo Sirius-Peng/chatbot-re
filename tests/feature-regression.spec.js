@@ -47,6 +47,16 @@ async function clickHomeApp(page, app, pageIndex = 0) {
     await appItem.click();
 }
 
+async function enterChatFromHome(page) {
+    const chatApp = page.locator('.app-item').filter({
+        has: page.locator('[data-app="chat"]')
+    }).first();
+    await expect(chatApp).toBeVisible();
+    await chatApp.click();
+    await expect(page.locator('#home-container')).toBeHidden();
+    await expect(page.locator('#message-input')).toBeVisible();
+}
+
 async function closeModalById(page, id) {
     await page.evaluate((modalId) => {
         const modal = document.getElementById(modalId);
@@ -411,6 +421,48 @@ test('group-chat: modal opens without crashing', async ({ page }) => {
         await closeModalById(page, 'group-chat-modal');
     }
     await closeModalById(page, 'session-modal');
+});
+
+test('chat export: "最近 7 天" quick option pre-fills date range', async ({ page }) => {
+    await dismissStartup(page);
+    // 发送一条消息确保有聊天记录
+    await enterChatFromHome(page);
+    const msg = `export-test-${Date.now()}`;
+    await page.locator('#message-input').fill(msg);
+    await page.locator('#send-btn').click();
+    await expect(page.locator('#chat-container')).toContainText(msg);
+
+    // 打开设置 → 数据管理 → 聊天记录导出
+    await page.locator('#settings-btn').click();
+    await expect(page.locator('#settings-modal')).toBeVisible();
+    await page.locator('#data-settings').click();
+    await expect(page.locator('#dm-tile-chat-backup')).toBeVisible();
+    await page.locator('#dm-tile-chat-backup').click();
+    await page.waitForTimeout(300);
+
+    // 点击导出聊天按钮打开导出弹窗
+    const exportBtn = page.locator('#export-chat-btn-real');
+    await expect(exportBtn).toBeVisible();
+    await exportBtn.click();
+    await page.waitForTimeout(300);
+
+    // 验证日期范围控件存在
+    const dateFrom = page.locator('#_exp_date_from');
+    const dateTo = page.locator('#_exp_date_to');
+    const quickBtn = page.locator('#_exp_last7d');
+    await expect(dateFrom).toBeVisible();
+    await expect(dateTo).toBeVisible();
+    await expect(quickBtn).toBeVisible();
+
+    // 点击"最近 7 天"，验证日期自动填充
+    await quickBtn.click();
+    const fromVal = await dateFrom.inputValue();
+    const toVal = await dateTo.inputValue();
+    expect(fromVal).toBeTruthy();
+    expect(toVal).toBeTruthy();
+    // from 应该是 7 天前的日期，to 应该是今天的日期
+    const today = new Date().toISOString().slice(0, 10);
+    expect(toVal).toBe(today);
 });
 
 test('red-packet: send modal opens without crashing', async ({ page }) => {

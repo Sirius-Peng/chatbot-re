@@ -2653,6 +2653,21 @@ function showModal(modalElement, focusElement = null) {
                             <span>自定义主题配色</span>
                         </label>
                     </div>
+                    <div style="margin-bottom:16px;padding:10px 12px;border:1px solid var(--border-color);border-radius:12px;background:var(--primary-bg);">
+                        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+                            <i class="fas fa-calendar-alt" style="font-size:11px;"></i>日期范围（可选，仅影响聊天记录）
+                        </div>
+                        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                            <input type="date" id="_exp_date_from" style="flex:1;min-width:0;padding:6px 8px;border:1px solid var(--border-color);border-radius:8px;background:var(--secondary-bg);color:var(--text-primary);font-size:12px;font-family:var(--font-family);">
+                            <span style="color:var(--text-secondary);font-size:12px;">至</span>
+                            <input type="date" id="_exp_date_to" style="flex:1;min-width:0;padding:6px 8px;border:1px solid var(--border-color);border-radius:8px;background:var(--secondary-bg);color:var(--text-primary);font-size:12px;font-family:var(--font-family);">
+                        </div>
+                        <div style="display:flex;gap:6px;margin-top:8px;">
+                            <button id="_exp_last7d" style="padding:4px 10px;border:1px solid var(--accent-color);border-radius:8px;background:none;color:var(--accent-color);font-size:11px;cursor:pointer;font-family:var(--font-family);">最近 7 天</button>
+                            <button id="_exp_last30d" style="padding:4px 10px;border:1px solid var(--border-color);border-radius:8px;background:none;color:var(--text-secondary);font-size:11px;cursor:pointer;font-family:var(--font-family);">最近 30 天</button>
+                            <button id="_exp_date_reset" style="padding:4px 10px;border:1px solid var(--border-color);border-radius:8px;background:none;color:var(--text-secondary);font-size:11px;cursor:pointer;font-family:var(--font-family);">不限</button>
+                        </div>
+                    </div>
                     <div style="display:flex;gap:10px;">
                         <button id="_exp_cancel" style="flex:1;padding:11px;border:1px solid var(--border-color);border-radius:12px;background:none;color:var(--text-secondary);font-size:13px;cursor:pointer;font-family:var(--font-family);">取消</button>
                         <button id="_exp_confirm" style="flex:2;padding:11px;border:none;border-radius:12px;background:var(--accent-color);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-family);display:flex;align-items:center;justify-content:center;gap:7px;">
@@ -2667,6 +2682,22 @@ function showModal(modalElement, focusElement = null) {
             const _expCancelBtn = document.getElementById('_exp_cancel');
             const _expConfirmBtn = document.getElementById('_exp_confirm');
             if (_expCancelBtn) _expCancelBtn.onclick = closeDialog;
+
+            // 日期快捷按钮
+            const _dateFrom = document.getElementById('_exp_date_from');
+            const _dateTo = document.getElementById('_exp_date_to');
+            const _last7d = document.getElementById('_exp_last7d');
+            const _last30d = document.getElementById('_exp_last30d');
+            const _dateReset = document.getElementById('_exp_date_reset');
+            function setDateRange(days) {
+                const now = new Date();
+                const from = new Date(now.getTime() - days * 86400000);
+                if (_dateFrom) _dateFrom.value = from.toISOString().slice(0, 10);
+                if (_dateTo) _dateTo.value = now.toISOString().slice(0, 10);
+            }
+            if (_last7d) _last7d.onclick = () => setDateRange(7);
+            if (_last30d) _last30d.onclick = () => setDateRange(30);
+            if (_dateReset) _dateReset.onclick = () => { if (_dateFrom) _dateFrom.value = ''; if (_dateTo) _dateTo.value = ''; };
 
             if (_expConfirmBtn) _expConfirmBtn.onclick = function() {
                 const inclMsgs     = !!document.getElementById('_exp_msgs')?.checked;
@@ -2702,8 +2733,23 @@ function showModal(modalElement, focusElement = null) {
                         exportModules: []
                     };
                     if (inclMsgs)     {
+                        // 日期范围过滤
+                        const dfVal = document.getElementById('_exp_date_from')?.value;
+                        const dtVal = document.getElementById('_exp_date_to')?.value;
+                        const df = dfVal ? new Date(dfVal + 'T00:00:00') : null;
+                        const dt = dtVal ? new Date(dtVal + 'T23:59:59') : null;
+                        let filtered = messages;
+                        if (df || dt) {
+                            filtered = messages.filter(m => {
+                                if (!m.timestamp) return true;
+                                const ts = new Date(m.timestamp);
+                                if (df && ts < df) return false;
+                                if (dt && ts > dt) return false;
+                                return true;
+                            });
+                        }
                         // 永远省略图片字段，只导出文字等基础信息，减小体积
-                        exportObj.messages = messages.map(m => {
+                        exportObj.messages = filtered.map(m => {
                             const { image, ...rest } = m;
                             return rest;
                         });
