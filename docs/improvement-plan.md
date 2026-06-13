@@ -2,7 +2,7 @@
 
 > 基于 [工程性审阅报告](engineering-review.md) 和项目经理审阅意见制定
 > 创建日期：2026-06-13
-> 最后更新：2026-06-13（v7 — 完成第 4 周全部任务）
+> 最后更新：2026-06-13（v8 — 完成第 5 周 Day 1-3 任务）
 > 执行周期：8 周（1 人全职）
 
 ---
@@ -375,21 +375,23 @@ html[data-theme="dark"] .glass {
 
 #### Day 1-3：增量渲染
 
-**Step 5.1 — renderMessages 增量更新**
+**Step 5.1 — renderMessages 增量更新 ✅ 已完成（2026-06-13）**
 
 - 对应问题：W-J2、W-P1
 - 改动文件：`js/core.js`
 - 业务价值：长对话（100+ 消息）时滚动更流畅，主题切换不卡顿
+- 实际提交：`6f5ad4f perf: add incremental DOM rendering for preserveScroll path`
 
-**操作：**
+**实际执行：**
 
-1. 引入消息 diff 机制，用 `Set` 跟踪已渲染消息 ID
-2. 仅追加新消息 DOM，仅移除已删除消息 DOM
-3. 给每个消息元素添加 `data-msg-id` 属性
-4. 保留 `forceRender()` 用于设置变更等需要全量重渲染的场景
-- 回滚方案：恢复原 `renderMessages` 函数
-- 风险：涉及 40+ 调用点，需逐一确认行为正确 → 充分测试
-- 验证：发送 100 条消息滚动流畅；修改主题后样式正确；`npm run test:web` 通过
+1. `preserveScroll=true` 时走增量路径：diff 已有 DOM `[data-msg-id]` 与目标消息数组的最长公共前缀
+2. 保留公共前缀元素，移除过时后缀，追加新消息
+3. `preserveScroll=false` 或 DOM 为空时走全量重建路径（兼容所有调用点）
+4. 新增 E2E 测试验证 `renderMessages(true)` 不销毁已有 DOM 节点
+
+- 回滚方案：`git revert 6f5ad4f`
+- 验证：48 测试全部通过（16 单元 + 32 E2E）
+- 状态：✅ 完成
 - 提交：`perf: implement incremental DOM updates for message rendering`
 
 #### Day 4-5：存储写入优化
@@ -537,7 +539,7 @@ html[data-theme="dark"] .glass {
   └── 全屏聊天搜索 ──────────── ✅ 32842a8
 
 第 5-6 周（性能优化）
-  ├── Step 5.1 增量渲染 ─────────┐── 独立
+  ├── Step 5.1 增量渲染 ─────────┐ ✅ 6f5ad4f
   ├── Step 5.2 批量写入 ─────────┤── 独立
   └── Step 5.3 图片引用 ─────────┘── 依赖 5.1（渲染逻辑需适配）
 
@@ -561,7 +563,7 @@ html[data-theme="dark"] .glass {
 | M1 | 第 2 周末 | 测试安全网就绪 | lint 0 errors ✅、40 测试通过 ✅、networkidle 已消除 ✅ |
 | M2 | 第 3 周末 | CSS 一致性修复 | 暗色模式选择器统一 ✅、z-index 无冲突 ✅ |
 | M3 | 第 4 周末 | 产品功能上线 | 备份快捷导出 ✅、全屏搜索 ✅、47 测试通过 ✅ |
-| M4 | 第 6 周末 | 性能优化完成 | 长对话流畅、存储写入减少 |
+| M4 | 第 6 周末 | 性能优化完成 | 增量渲染 ✅、存储写入减少 ⬜ |
 | M5 | 第 7 周末 | 安全加固+决策 | 上传服务安全、Vite ADR 完成 |
 | M6 | 第 8 周末 | 全部收尾 | 所有 Step 完成、回归通过 |
 
