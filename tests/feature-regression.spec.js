@@ -504,6 +504,44 @@ test('fullscreen search: opens and finds messages by keyword', async ({ page }) 
     await expect(searchPage).not.toHaveClass(/active/);
 });
 
+test('renderMessages: preserves DOM nodes when preserveScroll is true', async ({ page }) => {
+    await dismissStartup(page);
+    await enterChatFromHome(page);
+
+    // 发送两条消息
+    const msgA = `inc-a-${Date.now()}`;
+    const msgB = `inc-b-${Date.now()}`;
+    await page.locator('#message-input').fill(msgA);
+    await page.locator('#send-btn').click();
+    await expect(page.locator('#chat-container')).toContainText(msgA);
+
+    await page.locator('#message-input').fill(msgB);
+    await page.locator('#send-btn').click();
+    await expect(page.locator('#chat-container')).toContainText(msgB);
+
+    // 标记消息 A 的 DOM 节点
+    const markedId = await page.evaluate(() => {
+        const wrappers = document.querySelectorAll('#chat-container .message-wrapper');
+        if (wrappers.length < 2) return null;
+        const msgAEl = wrappers[wrappers.length - 2];
+        msgAEl.setAttribute('data-inc-test', 'marked');
+        return msgAEl.getAttribute('data-id');
+    });
+    expect(markedId).toBeTruthy();
+
+    // 直接调用 renderMessages(true) 模拟 preserveScroll 场景
+    await page.evaluate(() => {
+        if (typeof renderMessages === 'function') renderMessages(true);
+    });
+    await page.waitForTimeout(300);
+
+    // 验证标记的节点仍然存在（增量渲染未销毁）
+    const markerSurvived = await page.evaluate(() => {
+        return !!document.querySelector('[data-inc-test="marked"]');
+    });
+    expect(markerSurvived).toBe(true);
+});
+
 test('red-packet: send modal opens without crashing', async ({ page }) => {
     await dismissStartup(page);
     // 进入聊天

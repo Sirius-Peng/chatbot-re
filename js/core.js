@@ -1845,11 +1845,51 @@ function renderMessages(preserveScroll = false) {
 
     const oldScrollHeight = container.scrollHeight;
     const oldScrollTop = container.scrollTop;
-    
+
+    // 增量渲染路径：preserveScroll=true 时尝试 diff
+    if (preserveScroll && container.children.length > 0) {
+        const existingEls = Array.from(container.querySelectorAll('[data-msg-id]'));
+        const existingIds = existingEls.map(el => el.getAttribute('data-msg-id'));
+        const targetIds = msgsToRender.map(m => String(m.id));
+
+        // 找到最长公共前缀
+        let commonLen = 0;
+        while (commonLen < existingIds.length && commonLen < targetIds.length
+               && existingIds[commonLen] === targetIds[commonLen]) {
+            commonLen++;
+        }
+
+        // 移除公共前缀之后的所有 DOM（包括 date-divider 等非消息节点）
+        while (existingEls.length > commonLen) {
+            const last = existingEls.pop();
+            // 移除该元素之后的所有兄弟节点（date-divider 等）
+            while (last.nextSibling) last.nextSibling.remove();
+            last.remove();
+        }
+
+        // 追加新消息
+        if (commonLen < targetIds.length) {
+            const prevMsg = commonLen > 0 ? msgsToRender[commonLen - 1] : (startIndex > 0 ? messages[startIndex - 1] : null);
+            const lastSenderRef = { current: prevMsg ? prevMsg.sender : null };
+            const fragment = new DocumentFragment();
+            for (let i = commonLen; i < msgsToRender.length; i++) {
+                const pm = i > 0 ? msgsToRender[i - 1] : (startIndex > 0 ? messages[startIndex - 1] : null);
+                const nm = i < msgsToRender.length - 1 ? msgsToRender[i + 1] : null;
+                fragment.appendChild(createMessageFragment(msgsToRender[i], pm, nm, lastSenderRef));
+            }
+            container.appendChild(fragment);
+        }
+
+        const newScrollHeight = container.scrollHeight;
+        container.scrollTop = oldScrollTop + (newScrollHeight - oldScrollHeight);
+        return;
+    }
+
+    // 全量重建路径
     container.innerHTML = '';
 
     const fragment = new DocumentFragment();
-    
+
     const spacer = document.createElement('div');
     spacer.style.flex = '1';
     fragment.appendChild(spacer);
