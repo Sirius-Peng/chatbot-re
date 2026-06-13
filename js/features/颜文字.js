@@ -1595,14 +1595,14 @@ function _showGroupExportPicker() {
 }
 
 function _parseFlexibleJSON(text) {
-    try { return JSON.parse(text); } catch (_) {}
+    try { return JSON.parse(text); } catch(_) { console.warn("[js/features/颜文字.js] silent catch:", _); }
     let repaired = text
         .replace(/,\s*([}\]])/g, '$1')  
         .replace(/(["\d\w}])\s*\n\s*"/g, (m, p1) => { 
             if (p1 === '}' || p1 === ']') return m;
             return p1 + ',\n"';
         });
-    try { return JSON.parse(repaired); } catch (_) {}
+    try { return JSON.parse(repaired); } catch(_) { console.warn("[js/features/颜文字.js] silent catch:", _); }
     repaired = text.replace(/("(?:[^"\\]|\\.)*")\s*\n(\s*")/g, '$1,\n$2')
                    .replace(/,\s*([}\]])/g, '$1');
     return JSON.parse(repaired);

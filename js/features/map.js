@@ -1339,7 +1339,7 @@
             if (window.settings && window.settings.partnerName) {
                 return window.settings.partnerName;
             }
-        } catch (e) {}
+        } catch(e) { console.warn("[js/features/map.js] silent catch:", e); }
         return null;
     }
 
@@ -1578,7 +1578,7 @@
                         var partnerName = getPartnerName() || '梦角';
                         showNotification('已定位到 ' + partnerName + ' 的位置', 'success');
                     }
-                } catch (e) {}
+                } catch(e) { console.warn("[js/features/map.js] silent catch:", e); }
             });
         }
 
@@ -2548,7 +2548,7 @@
                     if (card.parentNode) card.remove();
                 });
             }, 5000);
-        } catch (e) {}
+        } catch(e) { console.warn("[js/features/map.js] silent catch:", e); }
     }
 
     // TA当前所在地图和地点（用于定位）

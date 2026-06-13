@@ -127,7 +127,7 @@
                                 fullText += delta.content;
                                 if (onChunk) onChunk(fullText, delta.content);
                             }
-                        } catch(e) {}
+                        } catch(e) { console.warn("[js/features/ai-engine.js] silent catch:", e); }
                     }
                 }
             }

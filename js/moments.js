@@ -29,7 +29,7 @@
         const profile = JSON.parse(lsProfile);
         if (!userName) userName = profile.name || null;
         if (!userSignature) userSignature = profile.signature || null;
-      } catch(e) {}
+      } catch(e) { console.warn("[js/moments.js] silent catch:", e); }
     }
 
     // 从 Home 页全局存储读取个人资料（homeGetGlobal 也读 localStorage）
@@ -42,7 +42,7 @@
             const profile = JSON.parse(profileStr);
             if (!userName) userName = profile.name || null;
             if (!userSignature) userSignature = profile.signature || null;
-          } catch(e) {}
+          } catch(e) { console.warn("[js/moments.js] silent catch:", e); }
         }
       }
     }
@@ -62,7 +62,7 @@
             if (!userSignature) userSignature = profile.signature || null;
           }
         }
-      } catch(e) {}
+      } catch(e) { console.warn("[js/moments.js] silent catch:", e); }
     }
 
     // 更新用户配置 - 与 Home 页保持同步
@@ -91,7 +91,7 @@
           parsed.forEach(m => momentsData.push(m));
         }
       }
-    } catch(e) {}
+    } catch(e) { console.warn("[js/moments.js] silent catch:", e); }
   })();
 
   // ========== 大文件存储（IndexedDB）- 视频 + 图片 ==========
@@ -293,7 +293,7 @@
           if (profile.avatar) partnerAvatar = profile.avatar;
         }
       }
-    } catch(e) {}
+    } catch(e) { console.warn("[js/moments.js] silent catch:", e); }
 
     cachedPartnerName = partnerName;
     cachedPartnerAvatar = partnerAvatar;
@@ -326,7 +326,7 @@
       if (savedCover) {
         userConfig.coverImage = savedCover;
       }
-    } catch(e) {}
+    } catch(e) { console.warn("[js/moments.js] silent catch:", e); }
     
     const container = document.getElementById('moments-container');
     if (!container) return;
@@ -3282,7 +3282,7 @@
           if (typeof homeSetGlobal === 'function') {
             homeSetGlobal('profile_me', JSON.stringify(profile));
           }
-        } catch(e) {}
+        } catch(e) { console.warn("[js/moments.js] silent catch:", e); }
       }
     }
     if (coverPreview && coverPreview.dataset.base64) {

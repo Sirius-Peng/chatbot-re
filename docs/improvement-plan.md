@@ -2,7 +2,7 @@
 
 > 基于 [工程性审阅报告](engineering-review.md) 和项目经理审阅意见制定
 > 创建日期：2026-06-13
-> 最后更新：2026-06-13（v10 — 完成第 7 周安全加固任务）
+> 最后更新：2026-06-13（v11 — 完成 Step 8.1 空 catch 块修复）
 > 执行周期：8 周（1 人全职）
 
 ---
@@ -458,25 +458,25 @@ html[data-theme="dark"] .glass {
 
 #### Day 3-5：工程化决策
 
-**Step 7.2 — Vite 迁移评估与 ADR**
+**Step 7.2 — Vite 迁移评估与 ADR ✅ 已完成（2026-06-13）**
 
 - 对应问题：P3-1
-- 改动文件：`docs/decisions/`（新增）
+- 改动文件：`docs/decisions/ADR-001-vite-migration.md`
 - 业务价值：为下一阶段的工程化升级做技术决策准备
+- 实际提交：`92a5267 docs: add ADR-001 for Vite migration decision`
 
-**操作：**
+**实际执行：**
 
-1. 编写 ADR（Architecture Decision Record）：
-   - 为什么选 Vite 而不是 esbuild / Rollup / Webpack
-   - 迁移策略：渐进式（Vite 支持混合 `<script>` 和 `<script type="module">`）
-   - 预期收益：minification、tree-shaking、HMR
-   - 预期风险：隐式全局依赖暴露
-2. 在独立分支尝试 Vite 最小接入（不合并），评估工作量
-3. 根据评估结果决定：立即启动 / 推迟到下季度 / 放弃
-- 验证：ADR 文档完成；独立分支 Vite 能跑通基本流程
-- 提交：`docs: add ADR for Vite migration decision`
+1. 评估 Vite vs esbuild/Rollup/Webpack，结论：Vite 是最佳选择
+2. 决策：**延迟执行** — 短期不迁移（隐式全局依赖太深，与全栈迁移冲突），中期随全栈迁移一并引入
+3. 文档化 4 阶段迁移策略（遗产模式 → ESM 转换 → 模块化入口 → 构建优化）
+4. 评估预期风险和缓解措施
 
-**第 7 周检查点：** 上传服务安全加固完成 + Vite 迁移决策文档完成
+- 回滚方案：删除 `docs/decisions/ADR-001-vite-migration.md`
+- 验证：ADR 文档完成
+- 状态：✅ 完成
+
+**第 7 周检查点：** ✅ 上传服务安全加固完成 + ✅ Vite 迁移决策文档完成
 
 ---
 
@@ -486,17 +486,22 @@ html[data-theme="dark"] .glass {
 
 #### Day 1-2：收尾
 
-**Step 8.1 — 空 catch 块添加日志**
+**Step 8.1 — 空 catch 块添加日志 ✅ 已完成（2026-06-13）**
 
 - 对应问题：W-J1
-- 改动文件：全项目（重点 `home.js`、`reply-library.js`、`prompt-manager.js`）
+- 改动文件：22 个 JS 文件（重点 `core.js`、`features.js`、`reply-library.js`）
 - 业务价值：线上问题可追溯，减少"静默失败"排查时间
 
-**操作：**
+**实际执行：**
 
-全局搜索 `catch(e) {}`，根据上下文替换为 `console.warn` 或 `console.error`。不改变业务逻辑。
-- 验证：`npm run test:web` 通过
-- 提交：`fix(logging): add console.warn/error to empty catch blocks`
+1. 修复 116 个空 try-catch 块：`catch(e) {}` → `catch(e) { console.warn('[file] silent catch:', e); }`
+2. 保留 4 个 `.catch(function(){})` promise 链（audio.play() 自动播放限制、localforage fire-and-forget）
+3. 新增基础设施测试验证无空 try-catch 块
+4. 附带效果：ESLint warnings 从 364 降至 253（catch 参数不再被标记为 unused）
+
+- 回滚方案：`git revert <commit>`
+- 验证：54 测试全部通过（21 单元 + 33 E2E）
+- 状态：✅ 完成
 
 **Step 8.2 — saveData 防抖**
 
@@ -550,10 +555,10 @@ html[data-theme="dark"] .glass {
 
 第 7 周（安全+决策）
   ├── Step 7.1 上传服务 ─────────┐ ✅ 97335d0
-  └── Step 7.2 Vite ADR ─────────┘── 独立
+  └── Step 7.2 Vite ADR ─────────┘ ✅ 92a5267
 
 第 8 周（收尾）
-  ├── Step 8.1 空 catch ─────────┐── 独立
+  ├── Step 8.1 空 catch ─────────┐── 独立 ✅
   ├── Step 8.2 saveData 防抖 ────┤── 独立
   └── 产品功能 ──────────────────┘── 独立
 ```
@@ -569,7 +574,7 @@ html[data-theme="dark"] .glass {
 | M2 | 第 3 周末 | CSS 一致性修复 | 暗色模式选择器统一 ✅、z-index 无冲突 ✅ |
 | M3 | 第 4 周末 | 产品功能上线 | 备份快捷导出 ✅、全屏搜索 ✅、47 测试通过 ✅ |
 | M4 | 第 6 周末 | 性能优化完成 | 增量渲染 ✅、存储写入批量 ✅、49 测试通过 ✅ |
-| M5 | 第 7 周末 | 安全加固+决策 | 上传服务安全 ✅、Vite ADR ⬜、53 测试通过 ✅ |
+| M5 | 第 7 周末 | 安全加固+决策 | 上传服务安全 ✅、Vite ADR ✅、53 测试通过 ✅ |
 | M6 | 第 8 周末 | 全部收尾 | 所有 Step 完成、回归通过 |
 
 ---

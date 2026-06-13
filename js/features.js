@@ -1015,7 +1015,7 @@ var statusPool = [
 
     // 混合系统预设 + 用户自定义状态池
     var userStatusPool = [];
-    try { userStatusPool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e) {}
+    try { userStatusPool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e) { console.warn("[js/features.js] silent catch:", e); }
     var userStatusTexts = userStatusPool.map(function(item) { return item.status || item; }).filter(Boolean);
     var mixedStatusPool = statusPool.concat(userStatusTexts);
     var status = mixedStatusPool[Math.floor(seededRandDg(seed, 1) * mixedStatusPool.length)];
@@ -1063,7 +1063,7 @@ function _buildDailyGreeting() {
         var noteText = festival ? festival.note : '今天也要元气满满，我在这里陪着你 ✦';
 
         var customData = {};
-        try { customData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e2) {}
+        try { customData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e2) { console.warn("[js/features.js] silent catch:", e2); }
         
         var now2 = new Date();
         var dailySeed = now2.getFullYear() * 10000 + (now2.getMonth()+1) * 100 + now2.getDate();
@@ -1105,7 +1105,7 @@ function _buildDailyGreeting() {
         setEl('dg-partner-mood-note', partnerMoodNote || (todayMood && todayMood.partner ? pName + ' 记录了今天的心情 ☆' : ''));
 
         var statusPoolData = [];
-        try { statusPoolData = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e2) {}
+        try { statusPoolData = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e2) { console.warn("[js/features.js] silent catch:", e2); }
         // 将系统预设 + 用户自定义混合后，按今日种子选取
         var systemStatusItems = (function() {
             var sysPool = [];
@@ -1179,7 +1179,7 @@ window.toggleImmersiveMode = function(force) {
     document.body.classList.toggle('immersive-mode', isOn);
     var toggle = document.getElementById('immersive-toggle');
     if (toggle) toggle.classList.toggle('active', isOn);
-    try { localStorage.setItem('immersive_mode', isOn ? '1' : '0'); } catch(e) {}
+    try { localStorage.setItem('immersive_mode', isOn ? '1' : '0'); } catch(e) { console.warn("[js/features.js] silent catch:", e); }
     if (!isOn && typeof showNotification === 'function') showNotification('已退出沉浸式模式', 'info');
 };
 
@@ -1240,14 +1240,14 @@ window.toggleImmersiveMode = function(force) {
             var t = document.getElementById('immersive-toggle');
             if (t) t.classList.add('active');
         }
-    } catch(e) {}
+    } catch(e) { console.warn("[js/features.js] silent catch:", e); }
 })();
 
 window.openDailyGreetingEditor = function() {
     var modal = document.getElementById('dg-editor-modal');
     if (!modal) return;
     var customData = {};
-    try { customData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) {}
+    try { customData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) { console.warn("[js/features.js] silent catch:", e); }
     var titleEl = document.getElementById('dg-edit-title');
     var noteEl = document.getElementById('dg-edit-note');
     if (titleEl) titleEl.value = (customData.titles && customData.titles.length) ? customData.titles.join('\n') : (customData.title || '');
@@ -1268,7 +1268,7 @@ window.closeDailyGreetingEditor = function() {
 };
 window.saveDailyGreetingCustom = function() {
     var customData = {};
-    try { customData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) {}
+    try { customData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) { console.warn("[js/features.js] silent catch:", e); }
     var titleEl = document.getElementById('dg-edit-title');
     var noteEl = document.getElementById('dg-edit-note');
     if (titleEl && titleEl.value.trim()) {
@@ -1288,7 +1288,7 @@ window.saveDailyGreetingCustom = function() {
 };
 window.clearDgDecoImg = function() {
     var customData = {};
-    try { customData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) {}
+    try { customData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) { console.warn("[js/features.js] silent catch:", e); }
     delete customData.decoImg;
     localStorage.setItem('dg_custom_data', JSON.stringify(customData));
     var prev = document.getElementById('dg-deco-preview');
@@ -1409,7 +1409,7 @@ window.switchToAnnouncementPanel = function() {
     if (addBtn) addBtn.style.display = 'none';
     if (titleEl) titleEl.textContent = '今日公告配置';
     var customData = {};
-    try { customData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e2) {}
+    try { customData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e2) { console.warn("[js/features.js] silent catch:", e2); }
     var titleInput = document.getElementById('dg-edit-title');
     var noteInput = document.getElementById('dg-edit-note');
     if (titleInput) titleInput.value = (customData.titles && customData.titles.length) ? customData.titles.join('\n') : (customData.title || '');
@@ -1432,7 +1432,7 @@ window.renderAnnStatusPool = function() {
     var listEl = document.getElementById('ann-status-pool-list');
     if (!listEl) return;
     var pool = [];
-    try { pool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e2) {}
+    try { pool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e2) { console.warn("[js/features.js] silent catch:", e2); }
     listEl.innerHTML = '';
     if (pool.length === 0) {
         listEl.innerHTML = '<div style="font-size:12px;color:var(--text-secondary);text-align:center;padding:10px 0;opacity:0.6;">暂无条目，添加后将随机抽取</div>';
@@ -1464,7 +1464,7 @@ window.addAnnStatusPoolItem = function() {
     var iconImg = iconInput ? (iconInput.dataset.imgSrc || '') : '';
     if (!status && !label) { if (typeof showNotification === 'function') showNotification('请至少填写状态或标签', 'warning'); return; }
     var pool = [];
-    try { pool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e2) {}
+    try { pool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e2) { console.warn("[js/features.js] silent catch:", e2); }
     var entry = { status: status, label: label, icon: icon || '✦' };
     if (iconImg) entry.iconImg = iconImg;
     pool.push(entry);
@@ -1493,7 +1493,7 @@ window.handleAnnStatusIconUpload = function(input) {
 
 window.removeAnnStatusPoolItem = function(idx) {
     var pool = [];
-    try { pool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e2) {}
+    try { pool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e2) { console.warn("[js/features.js] silent catch:", e2); }
     pool.splice(idx, 1);
     localStorage.setItem('dg_status_pool', JSON.stringify(pool));
     renderAnnStatusPool();
@@ -1524,7 +1524,7 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.onload = function(ev) {
                 var data = ev.target.result;
                 var customData = {};
-                try { customData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(ex) {}
+                try { customData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(ex) { console.warn("[js/features.js] silent catch:", ex); }
                 customData.decoImg = data;
                 localStorage.setItem('dg_custom_data', JSON.stringify(customData));
                 var prev = document.getElementById('dg-deco-preview');
@@ -1615,7 +1615,7 @@ window.closeDailyGreeting = function() {
             }, 320);
         }
         localStorage.setItem('dailyGreetingShown', new Date().toDateString());
-    } catch(e) {}
+    } catch(e) { console.warn("[js/features.js] silent catch:", e); }
 };
 
 window.reopenDailyGreeting = function() {
@@ -1630,7 +1630,7 @@ window.reopenDailyGreeting = function() {
                 modal.style.opacity = '1';
             });
         }
-    } catch(e) {}
+    } catch(e) { console.warn("[js/features.js] silent catch:", e); }
 };
 
 window.tryShowDailyGreeting = function() {

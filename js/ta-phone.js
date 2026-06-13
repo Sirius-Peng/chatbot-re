@@ -22,7 +22,7 @@
                 if (parsed.chat) collections.chat = parsed.chat;
                 if (parsed.moments) collections.moments = parsed.moments;
             }
-        } catch(e) {}
+        } catch(e) { console.warn("[js/ta-phone.js] silent catch:", e); }
     }
 
     // 保存收藏数据
@@ -169,7 +169,7 @@
             try {
                 const saved = localStorage.getItem('shop_gift_cabinet');
                 if (saved) gifts = JSON.parse(saved);
-            } catch(e) {}
+            } catch(e) { console.warn("[js/ta-phone.js] silent catch:", e); }
         }
 
         if (!gifts || gifts.length === 0) {
@@ -214,7 +214,7 @@
             try {
                 const saved = localStorage.getItem('shop_gift_cabinet');
                 if (saved) gifts = JSON.parse(saved);
-            } catch(e) {}
+            } catch(e) { console.warn("[js/ta-phone.js] silent catch:", e); }
         }
         const item = gifts[idx];
         if (!item || !item.replies) return;

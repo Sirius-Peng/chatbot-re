@@ -194,7 +194,7 @@ function initThemeEditor() {
             throttledSaveData && throttledSaveData();
             updateUI();
             if (settings.customBubbleCss) {
-                try { applyCustomBubbleCss(settings.customBubbleCss); } catch(e) {}
+                try { applyCustomBubbleCss(settings.customBubbleCss); } catch(e) { console.warn("[js/features/theme-editor.js] silent catch:", e); }
             }
             hideModal(document.getElementById('theme-editor-modal'));
             showNotification('主题已应用 ✓', 'success');
@@ -604,14 +604,14 @@ function populateThemeSelector() {
             }
             
             if (scheme.customFontUrl) {
-                try { applyCustomFont(scheme.customFontUrl); } catch(e) {}
+                try { applyCustomFont(scheme.customFontUrl); } catch(e) { console.warn("[js/features/theme-editor.js] silent catch:", e); }
             } else {
                 document.documentElement.style.setProperty('--message-font-family', scheme.messageFontFamily || "'Noto Serif SC', serif");
                 document.documentElement.style.setProperty('--font-family', scheme.messageFontFamily || "'Noto Serif SC', serif");
             }
             
             if (scheme.customBubbleCss) {
-                try { applyCustomBubbleCss(scheme.customBubbleCss); } catch(e) {}
+                try { applyCustomBubbleCss(scheme.customBubbleCss); } catch(e) { console.warn("[js/features/theme-editor.js] silent catch:", e); }
             }
             
             if (scheme.chatBackground) {

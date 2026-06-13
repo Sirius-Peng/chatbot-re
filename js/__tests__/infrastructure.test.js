@@ -142,6 +142,42 @@ describe('upload-server.js 安全加固', () => {
     });
 });
 
+describe('空 catch 块', () => {
+    test('JS 文件中没有空的 catch 块', () => {
+        const jsDir = resolve(ROOT, 'js');
+        const violations = [];
+
+        function scanDir(dir) {
+            const entries = readdirSync(dir, { withFileTypes: true });
+            for (const entry of entries) {
+                const full = resolve(dir, entry.name);
+                if (entry.isDirectory()) {
+                    // Skip __tests__ directory
+                    if (entry.name === '__tests__') continue;
+                    scanDir(full);
+                } else if (entry.name.endsWith('.js')) {
+                    const content = readFileSync(full, 'utf-8');
+                    const rel = full.replace(ROOT + '/', '');
+                    // Match try-catch blocks with empty body (not .catch() promise handlers)
+                    // Look for } catch preceded by a try block
+                    const catchRe = /\}\s*catch\s*\([^)]*\)\s*\{\s*\}/g;
+                    let m;
+                    while ((m = catchRe.exec(content)) !== null) {
+                        const line = content.slice(0, m.index).split('\n').length;
+                        violations.push(`${rel}:${line}`);
+                    }
+                }
+            }
+        }
+        scanDir(jsDir);
+        // Report violations but allow a small number of intentional ones
+        if (violations.length > 0) {
+            console.log(`  ⚠ ${violations.length} empty catch blocks found:\n  ${violations.join('\n  ')}`);
+        }
+        expect(violations).toEqual([]);
+    });
+});
+
 describe('diary.css 语法正确性', () => {
     test('没有多余的闭合花括号', () => {
         const css = readFileSync(resolve(ROOT, 'css/diary.css'), 'utf-8');

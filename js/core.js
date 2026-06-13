@@ -42,8 +42,8 @@
             displayedMessageCount = HISTORY_BATCH_SIZE;
 
             // 立即清除 localStorage 备份，防止 _tryRecoverFromBackup 在 IndexedDB 写入前恢复旧消息
-            try { localStorage.removeItem('BACKUP_V1_critical'); } catch(e) {}
-            try { localStorage.removeItem('BACKUP_V1_timestamp'); } catch(e) {}
+            try { localStorage.removeItem('BACKUP_V1_critical'); } catch(e) { console.warn("[js/core.js] silent catch:", e); }
+            try { localStorage.removeItem('BACKUP_V1_timestamp'); } catch(e) { console.warn("[js/core.js] silent catch:", e); }
 
             // 直接写入 IndexedDB（跳过 500ms 防抖），确保刷新后不恢复
             localforage.setItem(getStorageKey('chatMessages'), []).catch(() => {});
@@ -361,12 +361,12 @@ const loadData = async () => {
         if (!partnerAvatarSrc && SESSION_ID) {
             try {
                 partnerAvatarSrc = localStorage.getItem(`${APP_PREFIX}${SESSION_ID}_partnerAvatar`);
-            } catch(e) {}
+            } catch(e) { console.warn("[js/core.js] silent catch:", e); }
         }
         if (!myAvatarSrc && SESSION_ID) {
             try {
                 myAvatarSrc = localStorage.getItem(`${APP_PREFIX}${SESSION_ID}_myAvatar`);
-            } catch(e) {}
+            } catch(e) { console.warn("[js/core.js] silent catch:", e); }
         }
         const savedPartnerPersonas = getVal(13);
         const savedShowNameConfig = getVal(14);
@@ -486,7 +486,7 @@ const loadData = async () => {
                 scheduleWorkEndCheck();
             }
         }
-        try { const ce = await localforage.getItem(getStorageKey('customEmojis')); if (ce && Array.isArray(ce)) customEmojis = ce; } catch(e) {}
+        try { const ce = await localforage.getItem(getStorageKey('customEmojis')); if (ce && Array.isArray(ce)) customEmojis = ce; } catch(e) { console.warn("[js/core.js] silent catch:", e); }
         if (savedTransferData) transferData = savedTransferData;
 
         // 加载 AI 相关数据
@@ -548,7 +548,7 @@ const loadData = async () => {
             if (typeof checkEnvelopeStatus === 'function') checkEnvelopeStatus();
             if (typeof updateUI === 'function') updateUI();
             if (settings.customBubbleCss) {
-                try { applyCustomBubbleCss(settings.customBubbleCss); } catch(e) {}
+                try { applyCustomBubbleCss(settings.customBubbleCss); } catch(e) { console.warn("[js/core.js] silent catch:", e); }
             }
             // 同步数据到 Home 页
             if (typeof window.syncHomePageData === 'function') {
@@ -1367,7 +1367,7 @@ window.setMoyuUnread = function () {
     // 保存未读状态
     try {
         localforage.setItem(getStorageKey('moyuUnread'), true).catch(() => {});
-    } catch (e) {}
+    } catch(e) { console.warn("[js/core.js] silent catch:", e); }
 };
 
 // 清除摸鱼未读标记
@@ -1383,7 +1383,7 @@ window.clearMoyuUnread = function () {
     // 保存未读状态
     try {
         localforage.setItem(getStorageKey('moyuUnread'), false).catch(() => {});
-    } catch (e) {}
+    } catch(e) { console.warn("[js/core.js] silent catch:", e); }
 };
 
 // 关闭通知并标记未读
@@ -2114,7 +2114,7 @@ const addMessage = (message) => {
 
             addMessage({ id: Date.now(), text: pokeText, timestamp: new Date(), type: 'system' });
             if (typeof playSound === 'function') playSound('partner_poke');
-            (function(){try{if(window._typingIndicatorAutoHideTimer){clearTimeout(window._typingIndicatorAutoHideTimer);window._typingIndicatorAutoHideTimer=null;}}catch(e){}var _tiW=document.getElementById('typing-indicator-wrapper');if(_tiW){var _tiInner=_tiW.querySelector('.typing-indicator');if(_tiInner){_tiInner.classList.add('hiding');setTimeout(function(){_tiW.style.display='none';if(_tiInner)_tiInner.classList.remove('hiding');},240);}else{_tiW.style.display='none';}}})();
+            (function(){try{if(window._typingIndicatorAutoHideTimer){clearTimeout(window._typingIndicatorAutoHideTimer);window._typingIndicatorAutoHideTimer=null;}}catch(e) { console.warn("[js/core.js] silent catch:", e); }var _tiW=document.getElementById('typing-indicator-wrapper');if(_tiW){var _tiInner=_tiW.querySelector('.typing-indicator');if(_tiInner){_tiInner.classList.add('hiding');setTimeout(function(){_tiW.style.display='none';if(_tiInner)_tiInner.classList.remove('hiding');},240);}else{_tiW.style.display='none';}}})();
         };
 
         function sendMessage(textOverride = null, type = 'normal') {
@@ -2440,7 +2440,7 @@ if (partnerPersonas && partnerPersonas.length > 0 && Math.random() < 0.3) {
                         }
                     }
                     if (!replyText && i === replyCount - 1) {
-                        (function(){try{if(window._typingIndicatorAutoHideTimer){clearTimeout(window._typingIndicatorAutoHideTimer);window._typingIndicatorAutoHideTimer=null;}}catch(e){}var _tiW=document.getElementById('typing-indicator-wrapper');if(_tiW){var _tiInner=_tiW.querySelector('.typing-indicator');if(_tiInner){_tiInner.classList.add('hiding');setTimeout(function(){_tiW.style.display='none';if(_tiInner)_tiInner.classList.remove('hiding');},240);}else{_tiW.style.display='none';}}})();
+                        (function(){try{if(window._typingIndicatorAutoHideTimer){clearTimeout(window._typingIndicatorAutoHideTimer);window._typingIndicatorAutoHideTimer=null;}}catch(e) { console.warn("[js/core.js] silent catch:", e); }var _tiW=document.getElementById('typing-indicator-wrapper');if(_tiW){var _tiInner=_tiW.querySelector('.typing-indicator');if(_tiInner){_tiInner.classList.add('hiding');setTimeout(function(){_tiW.style.display='none';if(_tiInner)_tiInner.classList.remove('hiding');},240);}else{_tiW.style.display='none';}}})();
                         return;
                     }
 
@@ -2448,7 +2448,7 @@ if (partnerPersonas && partnerPersonas.length > 0 && Math.random() < 0.3) {
                     try {
                         const raw = localStorage.getItem('disabledStickerItems');
                         if (raw) disabledStickerItems = new Set(JSON.parse(raw));
-                    } catch (e) {}
+                    } catch(e) { console.warn("[js/core.js] silent catch:", e); }
                     const enabledStickerPool = (stickerLibrary || []).filter(s => !disabledStickerItems.has(s));
                     const shouldSendSticker = enabledStickerPool.length > 0 && Math.random() < 0.2;
 
@@ -2558,7 +2558,7 @@ if (partnerPersonas && partnerPersonas.length > 0 && Math.random() < 0.3) {
                                     clearTimeout(window._typingIndicatorAutoHideTimer);
                                     window._typingIndicatorAutoHideTimer = null;
                                 }
-                            } catch (e) {}
+                            } catch(e) { console.warn("[js/core.js] silent catch:", e); }
                             var _tiW = document.getElementById('typing-indicator-wrapper');
                             if (_tiW) {
                                 var _tiInner = _tiW.querySelector('.typing-indicator');
@@ -2591,11 +2591,11 @@ if (partnerPersonas && partnerPersonas.length > 0 && Math.random() < 0.3) {
                         // 机制性兜底：出错时至少让“正在输入中”消失，避免假死
                         try {
                             (function(){
-                                try { if (window._typingIndicatorAutoHideTimer) { clearTimeout(window._typingIndicatorAutoHideTimer); window._typingIndicatorAutoHideTimer = null; } } catch (e2) {}
+                                try { if (window._typingIndicatorAutoHideTimer) { clearTimeout(window._typingIndicatorAutoHideTimer); window._typingIndicatorAutoHideTimer = null; } } catch(e2) { console.warn("[js/core.js] silent catch:", e2); }
                                 var _tiW2 = document.getElementById('typing-indicator-wrapper');
                                 if (_tiW2) _tiW2.style.display = 'none';
                             })();
-                        } catch (e2) {}
+                        } catch(e2) { console.warn("[js/core.js] silent catch:", e2); }
                     }
                 }, delay);
             }
@@ -2759,15 +2759,15 @@ function showModal(modalElement, focusElement = null) {
                 try {
                     let dgCustomData = null, dgStatusPool = null, customWeatherMap = {};
                     if (inclSettings) {
-                        try { dgCustomData = JSON.parse(localStorage.getItem('dg_custom_data') || 'null'); } catch(e2) {}
-                        try { dgStatusPool = JSON.parse(localStorage.getItem('dg_status_pool') || 'null'); } catch(e2) {}
+                        try { dgCustomData = JSON.parse(localStorage.getItem('dg_custom_data') || 'null'); } catch(e2) { console.warn("[js/core.js] silent catch:", e2); }
+                        try { dgStatusPool = JSON.parse(localStorage.getItem('dg_status_pool') || 'null'); } catch(e2) { console.warn("[js/core.js] silent catch:", e2); }
                         try {
                             Object.keys(localStorage).forEach(kk => {
                                 if (kk && kk.startsWith('customWeather_')) {
                                     customWeatherMap[kk] = localStorage.getItem(kk);
                                 }
                             });
-                        } catch(e2) {}
+                        } catch(e2) { console.warn("[js/core.js] silent catch:", e2); }
                     }
 
                     const exportObj = {
@@ -3022,9 +3022,9 @@ function showModal(modalElement, focusElement = null) {
                                     if (settings.customGlobalCss) applyGlobalThemeCss(settings.customGlobalCss);
                                 } catch(e2) { console.warn('导入后样式应用失败', e2); }
                             }
-                            if (importedData.dgCustomData) { try { localStorage.setItem('dg_custom_data', JSON.stringify(importedData.dgCustomData)); } catch(e2) {} }
-                            if (importedData.dgStatusPool) { try { localStorage.setItem('dg_status_pool', JSON.stringify(importedData.dgStatusPool)); } catch(e2) {} }
-                            if (importedData.customWeatherMap) { try { Object.keys(importedData.customWeatherMap).forEach(wk => localStorage.setItem(wk, importedData.customWeatherMap[wk])); } catch(e2) {} }
+                            if (importedData.dgCustomData) { try { localStorage.setItem('dg_custom_data', JSON.stringify(importedData.dgCustomData)); } catch(e2) { console.warn("[js/core.js] silent catch:", e2); } }
+                            if (importedData.dgStatusPool) { try { localStorage.setItem('dg_status_pool', JSON.stringify(importedData.dgStatusPool)); } catch(e2) { console.warn("[js/core.js] silent catch:", e2); } }
+                            if (importedData.customWeatherMap) { try { Object.keys(importedData.customWeatherMap).forEach(wk => localStorage.setItem(wk, importedData.customWeatherMap[wk])); } catch(e2) { console.warn("[js/core.js] silent catch:", e2); } }
                         }
                         if (doReplies  && importedData.customReplies)  customReplies  = importedData.customReplies;
                         if (doReplies  && importedData.customEmojis && Array.isArray(importedData.customEmojis)) customEmojis = importedData.customEmojis;

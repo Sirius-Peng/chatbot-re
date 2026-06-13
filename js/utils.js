@@ -83,7 +83,7 @@ function deduplicateContentArray(arr, baseSystemArray = []) {
                             .catch(() => downloadFileFallback(blob, fileName));
                         return;
                     }
-                } catch (e) {}
+                } catch(e) { console.warn("[js/utils.js] silent catch:", e); }
             }
             const blob = new Blob([dataString], { type: 'application/json' });
             downloadFileFallback(blob, fileName);
@@ -138,7 +138,7 @@ function deduplicateContentArray(arr, baseSystemArray = []) {
                     _currentAudioContext.close();
                     _currentAudioContext = null;
                 }
-            } catch(e) {}
+            } catch(e) { console.warn("[js/utils.js] silent catch:", e); }
         };
 
         const playSound = (type) => {
@@ -375,7 +375,7 @@ html body .message.message-image-bubble-none {
                 }
             }
         }
-    } catch(e) {}
+    } catch(e) { console.warn("[js/utils.js] silent catch:", e); }
 }
 
 function applyGlobalThemeCss(cssCode) {

@@ -268,7 +268,7 @@ function checkPartnerDailyMood() {
                 }
                 moodData[dateStr].partnerNote = chosen.join('　');
             }
-        } catch(e) {  }
+        } catch(e) { console.warn("[js/features/mood.js] silent catch:", e); }
         saveMoodData();
     }
 }

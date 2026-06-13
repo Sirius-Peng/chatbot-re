@@ -71,7 +71,7 @@
         // 同时写入 localStorage 和 localforage，确保各模块都能读取
         try {
             localStorage.setItem(key, value);
-        } catch(e) {}
+        } catch(e) { console.warn("[js/home.js] silent catch:", e); }
         if (typeof localforage !== 'undefined') {
             localforage.setItem(key, value).catch(() => {});
         }
@@ -314,7 +314,7 @@
             try {
                 const savedData = JSON.parse(savedDataRaw);
                 hasValidSave = savedData && savedData.currentPet;
-            } catch(e) {}
+            } catch(e) { console.warn("[js/home.js] silent catch:", e); }
         }
 
         if (hasValidSave) {
@@ -897,7 +897,7 @@
                     // 同时保存到 localStorage 作为同步备份
                     try {
                         localStorage.setItem(storageKey, url);
-                    } catch(e) {}
+                    } catch(e) { console.warn("[js/home.js] silent catch:", e); }
                     localforage.setItem(storageKey, url).catch(() => {});
                 }
             }
@@ -1888,7 +1888,7 @@
                     if (parsed.signature) profileData[who].signature = parsed.signature;
                     if (parsed.startDate) profileData[who].startDate = parsed.startDate;
                     if (parsed.id) profileData[who].id = parsed.id;
-                } catch(e) {}
+                } catch(e) { console.warn("[js/home.js] silent catch:", e); }
             }
 
             // 更新头像 DOM（必须在数据加载完成后执行）
@@ -1947,7 +1947,7 @@
                         if (hexEl) hexEl.textContent = parsed[key];
                     });
                     document.querySelectorAll('.theme-preset').forEach(el => el.classList.remove('active'));
-                } catch(e) {}
+                } catch(e) { console.warn("[js/home.js] silent catch:", e); }
             }
         }
 
@@ -1962,7 +1962,7 @@
                         iconEl.innerHTML = `<img src="${customAppIcons[app]}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">`;
                     }
                 });
-            } catch(e) {}
+            } catch(e) { console.warn("[js/home.js] silent catch:", e); }
         }
 
         // 加载保存的应用顺序
@@ -1971,7 +1971,7 @@
             try {
                 appOrder = JSON.parse(savedOrder);
                 reorderAppItems();
-            } catch(e) {}
+            } catch(e) { console.warn("[js/home.js] silent catch:", e); }
         } else {
             // 首次加载：按默认顺序重新分页（每页8个）并保存
             reorderAppItems();
@@ -2388,7 +2388,7 @@
                 // 同时保存到 localStorage 作为同步备份
                 try {
                     localStorage.setItem(storageKey, url);
-                } catch(e) {}
+                } catch(e) { console.warn("[js/home.js] silent catch:", e); }
                 localforage.setItem(storageKey, url).catch(() => {});
             }
         }

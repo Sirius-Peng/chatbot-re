@@ -81,7 +81,7 @@
             time: Date.now()
         });
 
-        try { shopApp._saveData(); } catch (e) {}
+        try { shopApp._saveData(); } catch(e) { console.warn("[js/gift-cabinet.js] silent catch:", e); }
     }
 
     // 暴露到全局

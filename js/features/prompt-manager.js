@@ -109,15 +109,15 @@
                         contextParts.push('你可以适时关心这些待办的进展。');
                     }
                 }
-            } catch(e) {}
+            } catch(e) { console.warn("[js/features/prompt-manager.js] silent catch:", e); }
 
             // Menstrual cycle context
             try {
                 if (typeof CycleModule !== 'undefined' && typeof menstrualCycleData !== 'undefined' && menstrualCycleData) {
                     var nextPeriod = null;
-                    try { nextPeriod = CycleModule.getNextPeriodDate(); } catch(e) {}
+                    try { nextPeriod = CycleModule.getNextPeriodDate(); } catch(e) { console.warn("[js/features/prompt-manager.js] silent catch:", e); }
                     var phase = null;
-                    try { phase = CycleModule.getCurrentPhase(); } catch(e) {}
+                    try { phase = CycleModule.getCurrentPhase(); } catch(e) { console.warn("[js/features/prompt-manager.js] silent catch:", e); }
 
                     if (phase || nextPeriod) {
                         var cycleLines = ['[经期信息]'];
@@ -127,7 +127,7 @@
                         contextParts.push(cycleLines.join('\n'));
                     }
                 }
-            } catch(e) {}
+            } catch(e) { console.warn("[js/features/prompt-manager.js] silent catch:", e); }
 
             if (contextParts.length > 0) {
                 prompt = prompt + '\n\n---\n' + contextParts.join('\n');
@@ -138,7 +138,7 @@
         async save() {
             try {
                 if (window.localforage) await localforage.setItem(STORAGE_KEY_PREFIX, _templates);
-            } catch(e) {}
+            } catch(e) { console.warn("[js/features/prompt-manager.js] silent catch:", e); }
         }
     };
 })();

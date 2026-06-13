@@ -705,7 +705,7 @@ function init() {
             }
         } catch (e) {
             console.error('Pet init load error:', e);
-            try { showGameScreen(); updatePetUI(); } catch(e2) {}
+            try { showGameScreen(); updatePetUI(); } catch(e2) { console.warn("[js/pet-game.js] silent catch:", e2); }
         }
     } else {
         // 后续调用：只刷新UI数据，不重新显示界面、不启动定时器
@@ -4637,7 +4637,7 @@ function showToast(message) {
         toast.textContent = message;
         toast.classList.add('show');
         clearTimeout(toast._timeout);
-        toast._timeout = setTimeout(() => { try { toast.classList.remove('show'); } catch(e){} }, 3000);
+        toast._timeout = setTimeout(() => { try { toast.classList.remove('show'); } catch(e) { console.warn("[js/pet-game.js] silent catch:", e); } }, 3000);
     } catch(e) { console.error('showToast error:', e); }
 }
 
@@ -4649,7 +4649,7 @@ function showSpeech(text) {
         if (bubbleText) bubbleText.textContent = text;
         bubble.classList.add('show');
         clearTimeout(bubble._timeout);
-        bubble._timeout = setTimeout(() => { try { bubble.classList.remove('show'); } catch(e){} }, 2500);
+        bubble._timeout = setTimeout(() => { try { bubble.classList.remove('show'); } catch(e) { console.warn("[js/pet-game.js] silent catch:", e); } }, 2500);
     } catch(e) { console.error('showSpeech error:', e); }
 }
 

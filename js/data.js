@@ -333,8 +333,8 @@
             // 修复：直接赋值 let messages（window.messages 赋值不影响 let 绑定）
             messages = [];
             displayedMessageCount = typeof HISTORY_BATCH_SIZE !== 'undefined' ? HISTORY_BATCH_SIZE : 20;
-            try { localStorage.removeItem('BACKUP_V1_critical'); } catch(e) {}
-            try { localStorage.removeItem('BACKUP_V1_timestamp'); } catch(e) {}
+            try { localStorage.removeItem('BACKUP_V1_critical'); } catch(e) { console.warn("[js/data.js] silent catch:", e); }
+            try { localStorage.removeItem('BACKUP_V1_timestamp'); } catch(e) { console.warn("[js/data.js] silent catch:", e); }
             if (window.localforage && typeof getStorageKey === 'function') {
                 localforage.setItem(getStorageKey('chatMessages'), []).catch(function() {});
             }
@@ -544,7 +544,7 @@ window._sendPartnerNotification = function(title, body) {
             tag: 'partner-msg',
             renotify: true
         });
-    } catch(e) {}
+    } catch(e) { console.warn("[js/data.js] silent catch:", e); }
 };
 
 window.handleNotifToggle = function(checkbox) {
@@ -559,7 +559,7 @@ window.handleNotifToggle = function(checkbox) {
             if (perm === 'granted') {
                 if (statusEl) statusEl.textContent = '✅ 已开启 — 当页面在后台时，收到消息会弹出系统通知';
                 localStorage.setItem('notifEnabled', '1');
-                try { new Notification('传讯通知已开启 ✨', { body: '你现在可以在后台收到消息提醒了', tag: 'notif-test' }); } catch(e) {}
+                try { new Notification('传讯通知已开启 ✨', { body: '你现在可以在后台收到消息提醒了', tag: 'notif-test' }); } catch(e) { console.warn("[js/data.js] silent catch:", e); }
             } else if (perm === 'denied') {
                 checkbox.checked = false;
                 if (statusEl) statusEl.textContent = '❌ 权限被拒绝，请自行搜索如何开启';

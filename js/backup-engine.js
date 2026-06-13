@@ -233,7 +233,7 @@
             if (!lk || shouldSkipKeyGroupChat(lk, flags)) continue;
             try {
                 lsData[lk] = localStorage.getItem(lk);
-            } catch (e2) {}
+            } catch(e2) { console.warn("[js/backup-engine.js] silent catch:", e2); }
         }
         var state = { store: {}, map: new Map(), n: 0 };
         var lfOut = {};
@@ -546,11 +546,11 @@
                     });
                     await localforage.setItem(slKey, remappedSl);
                 }
-            } catch (e4) {}
+            } catch(e4) { console.warn("[js/backup-engine.js] silent catch:", e4); }
         }
 
         if (typeof APP_PREFIX !== 'undefined' && typeof SESSION_ID !== 'undefined') {
-            try { await localforage.setItem(APP_PREFIX + 'lastSessionId', SESSION_ID); } catch (e3) {}
+            try { await localforage.setItem(APP_PREFIX + 'lastSessionId', SESSION_ID); } catch(e3) { console.warn("[js/backup-engine.js] silent catch:", e3); }
         }
     }
 

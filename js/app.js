@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (document.visibilityState === 'hidden') {
                 try {
                     if (typeof saveTimeout !== 'undefined') clearTimeout(saveTimeout);
-                } catch (e) {}
+                } catch(e) { console.warn("[js/app.js] silent catch:", e); }
                 try { _backupCriticalData(); } catch (e) { console.warn('[visibilitychange] 紧急备份失败:', e); }
                 try {
                     const p = saveData();
@@ -133,11 +133,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         window.addEventListener('pagehide', () => {
-            try { _backupCriticalData(); } catch (e) {}
+            try { _backupCriticalData(); } catch(e) { console.warn("[js/app.js] silent catch:", e); }
         });
 
         window.addEventListener('beforeunload', () => {
-            try { _backupCriticalData(); } catch (e) {}
+            try { _backupCriticalData(); } catch(e) { console.warn("[js/app.js] silent catch:", e); }
         });
 
         setInterval(() => {
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // 检查信封状态
         setTimeout(() => {
-            try { if (typeof checkEnvelopeStatus === 'function') checkEnvelopeStatus(); } catch(e) {}
+            try { if (typeof checkEnvelopeStatus === 'function') checkEnvelopeStatus(); } catch(e) { console.warn("[js/app.js] silent catch:", e); }
         }, 2000);
 
         // 贴纸上传监听器（移入 DOMContentLoaded 内部）

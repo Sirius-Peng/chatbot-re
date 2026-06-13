@@ -1709,8 +1709,8 @@ function _showExportUI() {
     // 读取公告数据（localStorage）
     let _annCustomData = {};
     let _annStatusPool = [];
-    try { _annCustomData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) {}
-    try { _annStatusPool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e) {}
+    try { _annCustomData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) { console.warn("[js/features/reply-library.js] silent catch:", e); }
+    try { _annStatusPool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e) { console.warn("[js/features/reply-library.js] silent catch:", e); }
     const _annTextCount = (_annCustomData.titles || []).length + (_annCustomData.notes || []).length;
     const _annPoolCount = _annStatusPool.length;
     const _annTotalCount = _annTextCount + _annPoolCount;
@@ -1856,8 +1856,8 @@ function _doExport(selectedModules) {
         else if (m.key === 'moyuLocationGroups') { libraryData.moyuLocationGroups = window.moyuLocationGroups || [];               libraryData.modules.push('moyuLocationGroups'); }
         else if (m.key === 'announcementConfig') {
             let _acd = {}; let _asp = [];
-            try { _acd = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) {}
-            try { _asp = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e) {}
+            try { _acd = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) { console.warn("[js/features/reply-library.js] silent catch:", e); }
+            try { _asp = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e) { console.warn("[js/features/reply-library.js] silent catch:", e); }
             libraryData.announcementConfig = { customData: _acd, statusPool: _asp };
             libraryData.modules.push('announcementConfig');
         }
@@ -1953,8 +1953,8 @@ function _showGroupExportPicker(type) {
 function _showAnnouncementExportPicker() {
     let annCustomData = {};
     let annStatusPool = [];
-    try { annCustomData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) {}
-    try { annStatusPool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e) {}
+    try { annCustomData = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) { console.warn("[js/features/reply-library.js] silent catch:", e); }
+    try { annStatusPool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e) { console.warn("[js/features/reply-library.js] silent catch:", e); }
     const textCount = (annCustomData.titles || []).length + (annCustomData.notes || []).length;
     const poolCount = annStatusPool.length;
 
@@ -2024,14 +2024,14 @@ function _showAnnouncementExportPicker() {
 }
 
 function _parseFlexibleJSON(text) {
-    try { return JSON.parse(text); } catch (_) {}
+    try { return JSON.parse(text); } catch(_) { console.warn("[js/features/reply-library.js] silent catch:", _); }
     let repaired = text
         .replace(/,\s*([}\]])/g, '$1')  
         .replace(/(["\d\w}])\s*\n\s*"/g, (m, p1) => { 
             if (p1 === '}' || p1 === ']') return m;
             return p1 + ',\n"';
         });
-    try { return JSON.parse(repaired); } catch (_) {}
+    try { return JSON.parse(repaired); } catch(_) { console.warn("[js/features/reply-library.js] silent catch:", _); }
     repaired = text.replace(/("(?:[^"\\]|\\.)*")\s*\n(\s*")/g, '$1,\n$2')
                    .replace(/,\s*([}\]])/g, '$1');
     return JSON.parse(repaired);
@@ -2113,7 +2113,7 @@ function _showImportUI(data) {
                         if (_annCfg.statusPool) localStorage.setItem('dg_status_pool', JSON.stringify(_annCfg.statusPool));
                     }
                     else if (m.key === 'announcementText') {
-                        let cur = {}; try { cur = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) {}
+                        let cur = {}; try { cur = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) { console.warn("[js/features/reply-library.js] silent catch:", e); }
                         cur.titles = _annText.titles || []; cur.notes = _annText.notes || [];
                         localStorage.setItem('dg_custom_data', JSON.stringify(cur));
                     }
@@ -2189,25 +2189,25 @@ function _showImportUI(data) {
                         });
                     } else if (m.key === 'announcementConfig') {
                         // 追加：合并 titles/notes，pool 去重追加
-                        let cur = {}; try { cur = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) {}
+                        let cur = {}; try { cur = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) { console.warn("[js/features/reply-library.js] silent catch:", e); }
                         if (_annCfg.customData) {
                             cur.titles = [...new Set([...(cur.titles||[]), ...(_annCfg.customData.titles||[])])];
                             cur.notes  = [...new Set([...(cur.notes||[]),  ...(_annCfg.customData.notes||[])])];
                             localStorage.setItem('dg_custom_data', JSON.stringify(cur));
                         }
                         if (_annCfg.statusPool) {
-                            let pool = []; try { pool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e) {}
+                            let pool = []; try { pool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e) { console.warn("[js/features/reply-library.js] silent catch:", e); }
                             const existStatuses = new Set(pool.map(p => p.status));
                             _annCfg.statusPool.forEach(p => { if (!existStatuses.has(p.status)) pool.push(p); });
                             localStorage.setItem('dg_status_pool', JSON.stringify(pool));
                         }
                     } else if (m.key === 'announcementText') {
-                        let cur = {}; try { cur = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) {}
+                        let cur = {}; try { cur = JSON.parse(localStorage.getItem('dg_custom_data') || '{}'); } catch(e) { console.warn("[js/features/reply-library.js] silent catch:", e); }
                         cur.titles = [...new Set([...(cur.titles||[]), ...(_annText.titles||[])])];
                         cur.notes  = [...new Set([...(cur.notes||[]),  ...(_annText.notes||[])])];
                         localStorage.setItem('dg_custom_data', JSON.stringify(cur));
                     } else if (m.key === 'announcementStatusPool') {
-                        let pool = []; try { pool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e) {}
+                        let pool = []; try { pool = JSON.parse(localStorage.getItem('dg_status_pool') || '[]'); } catch(e) { console.warn("[js/features/reply-library.js] silent catch:", e); }
                         const existStatuses = new Set(pool.map(p => p.status));
                         _annPool.forEach(p => { if (!existStatuses.has(p.status)) pool.push(p); });
                         localStorage.setItem('dg_status_pool', JSON.stringify(pool));

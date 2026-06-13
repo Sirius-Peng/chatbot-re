@@ -748,7 +748,7 @@ html:not([data-theme="dark"])[data-color-theme="black-white"] .message-sent{
             const r = win.getBoundingClientRect();
             S.dragOff = { x: e.clientX - r.left, y: e.clientY - r.top };
             on = true;
-            try { hdr.setPointerCapture(e.pointerId); } catch(_) {}
+            try { hdr.setPointerCapture(e.pointerId); } catch(_) { console.warn("[js/features/call.js] silent catch:", _); }
         });
         hdr.addEventListener('pointermove', e => {
             if (!on || !S.dragOff) return; e.preventDefault();
@@ -760,7 +760,7 @@ html:not([data-theme="dark"])[data-color-theme="black-white"] .message-sent{
             if (!on) return; on = false; S.dragOff = null;
             const r = win.getBoundingClientRect(); S.pos = { x: r.left, y: r.top };
             localStorage.setItem(KEY_POS, JSON.stringify(S.pos));
-            try { hdr.releasePointerCapture(e.pointerId); } catch(_) {}
+            try { hdr.releasePointerCapture(e.pointerId); } catch(_) { console.warn("[js/features/call.js] silent catch:", _); }
         };
         hdr.addEventListener('pointerup', stop);
         hdr.addEventListener('pointercancel', stop);
@@ -776,7 +776,7 @@ html:not([data-theme="dark"])[data-color-theme="black-white"] .message-sent{
             const r = pill.getBoundingClientRect();
             S.pillDragOff = { x: e.clientX - r.left, y: e.clientY - r.top };
             S.pillDragged = false; on = true;
-            try { pill.setPointerCapture(e.pointerId); } catch(_) {}
+            try { pill.setPointerCapture(e.pointerId); } catch(_) { console.warn("[js/features/call.js] silent catch:", _); }
         });
         pill.addEventListener('pointermove', e => {
             if (!on || !S.pillDragOff) return; e.preventDefault();
@@ -793,7 +793,7 @@ html:not([data-theme="dark"])[data-color-theme="black-white"] .message-sent{
                 localStorage.setItem(KEY_PILL_POS, JSON.stringify(S.pillPos));
             }
             S.pillDragOff = null;
-            try { pill.releasePointerCapture(e.pointerId); } catch(_) {}
+            try { pill.releasePointerCapture(e.pointerId); } catch(_) { console.warn("[js/features/call.js] silent catch:", _); }
         };
         pill.addEventListener('pointerup', stop);
         pill.addEventListener('pointercancel', stop);
@@ -809,7 +809,7 @@ html:not([data-theme="dark"])[data-color-theme="black-white"] .message-sent{
             const r = win.getBoundingClientRect();
             S.resizeInit = { ex: e.clientX, ey: e.clientY, w: r.width, h: r.height };
             on = true;
-            try { h.setPointerCapture(e.pointerId); } catch(_) {}
+            try { h.setPointerCapture(e.pointerId); } catch(_) { console.warn("[js/features/call.js] silent catch:", _); }
         });
         h.addEventListener('pointermove', e => {
             if (!on || !S.resizeInit) return; e.preventDefault();
@@ -820,7 +820,7 @@ html:not([data-theme="dark"])[data-color-theme="black-white"] .message-sent{
         const stop = e => {
             if (!on) return; on = false; S.resizeInit = null;
             localStorage.setItem(KEY_SIZE, JSON.stringify(S.size));
-            try { h.releasePointerCapture(e.pointerId); } catch(_) {}
+            try { h.releasePointerCapture(e.pointerId); } catch(_) { console.warn("[js/features/call.js] silent catch:", _); }
         };
         h.addEventListener('pointerup', stop);
         h.addEventListener('pointercancel', stop);

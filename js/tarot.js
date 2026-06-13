@@ -559,7 +559,7 @@ function saveDiviHistory(type, question, cards) {
     // 保存到存储
     try {
         localforage.setItem('diviHistory', diviHistory).catch(() => {});
-    } catch (e) {}
+    } catch(e) { console.warn("[js/tarot.js] silent catch:", e); }
 
     // 刷新历史列表
     renderDiviHistory();
@@ -607,7 +607,7 @@ window.clearDiviHistory = function() {
     diviHistory = [];
     try {
         localforage.setItem('diviHistory', []).catch(() => {});
-    } catch (e) {}
+    } catch(e) { console.warn("[js/tarot.js] silent catch:", e); }
     renderDiviHistory();
 };
 
@@ -618,7 +618,7 @@ async function loadDiviHistory() {
         if (saved && Array.isArray(saved)) {
             diviHistory = saved;
         }
-    } catch (e) {}
+    } catch(e) { console.warn("[js/tarot.js] silent catch:", e); }
     renderDiviHistory();
 }
 
@@ -759,7 +759,7 @@ async function loadCustomTarotData() {
         const toggle = document.getElementById('custom-tarot-toggle');
         if (toggle) toggle.classList.toggle('active', customTarotEnabled);
         
-    } catch (e) {}
+    } catch(e) { console.warn("[js/tarot.js] silent catch:", e); }
 }
 
 // ==================== 初始化 ====================

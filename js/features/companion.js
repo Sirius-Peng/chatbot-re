@@ -759,7 +759,7 @@
         // 22 秒未接听自动消失 → 错过（不走过渡画面）
         const autoTimer = setTimeout(() => {
             if (!overlay.isConnected) return; // 已被其他操作移除了
-            try { if (typeof window.stopCurrentSound === 'function') window.stopCurrentSound(); } catch(e) {}
+            try { if (typeof window.stopCurrentSound === 'function') window.stopCurrentSound(); } catch(e) { console.warn("[js/features/companion.js] silent catch:", e); }
             overlay.remove();
             const sceneName = MODES[mode]?.label?.replace(/^一起/, '') || '';
             sendChatEvent('fa-heart-crack', `错过了${partnerName}的${sceneName}邀请`, null);
@@ -768,7 +768,7 @@
         // 拒绝
         overlay.querySelector('#companion-incoming-reject').addEventListener('click', () => {
             clearTimeout(autoTimer);
-            try { if (typeof window.stopCurrentSound === 'function') window.stopCurrentSound(); } catch(e) {}
+            try { if (typeof window.stopCurrentSound === 'function') window.stopCurrentSound(); } catch(e) { console.warn("[js/features/companion.js] silent catch:", e); }
             if (overlay.isConnected) overlay.remove();
             const sceneName = MODES[mode]?.label?.replace(/^一起/, '') || '';
             sendChatEvent('fa-heart-crack', `我拒绝了这次${sceneName}邀请`, null);
@@ -779,7 +779,7 @@
         // 接受 → 过渡画面 → 进入陪伴页
         overlay.querySelector('#companion-incoming-accept').addEventListener('click', () => {
             clearTimeout(autoTimer);
-            try { if (typeof window.stopCurrentSound === 'function') window.stopCurrentSound(); } catch(e) {}
+            try { if (typeof window.stopCurrentSound === 'function') window.stopCurrentSound(); } catch(e) { console.warn("[js/features/companion.js] silent catch:", e); }
             if (overlay.isConnected) overlay.remove();
             // 过渡画面：「我在等你……」
             showCompanionTransition(pickRandom(TRANSITION_LINES.partnerInviteAccept), () => {
@@ -1700,7 +1700,7 @@
 
     function stopNoise() {
         if (currentNoiseAudio) {
-            try { currentNoiseAudio.pause(); } catch (_) {}
+            try { currentNoiseAudio.pause(); } catch(_) { console.warn("[js/features/companion.js] silent catch:", _); }
             currentNoiseAudio = null;
         }
     }
