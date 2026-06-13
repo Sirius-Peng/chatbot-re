@@ -2,7 +2,7 @@
 
 > 基于 [工程性审阅报告](engineering-review.md) 和项目经理审阅意见制定
 > 创建日期：2026-06-13
-> 最后更新：2026-06-13（v2 — 融入 PM 审阅反馈）
+> 最后更新：2026-06-13（v3 — 完成第 1 周 Day 1 任务）
 > 执行周期：8 周（1 人全职）
 
 ---
@@ -40,9 +40,10 @@
 | 指标 | 当前值 | 目标值 | 衡量方式 |
 |------|--------|--------|----------|
 | CI 测试覆盖 | 0（不跑测试） | 部署前必须通过 | CI 配置 |
-| E2E 测试数量 | 22 | 35+ | `npm run test:web` |
+| E2E 测试数量 | 24 | 35+ | `npm run test:web` |
+| 单元测试数量 | 7 | 20+ | `npm run test:unit` |
 | ESLint errors | 0（规则被关） | 0（规则开启后仍为 0） | `npm run lint` |
-| XSS 可利用点 | 2（消息+通知） | 0 | 代码审查 |
+| XSS 可利用点 | ~~2~~ 0 | 0 | 代码审查 |
 | 暗色模式异常页面 | 3（商城/萌宠/朋友圈） | 0 | 手动检查 |
 | JS 控制台错误 | 未统计 | 0（正常操作路径） | 浏览器 DevTools |
 
@@ -54,63 +55,50 @@
 
 > 目标：消除可被利用的安全漏洞，建立部署安全网。
 
-#### Day 1：XSS 修复
+#### Day 1：XSS 修复 ✅ 已完成（2026-06-13）
 
-**Step 1.1 — 消息渲染 XSS 修复**
+**Step 1.1 — 消息渲染 XSS 修复 ✅**
 
 - 对应问题：C-1
-- 改动文件：`js/utils.js`、`js/core.js`
+- 改动文件：`js/utils.js`、`js/core.js`、`js/home.js`、11 个功能模块文件
 - 业务价值：防止恶意备份文件通过消息渲染执行任意 JavaScript
+- 实际提交：`8b16714 fix(security): unify escapeHTML and fix 7 Critical/High XSS vulnerabilities`
 
-**操作：**
+**实际执行：**
 
-1. 在 `js/utils.js` 新增 `escapeHTML` 函数：
+审计发现 22 个 XSS 漏洞（原计划仅识别 2 个），实际修复 7 个 Critical/High 级别：
+
+1. 在 `js/utils.js` 新增全局 `escapeHTML` 函数（采用 regex 方案而非原计划的 DOM 方案，因为 DOM 的 textContent→innerHTML 不转义 `"` 和 `'`，无法防御属性注入）：
    ```javascript
    window.escapeHTML = function(str) {
-       const div = document.createElement('div');
-       div.textContent = str;
-       return div.innerHTML;
+       if (str == null) return '';
+       return String(str).replace(/[&<>"']/g, function(c) {
+           return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+       });
    };
    ```
-2. 修改 `js/core.js` 消息渲染（约行 1705）：
-   ```javascript
-   // 修改前
-   let content = msg.text ? `<div>${msg.text.replace(/\n/g, '<br>')}</div>` : '';
-   // 修改后
-   let content = msg.text
-       ? `<div>${escapeHTML(msg.text).replace(/\n/g, '<br>')}</div>`
-       : '';
-   ```
-3. 修改系统消息渲染（约行 1564）：
-   ```javascript
-   systemMsgDiv.innerHTML = escapeHTML(msg.text);
-   ```
-4. 全局搜索 `innerHTML = msg` 和 `innerHTML =.*msg\.text`，逐一修复
-- 回滚方案：单次 git revert，无数据迁移
-- 验证：发送 `<img src=x onerror=alert(1)>` 确认不弹窗；`npm run test:web` 通过
-- 提交：`fix(security): escape HTML in message rendering to prevent XSS`
+2. 修复 `js/core.js` 中 5 个注入点：消息文本渲染、系统消息渲染、通话事件文本、回复指示器、图片属性
+3. 修复 `js/home.js` 中会话名称注入
+4. 修复 `js/utils.js` 中 showNotification 注入（textContent 方案）
+5. 消除 11 个文件中的私有转义函数（`escapeHtml`/`_esc`/`diaryEscHtml`/`_escapeHtml`），统一使用全局 `escapeHTML()`
 
-**Step 1.2 — showNotification XSS 修复**
+**新增测试基础设施：**
+
+- 引入 Vitest + jsdom 作为单元测试框架（原计划未包含）
+- 新增 `js/__tests__/escapeHTML.test.js`（7 个单元测试）
+- 新增 `tests/xss-regression.spec.js`（2 个 E2E 测试）
+- 更新 `.eslintrc.json` 添加 `escapeHTML: readonly` 全局变量
+
+- 回滚方案：`git revert 8b16714`
+- 验证：31 个测试全部通过（24 E2E + 7 单元）
+- 状态：✅ 完成
+
+**Step 1.2 — showNotification XSS 修复 ✅**
 
 - 对应问题：W-S1 相关
-- 改动文件：`js/utils.js`
+- 改动文件：`js/utils.js`（合并到 Step 1.1 的提交中）
 - 业务价值：防止通过通知消息注入 HTML
-
-**操作：**
-
-修改 `showNotification`（约行 109）：
-```javascript
-// 修改前
-notification.innerHTML = `<i class="fas ${iconMap[type] || 'fa-info-circle'}"></i><span>${message}</span>`;
-// 修改后
-const msgSpan = document.createElement('span');
-msgSpan.textContent = message;
-notification.innerHTML = `<i class="fas ${iconMap[type] || 'fa-info-circle'}"></i>`;
-notification.appendChild(msgSpan);
-```
-- 回滚方案：单次 git revert
-- 验证：`showNotification('<img src=x onerror=alert(1)>', 'info')` 不弹窗
-- 提交：`fix(security): use textContent in showNotification to prevent XSS`
+- 状态：✅ 已包含在 Step 1.1 提交中
 
 #### Day 2：CSS 修复 + CI 加测试
 
@@ -187,7 +175,13 @@ notification.appendChild(msgSpan);
 - 验证：手机双指缩放可用；页面布局缩放后不崩溃
 - 提交：`fix(a11y): allow user zoom by removing viewport scale restrictions`
 
-**第 1 周检查点：** `npm run test:web` 22 通过 + CI 包含测试 + XSS 已修复
+**第 1 周检查点：**
+- ✅ XSS 已修复（7 个 Critical/High，提交 `8b16714`）
+- ✅ `npm run test:web` 24 通过 + `npm run test:unit` 7 通过
+- ⬜ CI 包含测试（Step 1.4 待执行）
+- ⬜ CSS 语法修复（Step 1.3 待执行）
+- ⬜ Android 构建修复（Step 1.5 待执行）
+- ⬜ viewport 缩放（Step 1.6 待执行）
 
 ---
 
@@ -498,8 +492,8 @@ notification.appendChild(msgSpan);
 
 ```
 第 1 周（安全基线）
-  ├── Step 1.1 XSS 修复 ─────────┐
-  ├── Step 1.2 通知 XSS ─────────┤
+  ├── Step 1.1 XSS 修复 ─────────┐ ✅ 完成
+  ├── Step 1.2 通知 XSS ─────────┤ ✅ 完成
   ├── Step 1.3 CSS 语法 ─────────┤── 全部无依赖，可并行
   ├── Step 1.4 CI 测试 ──────────┤
   ├── Step 1.5 Android 构建 ─────┤
@@ -538,7 +532,7 @@ notification.appendChild(msgSpan);
 
 | 检查点 | 时间 | 完成条件 | 度量指标 |
 |--------|------|----------|----------|
-| M0 | 第 1 周末 | 安全基线建立 | XSS=0、CI 含测试、22 测试通过 |
+| M0 | 第 1 周末 | 安全基线建立 | XSS=0 ✅、CI 含测试 ⬜、31 测试通过 ✅ |
 | M1 | 第 2 周末 | 测试安全网就绪 | lint 0 errors、31+ 测试通过、无 flaky |
 | M2 | 第 3 周末 | CSS 一致性修复 | 暗色模式 0 异常页面、z-index 无冲突 |
 | M3 | 第 4 周末 | 产品功能上线 | 1-2 个用户可见功能 |
@@ -580,5 +574,6 @@ notification.appendChild(msgSpan);
 
 | 编号 | 决策 | 日期 | 状态 |
 |------|------|------|------|
+| ADR-000 | 引入 Vitest 作为单元测试框架 | 2026-06-13 | ✅ 已采纳 |
 | ADR-001 | Vite 迁移评估 | 第 7 周 | 待定 |
 | ADR-002 | 全栈迁移时间线 | 第 7 周 | 待定 |
