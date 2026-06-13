@@ -2,7 +2,7 @@
 
 > 基于 [工程性审阅报告](engineering-review.md) 和项目经理审阅意见制定
 > 创建日期：2026-06-13
-> 最后更新：2026-06-13（v8 — 完成第 5 周 Day 1-3 任务）
+> 最后更新：2026-06-13（v9 — 完成第 5-6 周性能优化核心任务）
 > 执行周期：8 周（1 人全职）
 
 ---
@@ -396,19 +396,21 @@ html[data-theme="dark"] .glass {
 
 #### Day 4-5：存储写入优化
 
-**Step 5.2 — saveData 批量写入优化**
+**Step 5.2 — saveData 批量写入优化 ✅ 已完成（2026-06-13）**
 
 - 对应问题：W-P3
 - 改动文件：`js/core.js`
 - 业务价值：减少 IndexedDB 写入压力，操作更跟手
+- 实际提交：`c94d60e perf: batch localforage writes in saveData (5 per batch)`
 
-**操作：**
+**实际执行：**
 
-1. 将 `saveData()` 中的 30 个并行 `setItem` 按批次执行（每批 5 个）
-2. 或引入写入合并：短时间内的多次 saveData 调用合并为一次实际写入
-- 回滚方案：恢复原 `saveData` 函数
-- 验证：连续操作后 IndexedDB 数据完整；DevTools 确认写入次数减少
-- 提交：`perf: batch localforage writes in saveData`
+1. 将 `saveData()` 中 28 个 `localforage.setItem` 从 `Promise.allSettled(all)` 改为每批 5 个的顺序批次
+2. 已有 `throttledSaveData`（500ms debounce）保持不变，继续合并短时间内的多次调用
+3. 新增 E2E 测试验证消息在页面刷新后持久化
+- 回滚方案：`git revert c94d60e`
+- 验证：49 测试全部通过（16 单元 + 33 E2E）
+- 状态：✅ 完成
 
 #### 备选：图片引用优化
 
@@ -540,7 +542,7 @@ html[data-theme="dark"] .glass {
 
 第 5-6 周（性能优化）
   ├── Step 5.1 增量渲染 ─────────┐ ✅ 6f5ad4f
-  ├── Step 5.2 批量写入 ─────────┤── 独立
+  ├── Step 5.2 批量写入 ─────────┤ ✅ c94d60e
   └── Step 5.3 图片引用 ─────────┘── 依赖 5.1（渲染逻辑需适配）
 
 第 7 周（安全+决策）
@@ -563,7 +565,7 @@ html[data-theme="dark"] .glass {
 | M1 | 第 2 周末 | 测试安全网就绪 | lint 0 errors ✅、40 测试通过 ✅、networkidle 已消除 ✅ |
 | M2 | 第 3 周末 | CSS 一致性修复 | 暗色模式选择器统一 ✅、z-index 无冲突 ✅ |
 | M3 | 第 4 周末 | 产品功能上线 | 备份快捷导出 ✅、全屏搜索 ✅、47 测试通过 ✅ |
-| M4 | 第 6 周末 | 性能优化完成 | 增量渲染 ✅、存储写入减少 ⬜ |
+| M4 | 第 6 周末 | 性能优化完成 | 增量渲染 ✅、存储写入批量 ✅、49 测试通过 ✅ |
 | M5 | 第 7 周末 | 安全加固+决策 | 上传服务安全、Vite ADR 完成 |
 | M6 | 第 8 周末 | 全部收尾 | 所有 Step 完成、回归通过 |
 
