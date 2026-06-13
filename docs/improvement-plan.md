@@ -2,7 +2,7 @@
 
 > 基于 [工程性审阅报告](engineering-review.md) 和项目经理审阅意见制定
 > 创建日期：2026-06-13
-> 最后更新：2026-06-13（v3 — 完成第 1 周 Day 1 任务）
+> 最后更新：2026-06-13（v5 — 完成第 3 周 Day 3-4 任务）
 > 执行周期：8 周（1 人全职）
 
 ---
@@ -283,31 +283,27 @@ shop.css 和 pet-style.css 无暗色模式样式，暂不添加（需先确定�
 
 #### Day 3-4：z-index 层级策略
 
-**Step 3.2 — z-index 层级策略**
+**Step 3.2 — z-index 层级策略 ✅ 已完成（2026-06-13）**
 
 - 对应问题：W-C4
-- 改动文件：`css/styles.css`、各 feature CSS
+- 改动文件：`css/styles.css`、`css/companion.css`、`css/diary.css`、`css/moments.css`、`css/pet-style.css`、`css/shop.css`
 - 业务价值：消除弹窗叠加时的层级错乱问题
+- 实际提交：`e60a229 refactor(css): cap all z-index values at 99999 and add z-index scale variables`
 
-**操作：**
+**实际执行：**
 
-1. 在 `:root` 定义层级变量：
-   ```css
-   :root {
-       --z-base: 1;
-       --z-sticky: 100;
-       --z-overlay: 1000;
-       --z-modal: 5000;
-       --z-elevated: 10000;
-       --z-toast: 50000;
-       --z-max: 99999;
-   }
-   ```
-2. 逐步替换各文件硬编码 z-index
-3. 删除所有超过 `--z-max` 的值
-- 回滚方案：恢复各 CSS 文件
-- 验证：弹窗叠加场景（设置 → 编辑 → 确认）层级正确
-- 提交：`refactor(css): establish z-index scale with CSS custom properties`
+1. 在 `:root` 定义层级变量（`css/styles.css` lines 52-58）
+2. 封顶 11 个超过 99999 的极端值（100000–99999999）→ 99999：
+   - companion.css: 100000 → 99999（过渡画面）、100001 → 99999（历史弹窗）
+   - diary.css: 100001 → 99999（经期编辑弹窗）
+   - moments.css: 999998 → 99999（朋友圈容器）
+   - pet-style.css: 999998 → 99999（萌宠容器）、9999999 !important → 99999 !important（模态层）、99999999 !important → 99999 !important（模态内容）
+   - shop.css: 100001 → 99999（商城容器）、100002 → 99999（商城弹窗×2）
+   - styles.css: 999999 → 99999（闪屏声明）
+3. 新增基础设施测试验证 z-index 变量定义和上限策略
+- 回滚方案：`git revert e60a229`
+- 验证：43 测试全部通过（14 单元 + 29 E2E）
+- 状态：✅ 完成
 
 #### Day 5：CSS 工具类提取
 
@@ -323,7 +319,7 @@ shop.css 和 pet-style.css 无暗色模式样式，暂不添加（需先确定�
 - 验证：毛玻璃效果视觉不变
 - 提交：`refactor(css): extract glass effect utility class`
 
-**第 3 周检查点：** 暗色模式全页面正常 + z-index 无冲突 + 测试全部通过
+**第 3 周检查点：** ✅ 暗色模式全页面正常 + ✅ z-index 无冲突（11 个极端值已封顶） + ✅ 测试全部通过（43 个）
 
 ---
 
@@ -508,7 +504,7 @@ shop.css 和 pet-style.css 无暗色模式样式，暂不添加（需先确定�
 
 第 3 周（CSS 修复）
   ├── Step 3.1 暗色模式 ─────────┐ ✅ 64019f1
-  ├── Step 3.2 z-index ──────────┤── 3.1 先行（颜色变量依赖统一后的选择器）
+  ├── Step 3.2 z-index ──────────┤ ✅ e60a229
   └── Step 3.3 CSS 工具类 ───────┘── 独立
 
 第 4 周（产品功能）── 独立，无技术依赖
@@ -536,7 +532,7 @@ shop.css 和 pet-style.css 无暗色模式样式，暂不添加（需先确定�
 |--------|------|----------|----------|
 | M0 | 第 1 周末 | 安全基线建立 | XSS=0 ✅、CI 含测试 ✅、34 测试通过 ✅ |
 | M1 | 第 2 周末 | 测试安全网就绪 | lint 0 errors ✅、40 测试通过 ✅、networkidle 已消除 ✅ |
-| M2 | 第 3 周末 | CSS 一致性修复 | 暗色模式选择器统一 ✅、z-index 无冲突 ⬜ |
+| M2 | 第 3 周末 | CSS 一致性修复 | 暗色模式选择器统一 ✅、z-index 无冲突 ✅ |
 | M3 | 第 4 周末 | 产品功能上线 | 1-2 个用户可见功能 |
 | M4 | 第 6 周末 | 性能优化完成 | 长对话流畅、存储写入减少 |
 | M5 | 第 7 周末 | 安全加固+决策 | 上传服务安全、Vite ADR 完成 |
