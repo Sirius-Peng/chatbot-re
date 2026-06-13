@@ -175,28 +175,50 @@ function uploadToCOS(localPath, remoteKey, bucket, region) {
 const app = express();
 const PORT = parseInt(process.env.UPLOAD_SERVER_PORT || '3001', 10);
 
-app.use(cors());
+// CORS 白名单
+const ALLOWED_ORIGINS = (process.env.CORS_ORIGINS || 'http://localhost:3000,http://localhost:4176')
+    .split(',').map(s => s.trim()).filter(Boolean);
+app.use(cors({ origin: ALLOWED_ORIGINS }));
 app.use(express.json());
+
+// API Key 认证中间件
+const API_KEY = process.env.UPLOAD_API_KEY || '';
+function requireApiKey(req, res, next) {
+    if (!API_KEY) return next(); // 未配置则跳过（开发环境）
+    const provided = req.headers['x-api-key'] || req.query.api_key;
+    if (provided === API_KEY) return next();
+    res.status(401).json({ success: false, error: '未授权：缺少或无效的 API Key' });
+}
 
 // 健康检查
 app.get('/api/health', function(_req, res) {
-    var cosOk = !!getCOS();
-    res.json({
-        ok: true,
-        cos: cosOk,
-        ncmdump: isNcmdumpInstalled(),
-        bucket: process.env.COS_BUCKET || null,
-        region: process.env.COS_REGION || 'ap-guangzhou'
-    });
+    res.json({ ok: true });
 });
+
+// 文件类型白名单
+const ALLOWED_MIMES = [
+    'audio/mpeg', 'audio/mp3', 'audio/ogg', 'audio/wav', 'audio/flac', 'audio/aac', 'audio/x-m4a', 'audio/mp4',
+    'image/jpeg', 'image/png', 'image/gif', 'image/webp'
+];
+const ALLOWED_EXTS = ['.mp3', '.ogg', '.wav', '.flac', '.aac', '.m4a', '.ncm', '.jpg', '.jpeg', '.png', '.gif', '.webp'];
 
 // 文件上传
 const upload = multer({
     dest: os.tmpdir(),
-    limits: { fileSize: 100 * 1024 * 1024 } // 100MB
+    limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+    fileFilter: function(_req, file, cb) {
+        const ext = extname(file.originalname);
+        const mimeOk = ALLOWED_MIMES.some(m => file.mimetype.startsWith(m));
+        const extOk = ALLOWED_EXTS.includes(ext);
+        if (mimeOk || extOk) {
+            cb(null, true);
+        } else {
+            cb(new Error('不支持的文件类型: ' + ext + ' (' + file.mimetype + ')'));
+        }
+    }
 });
 
-app.post('/api/upload', upload.single('file'), async function(req, res) {
+app.post('/api/upload', requireApiKey, upload.single('file'), async function(req, res) {
     let inputPath = null;
     let convertedPath = null;
 

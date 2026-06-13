@@ -111,6 +111,37 @@ describe('CSS 工具类', () => {
     });
 });
 
+describe('upload-server.js 安全加固', () => {
+    const serverPath = resolve(ROOT, 'server/upload-server.js');
+    const serverSrc = existsSync(serverPath) ? readFileSync(serverPath, 'utf-8') : '';
+
+    test('CORS 不使用通配符 *', () => {
+        if (!serverSrc) return; // 文件不存在时跳过
+        // cors() 无参数 = Access-Control-Allow-Origin: *
+        // 应该使用 cors({ origin: [...] }) 限制来源
+        expect(serverSrc).not.toMatch(/cors\(\s*\)/);
+    });
+    test('健康端点不暴露 bucket 和 region', () => {
+        if (!serverSrc) return;
+        // health 端点的响应中不应包含 bucket/region 字段
+        const healthMatch = serverSrc.match(/\/api\/health[\s\S]*?res\.json\(([\s\S]*?)\)/);
+        if (healthMatch) {
+            expect(healthMatch[1]).not.toContain('bucket');
+            expect(healthMatch[1]).not.toContain('region');
+        }
+    });
+    test('上传端点有 API Key 认证', () => {
+        if (!serverSrc) return;
+        // 应有某种 API Key 检查逻辑
+        expect(serverSrc).toMatch(/api[_-]?key|authorization|x-api-key/i);
+    });
+    test('multer 有文件类型白名单', () => {
+        if (!serverSrc) return;
+        // multer 配置应包含 fileFilter
+        expect(serverSrc).toContain('fileFilter');
+    });
+});
+
 describe('diary.css 语法正确性', () => {
     test('没有多余的闭合花括号', () => {
         const css = readFileSync(resolve(ROOT, 'css/diary.css'), 'utf-8');
